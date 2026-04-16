@@ -1,5 +1,6 @@
 #pragma once
 
+#include <unordered_set>
 #include <vector>
 #include "Color/RGB.h"
 #include "Math/Vec3.h"
@@ -27,7 +28,9 @@ namespace RedUI
 			Color::RGB color = Color::RGB(), float alpha = 1.0f, UIObject *parent = nullptr);
 		virtual			~UIObject() = default;
 		// Set parent of object. Parent is root (unparented) if nullptr or no argument.
-		void			SetParent(UIObject *newParent = nullptr);
-		virtual void	Draw() const;
+		void					SetParent(UIObject *newParent = nullptr);
+		UIObject				*GetParent() const;
+		std::vector<UIObject *>	GetChildren() const;
+		virtual void			Draw() const;
 	};
 }

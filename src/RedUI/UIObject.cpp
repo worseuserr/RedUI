@@ -43,6 +43,16 @@ void UIObject::SetParent(UIObject *newParent)
 	Parent = newParent;
 }
 
+UIObject *UIObject::GetParent() const
+{
+	return (Parent);
+}
+
+std::vector<UIObject *> UIObject::GetChildren() const
+{
+	return (Children);
+}
+
 void UIObject::Draw() const
 {
 }
