@@ -30,3 +30,7 @@ void UIObject::SetParent(UIObject *parent)
 	Parent = parent;
 	Parent->Children.push_back(this);
 }
+
+void UIObject::Draw() const
+{
+}

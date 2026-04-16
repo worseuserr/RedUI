@@ -16,15 +16,18 @@ namespace RedUI
 		Math::Vec3				WorldScale = Math::Vec3();
 
 	public:
-		bool		Enabled;
-		Math::Vec3	Position;
-		Math::Vec3	Scale;
-		Color::RGB	Color;
-		float		Alpha;
+
+		bool       Enabled;
+		Math::Vec3 Position;
+		Math::Vec3 Scale;
+		Color::RGB Color;
+		float      Alpha;
 
 		UIObject(Math::Vec3 position = Math::Vec3(), Math::Vec3 scale = Math::Vec3(1, 1, 1),
 			Color::RGB color = Color::RGB(), float alpha = 1.0f, UIObject *parent = nullptr);
+		virtual			~UIObject() = default;
 		// Set parent of object. Parent is root (unparented) if nullptr or no argument.
-		void	SetParent(UIObject *parent = nullptr);
+		void			SetParent(UIObject *parent = nullptr);
+		virtual void	Draw() const;
 	};
 }
