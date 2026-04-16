@@ -1,21 +1,11 @@
 #include <iostream>
 #include <windows.h>
 #include "RedUI.h"
-
-RedUI::Menu::Menu()
-{
-}
+#include "RedUI/UIState.h"
 
 bool RedUI::CheckVersion(const unsigned int version)
 {
-	// Debug code for now.
-	MessageBox(
-		nullptr,
-		version >= Version ? "valid version" : "invalid version",
-		"Works",
-		MB_ICONINFORMATION | MB_OK
-	);
-	return (version >= Version);
+	return (version >= VERSION);
 }
 
 bool RedUI::RequireVersion(const unsigned int version)
@@ -34,10 +24,18 @@ bool RedUI::RequireVersion(const unsigned int version)
 		ShellExecute(
 			nullptr,
 			"open",
-			ModPage,
+			MOD_PAGE,
 			nullptr,
 			nullptr,
 			SW_SHOWNORMAL
 		);
 	return (false);
+}
+
+void RedUI::Update()
+{
+	UIState::IsUpdating = true;
+	// todo: Add basic uiobject and hierarchyqueue iteration
+	UIState::IsUpdating = false;
+	// Then apply hierarchy changes here and clear map.
 }
