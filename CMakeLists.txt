@@ -3,10 +3,18 @@ project(RedUI)
 
 set(CMAKE_CXX_STANDARD 20)
 
-
 add_library(RedUI SHARED
 		include/RedUI.h
 		src/RedUI.cpp
+		include/RedUI/Menu.h
+		include/RedUI/UIState.h
+		include/RedUI/UIObject.h
+		include/RedUI/Animation.h
+		include/RedUI/Math/Vec3.h
+		include/RedUI/Color/RGB.h
+		src/RedUI/Math/Vec3.cpp
+		src/RedUI/Color/RGB.cpp
+		src/RedUI/UIObject.cpp
 )
 
 target_include_directories(RedUI PUBLIC
