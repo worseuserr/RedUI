@@ -27,7 +27,7 @@ namespace RedUI
 			Color::RGB color = Color::RGB(), float alpha = 1.0f, UIObject *parent = nullptr);
 		virtual			~UIObject() = default;
 		// Set parent of object. Parent is root (unparented) if nullptr or no argument.
-		void			SetParent(UIObject *parent = nullptr);
+		void			SetParent(UIObject *newParent = nullptr);
 		virtual void	Draw() const;
 	};
 }

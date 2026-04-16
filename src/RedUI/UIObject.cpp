@@ -18,17 +18,29 @@ UIObject::UIObject(const Vec3 position, const Vec3 scale, const RGB color, const
 }
 
 // If parent == nullptr, then parent is root.
-void UIObject::SetParent(UIObject *parent)
+void UIObject::SetParent(UIObject *newParent)
 {
+	if (newParent == Parent)
+		return ;
 	if (UIState::IsUpdating)
 	{
-		UIState::QueuedHierarchyChanges[this] = parent;
+		UIState::QueuedHierarchyChanges[this] = newParent;
 		return ;
 	}
-
-	// todo: add logic to remove from old parent and set to root if new parent = nullptr
-	Parent = parent;
-	Parent->Children.push_back(this);
+	if (newParent == nullptr)
+	{
+		std::erase(Parent->Children, this);
+		UIState::Objects.push_back(this);
+	}
+	else
+	{
+		if (Parent == nullptr)
+			std::erase(UIState::Objects, this);
+		else
+			std::erase(Parent->Children, this);
+		newParent->Children.push_back(this);
+	}
+	Parent = newParent;
 }
 
 void UIObject::Draw() const
