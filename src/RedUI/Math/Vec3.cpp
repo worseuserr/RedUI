@@ -18,6 +18,15 @@ Vec3	Vec3::Lerp(const Vec3 &dest, const float t) const
 	));
 }
 
+bool Vec3::operator==(const Vec3 &other) const
+{
+	return (
+		X == other.X &&
+		Y == other.Y &&
+		Z == other.Z
+	);
+}
+
 Vec3 Vec3::operator+(const Vec3 &other) const
 {
 	return (Vec3(

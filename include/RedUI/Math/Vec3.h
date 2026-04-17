@@ -12,6 +12,7 @@ namespace RedUI::Math
 
 		Vec3(float x = 0, float y = 0, float z = 0);
 		Vec3	Lerp(const Vec3 &dest, float t) const;
+		bool	operator==(const Vec3 &other) const;
 		Vec3	operator+(const Vec3 &other) const;
 		Vec3	operator-(const Vec3 &other) const;
 		Vec3	operator*(const Vec3 &other) const;
