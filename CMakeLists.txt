@@ -15,6 +15,7 @@ add_library(RedUI SHARED
 		src/RedUI/Math/Vec3.cpp
 		src/RedUI/Color/RGB.cpp
 		src/RedUI/UIObject.cpp
+		include/RedUI/Time/Time.h
 )
 
 target_include_directories(RedUI PUBLIC
