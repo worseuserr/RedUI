@@ -15,6 +15,9 @@ namespace RedUI::Math
 		Vec2	operator+(const Vec2 &other) const;
 		Vec2	operator-(const Vec2 &other) const;
 		Vec2	operator*(const Vec2 &other) const;
+		Vec2	operator+(const float &other) const;
+		Vec2	operator-(const float &other) const;
+		Vec2	operator*(const float &other) const;
 		Vec2	&operator+=(const Vec2 &other);
 		Vec2	&operator-=(const Vec2 &other);
 		Vec2	&operator*=(const Vec2 &other);

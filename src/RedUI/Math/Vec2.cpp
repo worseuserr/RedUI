@@ -48,6 +48,30 @@ Vec2 Vec2::operator*(const Vec2 &other) const
 	));
 }
 
+Vec2 Vec2::operator+(const float &other) const
+{
+	return (Vec2(
+		X + other,
+		Y + other
+	));
+}
+
+Vec2 Vec2::operator-(const float &other) const
+{
+	return (Vec2(
+		X - other,
+		Y - other
+	));
+}
+
+Vec2 Vec2::operator*(const float &other) const
+{
+	return (Vec2(
+		X * other,
+		Y * other
+	));
+}
+
 Vec2 &Vec2::operator+=(const Vec2 &other)
 {
 	X += other.X;
