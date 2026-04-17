@@ -1,5 +1,8 @@
 #pragma once
 
+#include <math.h>
+#include <numbers>
+
 #include "Time/Time.h"
 
 namespace RedUI
@@ -8,14 +11,14 @@ namespace RedUI
 	{
 		Linear,
 		Constant, // Instant set at the end of the animation, can be used to delay a change.
-		SineOut,
 		SineIn,
+		SineOut,
 		SineInOut,
-		QuadOut,
 		QuadIn,
+		QuadOut,
 		QuadInOut,
-		BackOut,
 		BackIn,
+		BackOut,
 		BackInOut,
 	};
 
@@ -51,14 +54,6 @@ namespace RedUI
 			EasingMethod = easing;
 			*Member = startValue;
 		}
-		virtual T	Ease(const float t)
-		{
-			if (EasingMethod == Easing::Linear)
-				return (StartValue + (EndValue - StartValue) * t);
-			if (EasingMethod == Easing::Constant)
-				return (t == 1.0f ? EndValue : StartValue);
-			return (EndValue);
-		}
 		// Returns true if animation finished, otherwise false.
 		bool		Update() override
 		{
@@ -69,6 +64,54 @@ namespace RedUI
 				progress = 1.0f;
 			*Member = Ease(progress);
 			return (progress == 1.0f);
+		}
+		virtual T	Ease(float t)
+		{
+			static constexpr float	BackOvershoot = 1.5f;
+			static constexpr float	OvershootAdd = BackOvershoot + 1.0f;
+			static constexpr float	OvershootMult = BackOvershoot * 1.525f;
+
+			// Big credit to https://easings.net/ for all these.
+			switch (EasingMethod)
+			{
+				case Easing::Linear:
+					// t = t;
+					break ;
+				case Easing::Constant:
+					return (t == 1.0f ? EndValue : StartValue);
+				case Easing::SineIn:
+					t = (1.0f - cos((t * std::numbers::pi) / 2.0f));
+					break ;
+				case Easing::SineOut:
+					t = (sin((t * std::numbers::pi) / 2.0f));
+					break ;
+				case Easing::SineInOut:
+					t = (-(cos(std::numbers::pi * t) - 1.0f) / 2.0f);
+					break ;
+				case Easing::QuadIn:
+					t = (t * t);
+					break ;
+				case Easing::QuadOut:
+					t = (1 - (1 - t) * (1 - t));
+					break ;
+				case Easing::QuadInOut:
+					t = (t < 0.5f ? 2.0f * t * t : 1.0f - pow(-2.0f * t + 2.0f, 2.0f) / 2.0f);
+					break ;
+				case Easing::BackIn:
+					t = (BackOvershoot * t * t * t - OvershootAdd * t * t);
+					break ;
+				case Easing::BackOut:
+					t = (1.0f + OvershootAdd * pow(t - 1.0f, 3.0f) + BackOvershoot * pow(t - 1.0f, 2.0f));
+					break ;
+				case Easing::BackInOut:
+					t = (t < 0.5f
+					  ? (pow(2.0f * t, 2.0f) * ((OvershootMult + 1.0f) * 2.0f * t - OvershootMult)) / 2.0f
+					  : (pow(2.0f * t - 2.0f, 2.0f) * ((OvershootMult + 1.0f) * (t * 2.0f - 2.0f) + OvershootMult) + 2.0f) / 2.0f);
+					break ;
+				default:
+					return (EndValue);
+			}
+			return (StartValue + (EndValue - StartValue) * t);
 		}
 	};
 
