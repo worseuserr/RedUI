@@ -5,7 +5,7 @@
 
 bool RedUI::CheckVersion(const unsigned int version)
 {
-	return (version >= VERSION);
+	return (VERSION >= version);
 }
 
 bool RedUI::RequireVersion(const unsigned int version)
@@ -52,6 +52,14 @@ void RedUI::Update()
 	// Clear.
 	UIState::QueuedHierarchyChanges.clear();
 	UIState::QueuedFinishedAnimations.clear();
+}
+
+void RedUI::EmplaceNewObject(UIObject *parent, UIObjectOwner obj)
+{
+	if (parent == nullptr)
+		UIState::RootObjects.push_back(std::move(obj));
+	else
+		parent->GetChildren().push_back(std::move(obj));
 }
 
 void RedUI::Remove(UIObject *object)
