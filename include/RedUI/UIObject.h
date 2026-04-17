@@ -22,8 +22,10 @@ namespace RedUI
 		Math::Vec3					WorldScale = Math::Vec3();
 
 	public:
-
+		// Toggles visibility of object AND its descendants.
 		bool		Enabled;
+		// Only toggles the visiblity of the object itself, not descendants.
+		bool		Visible;
 		Math::Vec3	Position;
 		Math::Vec3	Scale;
 		Color::RGB	Color;
@@ -47,5 +49,8 @@ namespace RedUI
 		UIObject		*GetParent() const;
 		std::vector<UIObjectOwner>	&GetChildren();
 		static UIObjectOwner		*GetChildHandle(std::vector<UIObjectOwner> &children, UIObject *child);
+
+		// Internal raw set parent. Do not use outside of core systems.
+		void			__RawSetParent(UIObject *newParent = nullptr);
 	};
 }
