@@ -12,6 +12,8 @@ namespace RedUI
 	{
 	public:
 		static bool								IsUpdating;
+		// Ratio for performing uniform scaling. {Scale.X = 1, Scale.Y = 1 * ScreenVerticalRatio}
+		static float							ScreenVerticalRatio;
 		// Root UI objects. All other objects are children.
 		static std::vector<UIObjectOwner>		RootObjects;
 		static std::vector<AnimationOwner>		Animations;
@@ -19,11 +21,5 @@ namespace RedUI
 		static std::map<UIObject *, UIObject *>	QueuedHierarchyChanges;
 		static std::vector<AnimationOwner *>	QueuedFinishedAnimations;
 	};
-
-	inline bool								UIState::IsUpdating = false;
-	inline std::vector<UIObjectOwner>		UIState::RootObjects = {};
-	inline std::vector<AnimationOwner>		UIState::Animations = {};
-	inline std::map<UIObject *, UIObject *>	UIState::QueuedHierarchyChanges = {};
-	inline std::vector<AnimationOwner *>	UIState::QueuedFinishedAnimations = {};
 }
 
