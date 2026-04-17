@@ -56,6 +56,7 @@ void RedUI::Update()
 
 void RedUI::EmplaceNewObject(UIObject *parent, UIObjectOwner obj)
 {
+	obj->__RawSetParent(parent);
 	if (parent == nullptr)
 		UIState::RootObjects.push_back(std::move(obj));
 	else
