@@ -10,9 +10,9 @@ add_library(RedUI SHARED
 		include/RedUI/UIState.h
 		include/RedUI/UIObject.h
 		include/RedUI/Animation.h
-		include/RedUI/Math/Vec3.h
+		include/RedUI/Math/Vec2.h
 		include/RedUI/Color/RGB.h
-		src/RedUI/Math/Vec3.cpp
+		src/RedUI/Math/Vec2.cpp
 		src/RedUI/Color/RGB.cpp
 		src/RedUI/UIObject.cpp
 		include/RedUI/Time/Time.h

@@ -5,7 +5,7 @@ using namespace RedUI;
 using namespace RedUI::Math;
 using namespace RedUI::Color;
 
-UIObject::UIObject(const Vec3 position, const Vec3 scale, const RGB color, const float alpha)
+UIObject::UIObject(const Vec2 position, const Vec2 scale, const RGB color, const float alpha)
 {
 	Enabled = true;
 	Visible = true;
@@ -63,7 +63,7 @@ void UIObject::RecursivelyUpdateAndDraw()
 		return ;
 	isRoot = Parent == nullptr;
 	WorldScale = isRoot ? Scale : Parent->WorldScale * Scale;
-	WorldPosition = isRoot ? Position : Parent->WorldPosition + (Position - Vec3(0.5, 0.5)) * Parent->WorldScale;
+	WorldPosition = isRoot ? Position : Parent->WorldPosition + (Position - Vec2(0.5, 0.5)) * Parent->WorldScale;
 	if (Visible)
 		this->Draw();
 	for (const UIObjectOwner &child : Children)
@@ -77,24 +77,24 @@ UIObjectOwner *UIObject::GetChildHandle(std::vector<UIObjectOwner> &children, UI
 	return (it != children.end() ? &(*it) : nullptr);
 }
 
-void UIObject::AnimatePositionFrom(Vec3 startPosition, Time::Milliseconds duration, Easing easing)
+void UIObject::AnimatePositionFrom(Vec2 startPosition, Time::Milliseconds duration, Easing easing)
 {
-	UIState::Animations.push_back(std::make_unique<Animation<Vec3>>(&Position, duration, startPosition, Position, easing));
+	UIState::Animations.push_back(std::make_unique<Animation<Vec2>>(&Position, duration, startPosition, Position, easing));
 }
 
-void UIObject::AnimatePositionTo(Vec3 endPosition, Time::Milliseconds duration, Easing easing)
+void UIObject::AnimatePositionTo(Vec2 endPosition, Time::Milliseconds duration, Easing easing)
 {
-	UIState::Animations.push_back(std::make_unique<Animation<Vec3>>(&Position, duration, Position, endPosition, easing));
+	UIState::Animations.push_back(std::make_unique<Animation<Vec2>>(&Position, duration, Position, endPosition, easing));
 }
 
-void UIObject::AnimateScaleFrom(Vec3 startScale, Time::Milliseconds duration, Easing easing)
+void UIObject::AnimateScaleFrom(Vec2 startScale, Time::Milliseconds duration, Easing easing)
 {
-	UIState::Animations.push_back(std::make_unique<Animation<Vec3>>(&Scale, duration, startScale, Scale, easing));
+	UIState::Animations.push_back(std::make_unique<Animation<Vec2>>(&Scale, duration, startScale, Scale, easing));
 }
 
-void UIObject::AnimateScaleTo(Vec3 endScale, Time::Milliseconds duration, Easing easing)
+void UIObject::AnimateScaleTo(Vec2 endScale, Time::Milliseconds duration, Easing easing)
 {
-	UIState::Animations.push_back(std::make_unique<Animation<Vec3>>(&Scale, duration, Scale, endScale, easing));
+	UIState::Animations.push_back(std::make_unique<Animation<Vec2>>(&Scale, duration, Scale, endScale, easing));
 }
 
 void UIObject::AnimateAlphaFrom(float startAlpha, Time::Milliseconds duration, Easing easing)
