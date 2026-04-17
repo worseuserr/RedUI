@@ -26,11 +26,12 @@ namespace RedUI
 
 		UIObject(Math::Vec3 position = Math::Vec3(), Math::Vec3 scale = Math::Vec3(1, 1, 1),
 			Color::RGB color = Color::RGB(), float alpha = 1.0f, UIObject *parent = nullptr);
-		virtual			~UIObject() = default;
+		virtual					~UIObject() = default;
 		// Set parent of object. Parent is root (unparented) if nullptr or no argument.
 		void					SetParent(UIObject *newParent = nullptr);
 		UIObject				*GetParent() const;
 		std::vector<UIObject *>	GetChildren() const;
-		virtual void			Draw() const;
+		virtual void			Draw() = 0;
+		void					RecursivelyUpdateAndDraw();
 	};
 }

@@ -35,7 +35,10 @@ bool RedUI::RequireVersion(const unsigned int version)
 void RedUI::Update()
 {
 	UIState::IsUpdating = true;
-	// todo: Add basic uiobject and hierarchyqueue iteration
+	for (UIObject *obj : UIState::Objects)
+		obj->RecursivelyUpdateAndDraw();
 	UIState::IsUpdating = false;
-	// Then apply hierarchy changes here and clear map.
+	for (const auto &[obj, newParent] : UIState::QueuedHierarchyChanges)
+		obj->SetParent(newParent);
+	UIState::QueuedHierarchyChanges.clear();
 }

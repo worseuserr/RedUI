@@ -1,7 +1,5 @@
+#include <windows.h>
 #include "RedUI/UIObject.h"
-
-#include <algorithm>
-
 #include "RedUI/UIState.h"
 
 using namespace RedUI;
@@ -53,6 +51,14 @@ std::vector<UIObject *> UIObject::GetChildren() const
 	return (Children);
 }
 
-void UIObject::Draw() const
+void UIObject::RecursivelyUpdateAndDraw()
 {
+	bool	isRoot;
+
+	isRoot = Parent == nullptr;
+	WorldPosition = isRoot ? Position : Parent->WorldPosition * Position;
+	WorldScale = isRoot ? Scale : Parent->WorldScale * Scale;
+	this->Draw();
+	for (UIObject *child : Children)
+		child->RecursivelyUpdateAndDraw();
 }
