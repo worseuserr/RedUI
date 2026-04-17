@@ -12,16 +12,18 @@ namespace RedUI
 	{
 	public:
 		static bool								IsUpdating;
-		// Root UI objects. All parented objects are children.
-		static std::vector<UIObject *>			Objects;
-		static std::vector<Animation *>			Animations;
+		// Root UI objects. All other objects are children.
+		static std::vector<UIObjectOwner>		RootObjects;
+		static std::vector<AnimationOwner>		Animations;
 		// Queued hierarchy changes if they were done during updating. <oldParent, newParent>
 		static std::map<UIObject *, UIObject *>	QueuedHierarchyChanges;
+		static std::vector<AnimationOwner *>	QueuedFinishedAnimations;
 	};
 
 	inline bool								UIState::IsUpdating = false;
-	inline std::vector<UIObject *>			UIState::Objects = {};
-	inline std::vector<Animation *>			UIState::Animations = {};
+	inline std::vector<UIObjectOwner>		UIState::RootObjects = {};
+	inline std::vector<AnimationOwner>		UIState::Animations = {};
 	inline std::map<UIObject *, UIObject *>	UIState::QueuedHierarchyChanges = {};
+	inline std::vector<AnimationOwner *>	UIState::QueuedFinishedAnimations = {};
 }
 
