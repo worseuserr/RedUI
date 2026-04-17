@@ -63,10 +63,10 @@ void UIObject::RecursivelyUpdateAndDraw()
 		return ;
 	isRoot = Parent == nullptr;
 	WorldScale = isRoot ? Scale : Parent->WorldScale * Scale;
-	WorldPosition = isRoot ? Position : Parent->WorldPosition + (Position * Parent->WorldScale);
+	WorldPosition = isRoot ? Position : Parent->WorldPosition + (Position - Vec3(0.5, 0.5)) * Parent->WorldScale;
 	if (Visible)
 		this->Draw();
-	for (const std::unique_ptr<UIObject> &child : Children)
+	for (const UIObjectOwner &child : Children)
 		child->RecursivelyUpdateAndDraw();
 }
 
