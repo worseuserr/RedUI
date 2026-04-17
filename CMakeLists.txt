@@ -16,6 +16,9 @@ add_library(RedUI SHARED
 		src/RedUI/Color/RGB.cpp
 		src/RedUI/UIObject.cpp
 		include/RedUI/Time/Time.h
+		include/RedUI/Components/Box.h
+		src/RedUI/Components/Box.cpp
+		src/RedUI/UIState.cpp
 )
 
 target_include_directories(RedUI PUBLIC
