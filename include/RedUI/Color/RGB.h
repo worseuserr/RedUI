@@ -11,5 +11,12 @@ namespace RedUI::Color
 		unsigned char	B;
 
 		RGB(unsigned char r = 255, unsigned char g = 255, unsigned char b = 255);
+		bool	operator==(const RGB &other) const;
+		RGB		operator+(const RGB &other) const;
+		RGB		operator-(const RGB &other) const;
+		RGB		operator*(const RGB &other) const;
+		RGB		&operator+=(const RGB &other);
+		RGB		&operator-=(const RGB &other);
+		RGB		&operator*=(const RGB &other);
 	};
 }
