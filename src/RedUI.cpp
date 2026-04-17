@@ -35,10 +35,33 @@ bool RedUI::RequireVersion(const unsigned int version)
 void RedUI::Update()
 {
 	UIState::IsUpdating = true;
-	for (UIObject *obj : UIState::Objects)
+	// Update all animations.
+	for (AnimationOwner &anim : UIState::Animations)
+		if (anim->Update())
+			UIState::QueuedFinishedAnimations.push_back(&anim); // Queue animation for removal if finished.
+	// Set worldpositions and draw objects.
+	for (const UIObjectOwner &obj : UIState::RootObjects)
 		obj->RecursivelyUpdateAndDraw();
 	UIState::IsUpdating = false;
+
+	// Process queues.
 	for (const auto &[obj, newParent] : UIState::QueuedHierarchyChanges)
 		obj->SetParent(newParent);
+	for (const AnimationOwner *anim : UIState::QueuedFinishedAnimations)
+		std::erase(UIState::Animations, *anim);
+	// Clear.
 	UIState::QueuedHierarchyChanges.clear();
+	UIState::QueuedFinishedAnimations.clear();
+}
+
+void RedUI::Remove(UIObject *object)
+{
+	if (object->GetParent() == nullptr)
+		std::erase_if(UIState::RootObjects, [object](const UIObjectOwner &ptr){
+			return (object == ptr.get());
+		});
+	else
+		std::erase_if(object->GetParent()->GetChildren(), [object](const UIObjectOwner &ptr){
+			return (object == ptr.get());
+		});
 }
