@@ -8,13 +8,18 @@ using namespace RedUI::Color;
 UIObject::UIObject(const Vec3 position, const Vec3 scale, const RGB color, const float alpha)
 {
 	Enabled = true;
+	Visible = true;
 	Position = position;
 	Scale = scale;
 	Color = color;
 	Alpha = alpha;
 }
 
-// If parent is nullptr, then parent is root.
+void UIObject::__RawSetParent(UIObject *newParent)
+{
+	Parent = newParent;
+}
+
 void UIObject::SetParent(UIObject *newParent)
 {
 	if (newParent == Parent)
@@ -54,10 +59,12 @@ void UIObject::RecursivelyUpdateAndDraw()
 {
 	bool	isRoot;
 
+	if (!Enabled)
+		return ;
 	isRoot = Parent == nullptr;
-	WorldPosition = isRoot ? Position : Parent->WorldPosition * Position;
 	WorldScale = isRoot ? Scale : Parent->WorldScale * Scale;
-	if (Enabled)
+	WorldPosition = isRoot ? Position : Parent->WorldPosition + (Position * Parent->WorldScale);
+	if (Visible)
 		this->Draw();
 	for (const std::unique_ptr<UIObject> &child : Children)
 		child->RecursivelyUpdateAndDraw();
