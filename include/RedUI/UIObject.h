@@ -1,9 +1,7 @@
 #pragma once
 
 #include <memory>
-#include <unordered_set>
 #include <vector>
-
 #include "Animation.h"
 #include "Color/RGB.h"
 #include "Math/Vec3.h"
@@ -31,8 +29,8 @@ namespace RedUI
 		Color::RGB	Color;
 		float		Alpha;
 
-		UIObject(Math::Vec3 position = Math::Vec3(), Math::Vec3 scale = Math::Vec3(1, 1, 1),
-			Color::RGB color = Color::RGB(), float alpha = 1.0f);
+		UIObject(Math::Vec3 position = {}, Math::Vec3 scale = {1, 1, 1},
+			Color::RGB color = {}, float alpha = 1.0f);
 		virtual			~UIObject() = default;
 		virtual void	Draw() = 0;
 		void			RecursivelyUpdateAndDraw();
