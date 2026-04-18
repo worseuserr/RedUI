@@ -6,7 +6,7 @@ namespace RedUI
 	class	Box : public UIObject
 	{
 	public:
-		using UIObject::UIObject;
-		void Draw() override;
+		using	UIObject::UIObject;
+		void	Draw() override;
 	};
 }
