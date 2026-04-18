@@ -28,6 +28,6 @@ namespace RedUI
 		EmplaceNewObject(parent, std::move(obj));
 		return (raw);
 	}
-	// Remove ui component from screen by reference.
-	void	Remove(UIObject *object);
+	// Remove ui component from screen by original reference. Sets the reference to nullptr.
+	void	Remove(UIObject *&object);
 }
