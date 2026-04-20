@@ -35,8 +35,8 @@ namespace RedUI
 		// Only toggles the visiblity of the object itself, not descendants.
 		bool			Visible = true;
 		bool			Clickable = true;
-		bool			BlockClick;
-		bool			BlockHover;
+		bool			BlocksClick = true;
+		bool			BlocksHover = true;
 		Math::Vec2		Position;
 		Math::Vec2		Scale;
 		Color::RGB		Color;
