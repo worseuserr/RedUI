@@ -32,28 +32,6 @@ bool RedUI::RequireVersion(const unsigned int version)
 	return (false);
 }
 
-void RedUI::Update()
-{
-	UIState::IsUpdating = true;
-	// Update all animations.
-	for (AnimationOwner &anim : UIState::Animations)
-		if (anim->Update())
-			UIState::QueuedFinishedAnimations.push_back(&anim); // Queue animation for removal if finished.
-	// Set worldpositions and draw objects.
-	for (const UIObjectOwner &obj : UIState::RootObjects)
-		obj->RecursivelyUpdateAndDraw();
-	UIState::IsUpdating = false;
-
-	// Process queues.
-	for (const auto &[obj, newParent] : UIState::QueuedHierarchyChanges)
-		obj->SetParent(newParent);
-	for (const AnimationOwner *anim : UIState::QueuedFinishedAnimations)
-		std::erase(UIState::Animations, *anim);
-	// Clear.
-	UIState::QueuedHierarchyChanges.clear();
-	UIState::QueuedFinishedAnimations.clear();
-}
-
 void RedUI::EmplaceNewObject(UIObject *parent, UIObjectOwner obj)
 {
 	obj->__RawSetParent(parent);
@@ -74,4 +52,14 @@ void RedUI::Remove(UIObject *&object)
 			return (object == ptr.get());
 		});
 	object = nullptr;
+}
+
+void RedUI::EnableCursor()
+{
+	UIState::IsCursorEnabled = true;
+}
+
+void RedUI::ResetCursor()
+{
+	UIState::IsCursorEnabled = false;
 }

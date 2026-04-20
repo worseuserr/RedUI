@@ -11,8 +11,6 @@ namespace RedUI
 	bool	CheckVersion(unsigned int version);
 	// Shows an error message and returns false if RedUI version is below passed version.
 	bool	RequireVersion(unsigned int version);
-	// Updates all UI components. This must be called every frame.
-	void	Update();
 	// Required to not copy static members of UIStates when compiling.
 	void	EmplaceNewObject(UIObject *parent, UIObjectOwner obj);
 	// Creates a UI component on the heap and returns a raw pointer to it. If parent is nullptr, the component is root.
