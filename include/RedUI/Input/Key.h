@@ -1,6 +1,6 @@
 #pragma once
 
-#include "winuser.h"
+#include "windows.h"
 
 namespace RedUI::Input
 {
