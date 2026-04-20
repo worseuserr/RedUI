@@ -34,5 +34,8 @@ namespace RedUI
 	void	EnableCursor();
 	// Disable forced cursor.
 	void	ResetCursor();
-	// TODO: add methods to enable/disable mouse inputs so you dont shoot while clicking on ui n shit
+	// Disable left and right clicks from registering ingame (shooting, aiming, etc).
+	void	DisableMouseInputs();
+	// Reallow ingame mouse inputs.
+	void	ResetMouseInputs();
 }
