@@ -82,14 +82,14 @@ void UIObject::ProcessEvents(FrameState &state)
 	bool	contains;
 
 	contains = ContainsPoint(state.MousePosition);
-	if (contains && !IsMouseHovering)
+	if (contains && !MouseHovering)
 	{
-		IsMouseHovering = true;
+		MouseHovering = true;
 		OnMouseEnter.Invoke(this, { .MousePosition = state.MousePosition });
 	}
-	else if (!contains && IsMouseHovering)
+	else if (!contains && MouseHovering)
 	{
-		IsMouseHovering = false;
+		MouseHovering = false;
 		OnMouseLeave.Invoke(this, { .MousePosition = state.MousePosition });
 	}
 	if (!Clickable)
@@ -120,6 +120,26 @@ void UIObject::AnimatePositionTo(Vec2 endPosition, Time::Milliseconds duration, 
 	UIState::Animations.push_back(std::make_unique<Animation<Vec2>>(&Position, duration, Position, endPosition, easing));
 }
 
+void UIObject::AnimateRenderOffsetFrom(Vec2 startOffset, Time::Milliseconds duration, Easing easing)
+{
+	UIState::Animations.push_back(std::make_unique<Animation<Vec2>>(&RenderOffset, duration, startOffset, RenderOffset, easing));
+}
+
+void UIObject::AnimateRenderOffsetTo(Vec2 endOffset, Time::Milliseconds duration, Easing easing)
+{
+	UIState::Animations.push_back(std::make_unique<Animation<Vec2>>(&RenderOffset, duration, RenderOffset, endOffset, easing));
+}
+
+void UIObject::AnimateRenderScaleFrom(Vec2 startScale, Time::Milliseconds duration, Easing easing)
+{
+	UIState::Animations.push_back(std::make_unique<Animation<Vec2>>(&RenderScale, duration, startScale, RenderScale, easing));
+}
+
+void UIObject::AnimateRenderScaleTo(Vec2 endScale, Time::Milliseconds duration, Easing easing)
+{
+	UIState::Animations.push_back(std::make_unique<Animation<Vec2>>(&RenderScale, duration, RenderScale, endScale, easing));
+}
+
 void UIObject::AnimateScaleFrom(Vec2 startScale, Time::Milliseconds duration, Easing easing)
 {
 	UIState::Animations.push_back(std::make_unique<Animation<Vec2>>(&Scale, duration, startScale, Scale, easing));
@@ -148,4 +168,9 @@ void UIObject::AnimateColorFrom(RGB startColor, Time::Milliseconds duration, Eas
 void UIObject::AnimateColorTo(RGB endColor, Time::Milliseconds duration, Easing easing)
 {
 	UIState::Animations.push_back(std::make_unique<Animation<RGB>>(&Color, duration, Color, endColor, easing));
+}
+
+bool UIObject::IsMouseHovering() const
+{
+	return (MouseHovering);
 }
