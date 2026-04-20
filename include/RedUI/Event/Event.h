@@ -9,7 +9,7 @@ namespace RedUI::Event
 	struct		Listener
 	{
 		unsigned long										ID;
-		std::function<void(TSender *sender, TArgs args)>	Function;
+		std::function<void(TSender *sender, TArgs &args)>	Function;
 	};
 
 	template	<typename TSender, typename TArgs>
