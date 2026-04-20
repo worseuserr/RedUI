@@ -21,6 +21,8 @@ namespace RedUI
 		bool						HasLeftClicked = false;
 		bool						HasRightClicked = false;
 
+		static void					RegisterAnimation(AnimationOwner anim);
+
 	protected:
 		UIObject					*Parent = nullptr;
 		std::vector<UIObjectOwner>	Children = {};
@@ -58,16 +60,21 @@ namespace RedUI
 		virtual bool	ContainsPoint(Math::Vec2 &point) = 0;
 		// Gets input information, polls ContainsPoint, and invokes events.
 		virtual void	ProcessEvents(FrameState &state);
-		void			AnimatePositionFrom(Math::Vec2 startPosition, Time::Milliseconds duration, Easing easing = Easing::Linear);
-		void			AnimatePositionTo(Math::Vec2 endPosition, Time::Milliseconds duration, Easing easing = Easing::Linear);
-		void			AnimateRenderOffsetFrom(Math::Vec2 startOffset, Time::Milliseconds duration, Easing easing = Easing::Linear);
-		void			AnimateRenderOffsetTo(Math::Vec2 endOffset, Time::Milliseconds duration, Easing easing = Easing::Linear);
-		void			AnimateRenderScaleFrom(Math::Vec2 startScale, Time::Milliseconds duration, Easing easing = Easing::Linear);
-		void			AnimateRenderScaleTo(Math::Vec2 endScale, Time::Milliseconds duration, Easing easing = Easing::Linear);
-		void			AnimateScaleFrom(Math::Vec2 startScale, Time::Milliseconds duration, Easing easing = Easing::Linear);
-		void			AnimateScaleTo(Math::Vec2 endScale, Time::Milliseconds duration, Easing easing = Easing::Linear);
-		void			AnimateColorFrom(Color::RGB startColor, Time::Milliseconds duration, Easing easing = Easing::Linear);
-		void			AnimateColorTo(Color::RGB endColor, Time::Milliseconds duration, Easing easing = Easing::Linear);
+		template		<typename T>
+		void			Animate(T *member, const T &startValue, const T &endValue, Time::Milliseconds duration, Easing easing)
+		{
+			RegisterAnimation(std::make_unique<Animation<T>>(member, duration, startValue, endValue, easing));
+		}
+		void			AnimatePositionFrom(const Math::Vec2 &startPosition, Time::Milliseconds duration, Easing easing = Easing::Linear);
+		void			AnimatePositionTo(const Math::Vec2 &endPosition, Time::Milliseconds duration, Easing easing = Easing::Linear);
+		void			AnimateRenderOffsetFrom(const Math::Vec2 &startOffset, Time::Milliseconds duration, Easing easing = Easing::Linear);
+		void			AnimateRenderOffsetTo(const Math::Vec2 &endOffset, Time::Milliseconds duration, Easing easing = Easing::Linear);
+		void			AnimateRenderScaleFrom(const Math::Vec2 &startScale, Time::Milliseconds duration, Easing easing = Easing::Linear);
+		void			AnimateRenderScaleTo(const Math::Vec2 &endScale, Time::Milliseconds duration, Easing easing = Easing::Linear);
+		void			AnimateScaleFrom(const Math::Vec2 &startScale, Time::Milliseconds duration, Easing easing = Easing::Linear);
+		void			AnimateScaleTo(const Math::Vec2 &endScale, Time::Milliseconds duration, Easing easing = Easing::Linear);
+		void			AnimateColorFrom(const Color::RGB &startColor, Time::Milliseconds duration, Easing easing = Easing::Linear);
+		void			AnimateColorTo(const Color::RGB &endColor, Time::Milliseconds duration, Easing easing = Easing::Linear);
 		void			AnimateAlphaFrom(float startAlpha, Time::Milliseconds duration, Easing easing = Easing::Linear);
 		void			AnimateAlphaTo(float endAlpha, Time::Milliseconds duration, Easing easing = Easing::Linear);
 		bool			IsMouseHovering() const;

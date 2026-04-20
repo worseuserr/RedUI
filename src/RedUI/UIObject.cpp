@@ -5,6 +5,11 @@ using namespace RedUI;
 using namespace RedUI::Math;
 using namespace RedUI::Color;
 
+void UIObject::RegisterAnimation(AnimationOwner anim)
+{
+	UIState::Animations.push_back(std::move(anim));
+}
+
 UIObject::UIObject(const Vec2 position, const Vec2 scale, const RGB color, const float alpha)
 {
 	Position = position;
@@ -110,67 +115,43 @@ void UIObject::ProcessEvents(FrameState &state)
 	}
 }
 
-void UIObject::AnimatePositionFrom(Vec2 startPosition, Time::Milliseconds duration, Easing easing)
-{
-	UIState::Animations.push_back(std::make_unique<Animation<Vec2>>(&Position, duration, startPosition, Position, easing));
-}
-
-void UIObject::AnimatePositionTo(Vec2 endPosition, Time::Milliseconds duration, Easing easing)
-{
-	UIState::Animations.push_back(std::make_unique<Animation<Vec2>>(&Position, duration, Position, endPosition, easing));
-}
-
-void UIObject::AnimateRenderOffsetFrom(Vec2 startOffset, Time::Milliseconds duration, Easing easing)
-{
-	UIState::Animations.push_back(std::make_unique<Animation<Vec2>>(&RenderOffset, duration, startOffset, RenderOffset, easing));
-}
-
-void UIObject::AnimateRenderOffsetTo(Vec2 endOffset, Time::Milliseconds duration, Easing easing)
-{
-	UIState::Animations.push_back(std::make_unique<Animation<Vec2>>(&RenderOffset, duration, RenderOffset, endOffset, easing));
-}
-
-void UIObject::AnimateRenderScaleFrom(Vec2 startScale, Time::Milliseconds duration, Easing easing)
-{
-	UIState::Animations.push_back(std::make_unique<Animation<Vec2>>(&RenderScale, duration, startScale, RenderScale, easing));
-}
-
-void UIObject::AnimateRenderScaleTo(Vec2 endScale, Time::Milliseconds duration, Easing easing)
-{
-	UIState::Animations.push_back(std::make_unique<Animation<Vec2>>(&RenderScale, duration, RenderScale, endScale, easing));
-}
-
-void UIObject::AnimateScaleFrom(Vec2 startScale, Time::Milliseconds duration, Easing easing)
-{
-	UIState::Animations.push_back(std::make_unique<Animation<Vec2>>(&Scale, duration, startScale, Scale, easing));
-}
-
-void UIObject::AnimateScaleTo(Vec2 endScale, Time::Milliseconds duration, Easing easing)
-{
-	UIState::Animations.push_back(std::make_unique<Animation<Vec2>>(&Scale, duration, Scale, endScale, easing));
-}
-
-void UIObject::AnimateColorFrom(RGB startColor, Time::Milliseconds duration, Easing easing)
-{
-	UIState::Animations.push_back(std::make_unique<Animation<RGB>>(&Color, duration, startColor, Color, easing));
-}
-
-void UIObject::AnimateColorTo(RGB endColor, Time::Milliseconds duration, Easing easing)
-{
-	UIState::Animations.push_back(std::make_unique<Animation<RGB>>(&Color, duration, Color, endColor, easing));
-}
-
-void UIObject::AnimateAlphaFrom(float startAlpha, Time::Milliseconds duration, Easing easing)
-{
-	UIState::Animations.push_back(std::make_unique<Animation<float>>(&Alpha, duration, startAlpha, Alpha, easing));
-}
-
-void UIObject::AnimateAlphaTo(float endAlpha, Time::Milliseconds duration, Easing easing)
-{
-	UIState::Animations.push_back(std::make_unique<Animation<float>>(&Alpha, duration, Alpha, endAlpha, easing));
-}
-
 bool UIObject::IsMouseHovering() const
 {
 	return (MouseHovering);
 }
+
+void UIObject::AnimatePositionFrom(const Vec2 &startPosition, const Time::Milliseconds duration, const Easing easing)
+	{ Animate<Vec2>(&Position, startPosition, Position, duration, easing); }
+
+void UIObject::AnimatePositionTo(const Vec2 &endPosition, const Time::Milliseconds duration, const Easing easing)
+	{ Animate<Vec2>(&Position, Position, endPosition, duration, easing); }
+
+void UIObject::AnimateRenderOffsetFrom(const Vec2 &startOffset, const Time::Milliseconds duration, const Easing easing)
+	{ Animate<Vec2>(&RenderOffset, startOffset, RenderOffset, duration, easing); }
+
+void UIObject::AnimateRenderOffsetTo(const Vec2 &endOffset, const Time::Milliseconds duration, const Easing easing)
+	{ Animate<Vec2>(&RenderOffset, RenderOffset, endOffset, duration, easing); }
+
+void UIObject::AnimateRenderScaleFrom(const Vec2 &startScale, const Time::Milliseconds duration, const Easing easing)
+	{ Animate<Vec2>(&RenderScale, startScale, RenderScale, duration, easing); }
+
+void UIObject::AnimateRenderScaleTo(const Vec2 &endScale, const Time::Milliseconds duration, const Easing easing)
+	{ Animate<Vec2>(&RenderScale, RenderScale, endScale, duration, easing); }
+
+void UIObject::AnimateScaleFrom(const Vec2 &startScale, const Time::Milliseconds duration, const Easing easing)
+	{ Animate<Vec2>(&Scale, startScale, Scale, duration, easing); }
+
+void UIObject::AnimateScaleTo(const Vec2 &endScale, const Time::Milliseconds duration, const Easing easing)
+	{ Animate<Vec2>(&Scale, Scale, endScale, duration, easing);}
+
+void UIObject::AnimateColorFrom(const RGB &startColor, const Time::Milliseconds duration, const Easing easing)
+	{ Animate<RGB>(&Color, startColor, Color, duration, easing); }
+
+void UIObject::AnimateColorTo(const RGB &endColor, const Time::Milliseconds duration, const Easing easing)
+	{ Animate<RGB>(&Color, Color, endColor, duration, easing); }
+
+void UIObject::AnimateAlphaFrom(const float startAlpha, const Time::Milliseconds duration, const Easing easing)
+	{ Animate<float>(&Alpha, startAlpha, Alpha, duration, easing); }
+
+void UIObject::AnimateAlphaTo(const float endAlpha, const Time::Milliseconds duration, const Easing easing)
+	{ Animate<float>(&Alpha, Alpha, endAlpha, duration, easing); }
