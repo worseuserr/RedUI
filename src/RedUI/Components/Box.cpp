@@ -5,8 +5,11 @@ using namespace RedUI;
 
 void Box::Draw()
 {
+	const Math::Vec2	pos = WorldPosition + RenderOffset;
+	const Math::Vec2	scale = WorldScale * RenderScale;
+
 	GRAPHICS::DRAW_RECT(
-		WorldPosition.X, WorldPosition.Y, WorldScale.X, WorldScale.Y,
+		pos.X, pos.Y, scale.X, scale.Y,
 		Color.R, Color.G, Color.B,
 		static_cast<int>(Alpha * 255),
 		true, true);
@@ -14,15 +17,17 @@ void Box::Draw()
 
 bool Box::ContainsPoint(Math::Vec2 &point)
 {
-	float	halfX;
-	float	halfY;
+	const Math::Vec2	pos = WorldPosition + RenderOffset;
+	const Math::Vec2	scale = WorldScale * RenderScale;
+	float				halfX;
+	float				halfY;
 
-	halfX = WorldScale.X * 0.5f;
-	halfY = WorldScale.Y * 0.5f;
+	halfX = scale.X * 0.5f;
+	halfY = scale.Y * 0.5f;
 	return (
-		point.X > WorldPosition.X - halfX &&
-		point.X < WorldPosition.X + halfX &&
-		point.Y > WorldPosition.Y - halfY &&
-		point.Y < WorldPosition.Y + halfY
+		point.X > pos.X - halfX &&
+		point.X < pos.X + halfX &&
+		point.Y > pos.Y - halfY &&
+		point.Y < pos.Y + halfY
 	);
 }
