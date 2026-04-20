@@ -40,7 +40,7 @@ namespace RedUI
 		Time::Milliseconds	Duration;
 
 	public:
-		Animation(T *member, const Time::Milliseconds duration, T startValue, T endValue, const Easing easing = Easing::Linear)
+		Animation(T *member, const Time::Milliseconds duration, const T &startValue, const T &endValue, const Easing easing = Easing::Linear)
 		{
 			if (member == nullptr)
 				return ;
