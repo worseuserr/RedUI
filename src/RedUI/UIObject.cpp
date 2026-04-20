@@ -150,16 +150,6 @@ void UIObject::AnimateScaleTo(Vec2 endScale, Time::Milliseconds duration, Easing
 	UIState::Animations.push_back(std::make_unique<Animation<Vec2>>(&Scale, duration, Scale, endScale, easing));
 }
 
-void UIObject::AnimateAlphaFrom(float startAlpha, Time::Milliseconds duration, Easing easing)
-{
-	UIState::Animations.push_back(std::make_unique<Animation<float>>(&Alpha, duration, startAlpha, Alpha, easing));
-}
-
-void UIObject::AnimateAlphaTo(float endAlpha, Time::Milliseconds duration, Easing easing)
-{
-	UIState::Animations.push_back(std::make_unique<Animation<float>>(&Alpha, duration, Alpha, endAlpha, easing));
-}
-
 void UIObject::AnimateColorFrom(RGB startColor, Time::Milliseconds duration, Easing easing)
 {
 	UIState::Animations.push_back(std::make_unique<Animation<RGB>>(&Color, duration, startColor, Color, easing));
@@ -168,6 +158,16 @@ void UIObject::AnimateColorFrom(RGB startColor, Time::Milliseconds duration, Eas
 void UIObject::AnimateColorTo(RGB endColor, Time::Milliseconds duration, Easing easing)
 {
 	UIState::Animations.push_back(std::make_unique<Animation<RGB>>(&Color, duration, Color, endColor, easing));
+}
+
+void UIObject::AnimateAlphaFrom(float startAlpha, Time::Milliseconds duration, Easing easing)
+{
+	UIState::Animations.push_back(std::make_unique<Animation<float>>(&Alpha, duration, startAlpha, Alpha, easing));
+}
+
+void UIObject::AnimateAlphaTo(float endAlpha, Time::Milliseconds duration, Easing easing)
+{
+	UIState::Animations.push_back(std::make_unique<Animation<float>>(&Alpha, duration, Alpha, endAlpha, easing));
 }
 
 bool UIObject::IsMouseHovering() const

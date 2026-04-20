@@ -58,18 +58,18 @@ namespace RedUI
 		virtual bool	ContainsPoint(Math::Vec2 &point) = 0;
 		// Gets input information, polls ContainsPoint, and invokes events.
 		virtual void	ProcessEvents(FrameState &state);
-		void			AnimatePositionFrom(Math::Vec2 startPosition, Time::Milliseconds duration, Easing easing = Easing::Linear); // Ooh, staircase!
+		void			AnimatePositionFrom(Math::Vec2 startPosition, Time::Milliseconds duration, Easing easing = Easing::Linear);
 		void			AnimatePositionTo(Math::Vec2 endPosition, Time::Milliseconds duration, Easing easing = Easing::Linear);
-		void			AnimateRenderOffsetFrom(Math::Vec2 startOffset, Time::Milliseconds duration, Easing easing = Easing::Linear); // Ooh, staircase!
+		void			AnimateRenderOffsetFrom(Math::Vec2 startOffset, Time::Milliseconds duration, Easing easing = Easing::Linear);
 		void			AnimateRenderOffsetTo(Math::Vec2 endOffset, Time::Milliseconds duration, Easing easing = Easing::Linear);
 		void			AnimateRenderScaleFrom(Math::Vec2 startScale, Time::Milliseconds duration, Easing easing = Easing::Linear);
 		void			AnimateRenderScaleTo(Math::Vec2 endScale, Time::Milliseconds duration, Easing easing = Easing::Linear);
 		void			AnimateScaleFrom(Math::Vec2 startScale, Time::Milliseconds duration, Easing easing = Easing::Linear);
 		void			AnimateScaleTo(Math::Vec2 endScale, Time::Milliseconds duration, Easing easing = Easing::Linear);
-		void			AnimateAlphaFrom(float startAlpha, Time::Milliseconds duration, Easing easing = Easing::Linear);
-		void			AnimateAlphaTo(float endAlpha, Time::Milliseconds duration, Easing easing = Easing::Linear);
 		void			AnimateColorFrom(Color::RGB startColor, Time::Milliseconds duration, Easing easing = Easing::Linear);
 		void			AnimateColorTo(Color::RGB endColor, Time::Milliseconds duration, Easing easing = Easing::Linear);
+		void			AnimateAlphaFrom(float startAlpha, Time::Milliseconds duration, Easing easing = Easing::Linear);
+		void			AnimateAlphaTo(float endAlpha, Time::Milliseconds duration, Easing easing = Easing::Linear);
 		bool			IsMouseHovering() const;
 		// Set parent of object. Parent is root (unparented) if nullptr or no argument.
 		void			SetParent(UIObject *newParent = nullptr);
