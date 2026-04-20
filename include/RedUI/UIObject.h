@@ -30,9 +30,9 @@ namespace RedUI
 		Math::Vec2					WorldScale = Math::Vec2();
 
 	public:
-		// Toggles visibility of object AND its descendants.
+		// Toggles visibility and functionality of object AND its descendants.
 		bool			Enabled = true;
-		// Only toggles the visiblity of the object itself, not descendants.
+		// Toggles only the visiblity of the object itself, not descendants.
 		bool			Visible = true;
 		bool			Clickable = true;
 		bool			BlocksClick = true;
