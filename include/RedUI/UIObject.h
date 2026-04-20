@@ -17,11 +17,11 @@ namespace RedUI
 	class	UIObject
 	{
 		// Used for mouse events.
-		bool						MouseHovering = false;
-		bool						HasLeftClicked = false;
-		bool						HasRightClicked = false;
+		bool		MouseHovering = false;
+		bool		HasLeftClicked = false;
+		bool		HasRightClicked = false;
 
-		static void					RegisterAnimation(AnimationOwner anim);
+		static void	RegisterAnimation(AnimationOwner anim);
 
 	protected:
 		UIObject					*Parent = nullptr;
@@ -35,6 +35,8 @@ namespace RedUI
 		// Only toggles the visiblity of the object itself, not descendants.
 		bool			Visible = true;
 		bool			Clickable = true;
+		bool			BlockClick;
+		bool			BlockHover;
 		Math::Vec2		Position;
 		Math::Vec2		Scale;
 		Color::RGB		Color;
@@ -51,6 +53,7 @@ namespace RedUI
 		UIObject(Math::Vec2 position = {}, Math::Vec2 scale = {1, 1},
 			Color::RGB color = {}, float alpha = 1.0f);
 		virtual			~UIObject() = default;
+		// The main entry point for invoking events, updating layout and rendering.
 		void			RecursivelyUpdateAndDraw(FrameState &state);
 		// Draw component. Called every frame, in order: ProcessEvents (and thus ContainsPoint) -> Update -> Draw.
 		virtual void	Draw() = 0;
