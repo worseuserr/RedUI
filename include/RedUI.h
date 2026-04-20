@@ -18,9 +18,11 @@ namespace RedUI
 	// Creates a UI component on the heap and returns a raw pointer to it. If parent is nullptr, the component is root.
 	// Default UIObject constuctor parameters: Position, Scale, Color, Alpha
 	template <typename T, typename ...Args>
-	requires (std::derived_from<T, UIObject> && std::constructible_from<T, Args...>)
+	requires (std::derived_from<T, UIObject> && (std::is_abstract_v<T> || std::constructible_from<T, Args...>)) // Constructible check has to be here or bitchass resharper wont show parameter hints.
 	T		*Create(UIObject *parent, Args&&... args)
 	{
+		static_assert(!std::is_abstract_v<T>, "T is an abstract class. Did you forget to implement a pure virtual function?");
+		static_assert(std::is_constructible_v<T, Args...>, "T cannot be constructed with the provided arguments.");
 		T					*raw;
 		std::unique_ptr<T>	obj = std::make_unique<T>(std::forward<Args>(args)...);
 
@@ -28,6 +30,11 @@ namespace RedUI
 		EmplaceNewObject(parent, std::move(obj));
 		return (raw);
 	}
-	// Remove ui component from screen by original reference. Sets the reference to nullptr.
+	// Remove ui component from screen by ptr returned by Create. Sets the ptr to nullptr.
 	void	Remove(UIObject *&object);
+	// Force mouse cursor to show even while ingame.
+	void	EnableCursor();
+	// Disable forced cursor.
+	void	ResetCursor();
+	// TODO: add methods to enable/disable mouse inputs so you dont shoot while clicking on ui n shit
 }
