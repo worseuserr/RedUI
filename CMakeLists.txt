@@ -6,7 +6,6 @@ set(CMAKE_CXX_STANDARD 20)
 add_library(RedUI SHARED
 		include/RedUI.h
 		src/RedUI.cpp
-		include/RedUI/Menu.h
 		include/RedUI/UIState.h
 		include/RedUI/UIObject.h
 		include/RedUI/Animation.h
@@ -19,6 +18,18 @@ add_library(RedUI SHARED
 		include/RedUI/Components/Box.h
 		src/RedUI/Components/Box.cpp
 		src/RedUI/UIState.cpp
+		include/RedUI/Components/TextLabel.h
+		src/RedUI/Components/TextLabel.cpp
+		include/RedUI/Color/Dropshadow.h
+		src/RedUI/Update.cpp
+		src/RedUI/Color/Dropshadow.cpp
+		include/RedUI/Input/Mouse.h
+		src/RedUI/Input/Mouse.cpp
+		include/RedUI/Event/Event.h
+		include/RedUI/Event/MouseEvent.h
+		include/RedUI/Update.h
+		include/RedUI/Input/Key.h
+		src/RedUI/Input/Key.cpp
 )
 
 target_include_directories(RedUI PUBLIC
