@@ -12,6 +12,8 @@ namespace RedUI
 	{
 	public:
 		static bool								IsUpdating;
+		// Tracks whether mouse cursor should be enabled.
+		static bool								IsCursorEnabled;
 		// Ratio for performing uniform scaling. {Scale.X = 1, Scale.Y = 1 * ScreenVerticalRatio}
 		static float							ScreenVerticalRatio;
 		// Root UI objects. All other objects are children.
