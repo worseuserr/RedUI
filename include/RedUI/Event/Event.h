@@ -8,8 +8,8 @@ namespace RedUI::Event
 	template	<typename TSender, typename TArgs>
 	struct		Listener
 	{
-		unsigned long										ID;
-		std::function<void(TSender *sender, TArgs &args)>	Function;
+		unsigned long											ID;
+		std::function<void(TSender *sender, const TArgs &args)>	Function;
 	};
 
 	template	<typename TSender, typename TArgs>
@@ -42,21 +42,21 @@ namespace RedUI::Event
 
 	public:
 		Event() = default;
-		void	Invoke(TSender *sender, TArgs args)
+		void	Invoke(TSender *sender, const TArgs &args)
 		{
-			for (auto listener : Listeners)
+			for (auto &listener : Listeners)
 			{
 				listener.Function(sender, args);
 			}
 		}
 
-		std::unique_ptr<Connection<TSender, TArgs>>	operator+=(std::function<void(TSender *sender, TArgs &args)> func)
+		std::unique_ptr<Connection<TSender, TArgs>>	operator+=(std::function<void(TSender *sender, const TArgs &args)> func)
 		{
 			static unsigned long	id = 0;
 
 			Listeners.push_back(Listener<TSender, TArgs>{ .ID = id, .Function = func });
 			id++;
-			return (std::make_unique<Connection<TSender, TArgs>>(id, &Listeners));
+			return (std::make_unique<Connection<TSender, TArgs>>(id++, &Listeners));
 		}
 	};
 }
