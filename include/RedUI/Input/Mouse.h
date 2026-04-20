@@ -1,5 +1,4 @@
 #pragma once
-
 #include <Sdk/natives.h>
 #include "RedUI/Math/Vec2.h"
 #include "RedUI/Event/Event.h"

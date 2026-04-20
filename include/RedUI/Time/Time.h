@@ -1,5 +1,4 @@
 #pragma once
-
 #include <chrono>
 
 namespace RedUI::Time
@@ -28,4 +27,6 @@ namespace RedUI::Time
 	{
 		return (duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now().time_since_epoch()).count());
 	}
+
+	// TODO: add a method for delaying functions
 }

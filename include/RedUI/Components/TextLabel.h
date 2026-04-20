@@ -1,5 +1,4 @@
 #pragma once
-
 #include "RedUI/UIObject.h"
 #include "RedUI/Color/Dropshadow.h"
 

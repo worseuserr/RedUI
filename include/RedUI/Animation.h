@@ -1,8 +1,6 @@
 #pragma once
-
 #include <math.h>
 #include <numbers>
-
 #include "Time/Time.h"
 
 namespace RedUI
