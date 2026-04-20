@@ -56,10 +56,20 @@ void RedUI::Remove(UIObject *&object)
 
 void RedUI::EnableCursor()
 {
-	UIState::IsCursorEnabled = true;
+	UIState::CursorEnabled = true;
 }
 
 void RedUI::ResetCursor()
 {
-	UIState::IsCursorEnabled = false;
+	UIState::CursorEnabled = false;
+}
+
+void RedUI::DisableMouseInputs()
+{
+	UIState::MouseInputsDisabled = true;
+}
+
+void RedUI::ResetMouseInputs()
+{
+	UIState::MouseInputsDisabled = false;
 }
