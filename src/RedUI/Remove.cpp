@@ -1,7 +1,7 @@
 #include "RedUI/Remove.h"
 #include "RedUI/UIState.h"
 
-void RedUI::Remove(UIObject *&object)
+void RedUI::RemoveInternal(UIObject *object)
 {
 	object->Enabled = false;
 	if (UIState::IsUpdating)
@@ -17,5 +17,4 @@ void RedUI::Remove(UIObject *&object)
 		std::erase_if(object->GetParent()->GetChildren(), [object](const UIObjectOwner &ptr){
 			return (object == ptr.get());
 		});
-	object = nullptr;
 }
