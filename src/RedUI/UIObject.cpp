@@ -96,14 +96,14 @@ void UIObject::ProcessEvents(FrameState &state)
 		return ;
 	if (!state.IsLeftMouseDown)
 		HasLeftClicked = false;
-	else if (!HasLeftClicked)
+	else if (!HasLeftClicked && contains)
 	{
 		HasLeftClicked = true;
 		OnLeftClick.Invoke(this, { .IsLeft = true, .MousePosition = state.MousePosition });
 	}
 	if (!state.IsRightMouseDown)
 		HasRightClicked = false;
-	else if (!HasRightClicked)
+	else if (!HasRightClicked && contains)
 	{
 		HasRightClicked = true;
 		OnRightClick.Invoke(this, { .IsLeft = false, .MousePosition = state.MousePosition });
