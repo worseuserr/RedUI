@@ -3,7 +3,7 @@
 using namespace RedUI;
 
 bool								UIState::IsUpdating = false;
-bool								UIState::IsCursorEnabled = false;
+bool								UIState::CursorEnabled = false;
 float								UIState::ScreenVerticalRatio = 1.0f;
 std::vector<UIObjectOwner>			UIState::RootObjects = {};
 std::vector<AnimationOwner>			UIState::Animations = {};
