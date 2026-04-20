@@ -1,4 +1,3 @@
-#include "RedUI.h"
 #include "RedUI/UIState.h"
 #include "RedUI/Input/Mouse.h"
 #include "Sdk/natives.h"
@@ -7,9 +6,13 @@ void RedUI::Update()
 {
 	FrameState	state;
 
-	if (UIState::IsCursorEnabled)
+	if (UIState::CursorEnabled)
 		_NAMESPACE30::_SET_MOUSE_CURSOR_ACTIVE_THIS_FRAME();
-
+	if (UIState::MouseInputsDisabled)
+	{
+		PAD::DISABLE_CONTROL_ACTION(0, Input::INPUT_ATTACK, true);
+		PAD::DISABLE_CONTROL_ACTION(0, Input::INPUT_AIM, true);
+	}
 	UIState::IsUpdating = true;
 	// Update all animations.
 	for (AnimationOwner &anim : UIState::Animations)
