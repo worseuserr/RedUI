@@ -7,8 +7,6 @@ using namespace RedUI::Color;
 
 UIObject::UIObject(const Vec2 position, const Vec2 scale, const RGB color, const float alpha)
 {
-	Enabled = true;
-	Visible = true;
 	Position = position;
 	Scale = scale;
 	Color = color;
@@ -55,7 +53,7 @@ std::vector<UIObjectOwner> &UIObject::GetChildren()
 	return (Children);
 }
 
-void UIObject::RecursivelyUpdateAndDraw()
+void UIObject::RecursivelyUpdateAndDraw(FrameState &state)
 {
 	bool	isRoot;
 
@@ -64,10 +62,12 @@ void UIObject::RecursivelyUpdateAndDraw()
 	isRoot = Parent == nullptr;
 	WorldScale = isRoot ? Scale : Parent->WorldScale * Scale;
 	WorldPosition = isRoot ? Position : Parent->WorldPosition + (Position - Vec2(0.5, 0.5)) * Parent->WorldScale;
+	this->ProcessEvents(state);
+	this->Update(state);
 	if (Visible)
 		this->Draw();
 	for (const UIObjectOwner &child : Children)
-		child->RecursivelyUpdateAndDraw();
+		child->RecursivelyUpdateAndDraw(state);
 }
 
 UIObjectOwner *UIObject::GetChildHandle(std::vector<UIObjectOwner> &children, UIObject *child)
@@ -75,6 +75,39 @@ UIObjectOwner *UIObject::GetChildHandle(std::vector<UIObjectOwner> &children, UI
 	const auto	it = std::ranges::find(children, child, &UIObjectOwner::get);
 
 	return (it != children.end() ? &(*it) : nullptr);
+}
+
+void UIObject::ProcessEvents(FrameState &state)
+{
+	bool	contains;
+
+	contains = ContainsPoint(state.MousePosition);
+	if (contains && !IsMouseHovering)
+	{
+		IsMouseHovering = true;
+		OnMouseEnter.Invoke(this, { .MousePosition = state.MousePosition });
+	}
+	else if (!contains && IsMouseHovering)
+	{
+		IsMouseHovering = false;
+		OnMouseLeave.Invoke(this, { .MousePosition = state.MousePosition });
+	}
+	if (!Clickable)
+		return ;
+	if (!state.IsLeftMouseDown)
+		HasLeftClicked = false;
+	else if (!HasLeftClicked)
+	{
+		HasLeftClicked = true;
+		OnLeftClick.Invoke(this, { .IsLeft = true, .MousePosition = state.MousePosition });
+	}
+	if (!state.IsRightMouseDown)
+		HasRightClicked = false;
+	else if (!HasRightClicked)
+	{
+		HasRightClicked = true;
+		OnRightClick.Invoke(this, { .IsLeft = false, .MousePosition = state.MousePosition });
+	}
 }
 
 void UIObject::AnimatePositionFrom(Vec2 startPosition, Time::Milliseconds duration, Easing easing)
