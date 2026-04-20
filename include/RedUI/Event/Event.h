@@ -55,7 +55,6 @@ namespace RedUI::Event
 			static unsigned long	id = 0;
 
 			Listeners.push_back(Listener<TSender, TArgs>{ .ID = id, .Function = func });
-			id++;
 			return (std::make_unique<Connection<TSender, TArgs>>(id++, &Listeners));
 		}
 	};
