@@ -22,6 +22,7 @@ namespace RedUI
 		static std::vector<UIObjectOwner>		RootObjects;
 		static std::vector<AnimationOwner>		Animations;
 		// Queued hierarchy changes if they were done during updating. <oldParent, newParent>
+		static std::vector<UIObject *>			QueuedObjectDeletions;
 		static std::map<UIObject *, UIObject *>	QueuedHierarchyChanges;
 		static std::vector<AnimationOwner *>	QueuedFinishedAnimations;
 	};

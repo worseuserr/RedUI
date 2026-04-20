@@ -1,3 +1,4 @@
+#include "RedUI/Remove.h"
 #include "RedUI/UIState.h"
 #include "RedUI/Input/Mouse.h"
 #include "Sdk/natives.h"
@@ -29,7 +30,8 @@ void RedUI::Update()
 	UIState::IsUpdating = false;
 
 	// Process queues.
-	// TODO: add deletion queue
+	for (UIObject *obj: UIState::QueuedObjectDeletions)
+		Remove(obj);
 	for (const auto &[obj, newParent] : UIState::QueuedHierarchyChanges)
 		obj->SetParent(newParent);
 	for (const AnimationOwner *anim : UIState::QueuedFinishedAnimations)
@@ -37,4 +39,5 @@ void RedUI::Update()
 	// Clear.
 	UIState::QueuedHierarchyChanges.clear();
 	UIState::QueuedFinishedAnimations.clear();
+	UIState::QueuedObjectDeletions.clear();
 }

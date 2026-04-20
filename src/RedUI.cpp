@@ -41,19 +41,6 @@ void RedUI::EmplaceNewObject(UIObject *parent, UIObjectOwner obj)
 		parent->GetChildren().push_back(std::move(obj));
 }
 
-void RedUI::Remove(UIObject *&object)
-{
-	if (object->GetParent() == nullptr)
-		std::erase_if(UIState::RootObjects, [object](const UIObjectOwner &ptr){
-			return (object == ptr.get());
-		});
-	else
-		std::erase_if(object->GetParent()->GetChildren(), [object](const UIObjectOwner &ptr){
-			return (object == ptr.get());
-		});
-	object = nullptr;
-}
-
 void RedUI::EnableCursor()
 {
 	UIState::CursorEnabled = true;

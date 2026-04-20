@@ -1,6 +1,10 @@
 #pragma once
-
 #include "RedUI/UIObject.h"
+// Expose these in RedUI.h
+// ReSharper disable once CppUnusedIncludeDirective
+#include "RedUI/Remove.h"
+// ReSharper disable once CppUnusedIncludeDirective
+#include "RedUI/Update.h"
 
 namespace RedUI
 {
@@ -28,8 +32,6 @@ namespace RedUI
 		EmplaceNewObject(parent, std::move(obj));
 		return (raw);
 	}
-	// Remove ui component from screen by ptr returned by Create. Sets the ptr to nullptr.
-	void	Remove(UIObject *&object);
 	// Force mouse cursor to show even while ingame.
 	void	EnableCursor();
 	// Disable forced cursor.
