@@ -42,7 +42,7 @@ namespace RedUI::Event
 
 	public:
 		Event() = default;
-		void	Invoke(TSender *sender, const TArgs &args)
+		void	Invoke(TSender *sender, TArgs args)
 		{
 			for (auto listener : Listeners)
 			{
