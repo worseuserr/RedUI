@@ -3,7 +3,9 @@
 #include <memory>
 #include <vector>
 #include "Animation.h"
+#include "Update.h"
 #include "Color/RGB.h"
+#include "Event/MouseEvent.h"
 #include "Math/Vec2.h"
 #include "Time/Time.h"
 
@@ -15,6 +17,11 @@ namespace RedUI
 	// Base class for all ui components.
 	class	UIObject
 	{
+		// Used for mouse events.
+		bool						IsMouseHovering = false;
+		bool						HasLeftClicked = false;
+		bool						HasRightClicked = false;
+
 	protected:
 		UIObject					*Parent = nullptr;
 		std::vector<UIObjectOwner>	Children = {};
@@ -23,19 +30,31 @@ namespace RedUI
 
 	public:
 		// Toggles visibility of object AND its descendants.
-		bool		Enabled;
+		bool			Enabled = true;
 		// Only toggles the visiblity of the object itself, not descendants.
-		bool		Visible;
-		Math::Vec2	Position;
-		Math::Vec2	Scale;
-		Color::RGB	Color;
-		float		Alpha;
+		bool			Visible = true;
+		bool			Clickable = true;
+		Math::Vec2		Position;
+		Math::Vec2		Scale;
+		Color::RGB		Color;
+		float			Alpha;
+		Event::MouseHoverEvent<UIObject>	OnMouseEnter;
+		Event::MouseHoverEvent<UIObject>	OnMouseLeave;
+		Event::MouseClickEvent<UIObject>	OnLeftClick;
+		Event::MouseClickEvent<UIObject>	OnRightClick;
 
 		UIObject(Math::Vec2 position = {}, Math::Vec2 scale = {1, 1},
 			Color::RGB color = {}, float alpha = 1.0f);
 		virtual			~UIObject() = default;
+		void			RecursivelyUpdateAndDraw(FrameState &state);
+		// Draw component. Called every frame, in order: ProcessEvents (and thus ContainsPoint) -> Update -> Draw.
 		virtual void	Draw() = 0;
-		void			RecursivelyUpdateAndDraw();
+		// Optional method for ui components to implement per-frame logic.
+		virtual void	Update(FrameState &state) {}
+		// Return whether or not point is on the drawn component. This is polled every frame and used to dispatch mouse events.
+		virtual bool	ContainsPoint(Math::Vec2 &point) = 0;
+		// Gets input information, polls ContainsPoint, and invokes events.
+		virtual void	ProcessEvents(FrameState &state);
 		void			AnimatePositionFrom(Math::Vec2 startPosition, Time::Milliseconds duration, Easing easing = Easing::Linear); // Ooh, staircase!
 		void			AnimatePositionTo(Math::Vec2 endPosition, Time::Milliseconds duration, Easing easing = Easing::Linear);
 		void			AnimateScaleFrom(Math::Vec2 startScale, Time::Milliseconds duration, Easing easing = Easing::Linear);
