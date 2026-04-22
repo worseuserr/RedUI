@@ -13,6 +13,16 @@ namespace RedUI
 	class	UIObject;
 	using	UIObjectOwner = std::unique_ptr<UIObject>;
 
+	// Plan for hit occlusion
+	// CurrentlyHovering to track if hovering
+	// HasHovered to track if mouse is still hovering this frame
+	// HasLeftClicked and HasRightClicked to track if click was registered for object
+	// 	in event processing, if mousedown and click hasnt been registered yet, set hasclicked to true and invoke mousedown
+	//
+	// After Update(), check mousedown, hashovered and everything to invoke all mouseup and hoverleave events, then reset bools
+	//
+	// MouseClick will be split into MouseDown and MouseUp
+
 	// Base class for all ui components.
 	class	UIObject
 	{
