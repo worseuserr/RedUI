@@ -46,11 +46,24 @@ void UIObject::SetParent(UIObject *newParent)
 			std::erase(Parent->Children, nullptr);
 	}
 	Parent = newParent;
+	UpdateWorldTransform();
 }
 
 UIObject *UIObject::GetParent() const
 {
 	return (Parent);
+}
+
+void UIObject::SetPosition(const Vec2 &position)
+{
+	Position = position;
+	UpdateWorldTransform();
+}
+
+void UIObject::SetScale(const Vec2 &scale)
+{
+	Scale = scale;
+	UpdateWorldTransform();
 }
 
 std::vector<UIObjectOwner> &UIObject::GetChildren()

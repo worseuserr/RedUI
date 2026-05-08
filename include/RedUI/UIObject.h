@@ -89,6 +89,7 @@ namespace RedUI
 		// Draw component. Called every frame, in order: ProcessEvents (and thus ContainsPoint) -> Update -> Draw.
 		virtual void	Draw() = 0;
 		// Optional method for ui components to implement per-frame logic.
+		// Important: If changing Position or Scale inside the method, you MUST call UpdateWorldTransform afterwards or use SetPosition/SetScale.
 		virtual void	Update(FrameState &state) {}
 		// Return whether or not point is on the drawn component. This is polled every frame and used to dispatch mouse events.
 		virtual bool	ContainsPoint(Math::Vec2 &point) = 0;
@@ -117,6 +118,10 @@ namespace RedUI
 		// Set parent of object. Parent is root (unparented) if nullptr or no argument.
 		void			SetParent(UIObject *newParent = nullptr);
 		UIObject		*GetParent() const;
+		// Safely set position by immediately updating world transform afterwards.
+		void			SetPosition(const Math::Vec2 &position);
+		// Safely set scale by immediately updating world transform afterwards.
+		void			SetScale(const Math::Vec2 &scale);
 		std::vector<UIObjectOwner>	&GetChildren();
 		static UIObjectOwner		*GetChildHandle(std::vector<UIObjectOwner> &children, UIObject *child);
 
