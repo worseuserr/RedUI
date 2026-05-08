@@ -58,23 +58,6 @@ std::vector<UIObjectOwner> &UIObject::GetChildren()
 	return (Children);
 }
 
-void UIObject::RecursivelyUpdateAndDraw(FrameState &state)
-{
-	bool	isRoot;
-
-	if (!Enabled)
-		return ;
-	isRoot = Parent == nullptr;
-	WorldScale = isRoot ? Scale : Parent->WorldScale * Scale;
-	WorldPosition = isRoot ? Position : Parent->WorldPosition + (Position - Vec2(0.5, 0.5)) * Parent->WorldScale;
-	this->ProcessEvents(state);
-	this->Update(state);
-	if (Visible)
-		this->Draw();
-	for (const UIObjectOwner &child : Children)
-		child->RecursivelyUpdateAndDraw(state);
-}
-
 UIObjectOwner *UIObject::GetChildHandle(std::vector<UIObjectOwner> &children, UIObject *child)
 {
 	const auto	it = std::ranges::find(children, child, &UIObjectOwner::get);
@@ -82,37 +65,97 @@ UIObjectOwner *UIObject::GetChildHandle(std::vector<UIObjectOwner> &children, UI
 	return (it != children.end() ? &(*it) : nullptr);
 }
 
-void UIObject::ProcessEvents(FrameState &state)
+void UIObject::RecursivelyRender(FrameState &state)
+{
+	if (!Enabled)
+		return ;
+	if (!HasUpdatedWorldTransform)
+		UpdateWorldTransform();
+	// It's set to false because it won't be used for the rest of the tick.
+	HasUpdatedWorldTransform = false;
+	if (MouseHovering != HasHovered)
+	{
+		if (HasHovered)
+			OnMouseEnter.Invoke(this, { .MousePosition = state.MousePosition });
+		else
+			OnMouseLeave.Invoke(this, { .MousePosition = state.MousePosition });
+		MouseHovering = HasHovered;
+	}
+	this->Update(state);
+	if (Visible)
+		this->Draw();
+	for (const UIObjectOwner &child : Children)
+		child->RecursivelyRender(state);
+}
+
+void UIObject::UpdateWorldTransform()
+{
+	bool	isRoot;
+
+	isRoot = Parent == nullptr;
+	WorldScale = isRoot ? Scale : Parent->WorldScale * Scale;
+	WorldPosition = isRoot ? Position : Parent->WorldPosition + (Position - Vec2(0.5, 0.5)) * Parent->WorldScale;
+}
+
+void UpdateHitState(HitState &state)
+{
+	if (state.RightClickConsumed && state.HoverConsumed && state.LeftClickConsumed)
+		state.FullyConsumed = true;
+}
+
+bool UIObject::RecursivelyProcessEvents(HitState &state)
 {
 	bool	contains;
 
-	contains = ContainsPoint(state.MousePosition);
-	if (contains && !MouseHovering)
+	// Early exit and children.
+	if (state.FullyConsumed)
+		return (false);
+	contains = ContainsPoint(state.Frame.MousePosition);
+	if (!OverflowChildHits && !contains)
+		return (true);
+	UpdateWorldTransform();
+	HasUpdatedWorldTransform = true;
+	for (const UIObjectOwner &child : Children)
 	{
-		MouseHovering = true;
-		OnMouseEnter.Invoke(this, { .MousePosition = state.MousePosition });
+		child->RecursivelyProcessEvents(state);
+		if (state.FullyConsumed)
+			return (false);
 	}
-	else if (!contains && MouseHovering)
+	if (!contains)
+		return (true);
+	// Process hit.
+	if (Clickable)
 	{
-		MouseHovering = false;
-		OnMouseLeave.Invoke(this, { .MousePosition = state.MousePosition });
+		if (!state.LeftClickConsumed && state.Frame.IsLeftMouseClicked)
+		{
+			OnLeftClick.Invoke(this, { .IsLeft = true, .MousePosition = state.Frame.MousePosition });
+			if (BlocksClick)
+			{
+				state.LeftClickConsumed = true;
+				UpdateHitState(state);
+			}
+		}
+		if (!state.RightClickConsumed && state.Frame.IsRightMouseClicked)
+		{
+			OnRightClick.Invoke(this, { .IsLeft = false, .MousePosition = state.Frame.MousePosition });
+			if (BlocksClick)
+			{
+				state.RightClickConsumed = true;
+				UpdateHitState(state);
+			}
+		}
 	}
-	if (!Clickable)
-		return ;
-	if (!state.IsLeftMouseDown)
-		HasLeftClicked = false;
-	else if (!HasLeftClicked && contains)
+	// For hover, the events are called in RecursivelyRender to allow easy comparison between old and new state.
+	if (!state.HoverConsumed && Hoverable)
 	{
-		HasLeftClicked = true;
-		OnLeftClick.Invoke(this, { .IsLeft = true, .MousePosition = state.MousePosition });
+		HasHovered = true;
+		if (BlocksHover)
+		{
+			state.HoverConsumed = true;
+			UpdateHitState(state);
+		}
 	}
-	if (!state.IsRightMouseDown)
-		HasRightClicked = false;
-	else if (!HasRightClicked && contains)
-	{
-		HasRightClicked = true;
-		OnRightClick.Invoke(this, { .IsLeft = false, .MousePosition = state.MousePosition });
-	}
+	return (false);
 }
 
 bool UIObject::IsMouseHovering() const

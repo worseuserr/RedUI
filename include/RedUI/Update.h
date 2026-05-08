@@ -6,11 +6,13 @@ namespace RedUI
 	// Updates all UI components. This must be called every frame.
 	void	Update();
 
-	// Data to be passed to every UIObject::RecursivelyUpdateAndDraw call to prevent calling natives for every object.
+	// Data to be passed to every UIObject::RecursivelyRender call to prevent calling natives for every object.
 	struct		FrameState
 	{
-		bool		IsLeftMouseDown;
-		bool		IsRightMouseDown;
+		// This is only true for the first frame that the mouse button has been down.
+		bool		IsLeftMouseClicked;
+		// This is only true for the first frame that the mouse button has been down.
+		bool		IsRightMouseClicked;
 		Math::Vec2	MousePosition;
 	};
 }

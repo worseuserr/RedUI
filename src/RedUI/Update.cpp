@@ -5,8 +5,8 @@
 
 void RedUI::Update()
 {
-	FrameState	state;
-
+	if (UIState::IsUpdating)
+		return ;
 	if (UIState::CursorEnabled)
 		_NAMESPACE30::_SET_MOUSE_CURSOR_ACTIVE_THIS_FRAME();
 	if (UIState::MouseInputsDisabled)
@@ -20,13 +20,23 @@ void RedUI::Update()
 		if (anim->Update())
 			UIState::QueuedFinishedAnimations.push_back(&anim); // Queue animation for removal if finished.
 	// Set worldpositions and draw objects.
-	state = {
-		.IsLeftMouseDown = Input::IsLeftMouseDown(),
-		.IsRightMouseDown = Input::IsRightMouseDown(),
+	FrameState	state = {
+		.IsLeftMouseClicked = Input::IsLeftMouseDown(),
+		.IsRightMouseClicked = Input::IsRightMouseDown(),
 		.MousePosition = Input::GetMousePosition()
 	};
+	HitState	hitState = {
+		.Frame = state,
+		.LeftClickConsumed = false,
+		.RightClickConsumed = false,
+		.HoverConsumed = false,
+		.FullyConsumed = false
+	};
 	for (const UIObjectOwner &obj : UIState::RootObjects)
-		obj->RecursivelyUpdateAndDraw(state);
+	{
+		obj->RecursivelyProcessEvents(hitState);
+		obj->RecursivelyRender(state);
+	}
 	UIState::IsUpdating = false;
 
 	// Process queues.
