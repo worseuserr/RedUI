@@ -84,19 +84,19 @@ namespace RedUI
 		virtual			~UIObject() = default;
 		// Updates world transform using local transforms and nearest parent.
 		void			UpdateWorldTransform();
-		// The main entry point for invoking events, updating layout and rendering.
-		void			RecursivelyRender(FrameState &state);
-		// Draw component. Called every frame, in order: ProcessEvents (and thus ContainsPoint) -> Update -> Draw.
-		virtual void	Draw() = 0;
-		// Optional method for ui components to implement per-frame logic.
-		// Important: If changing Position or Scale inside the method, you MUST call UpdateWorldTransform afterwards or use SetPosition/SetScale.
-		virtual void	Update(FrameState &state) {}
-		// Return whether or not point is on the drawn component. This is polled every frame and used to dispatch mouse events.
-		virtual bool	ContainsPoint(Math::Vec2 &point) = 0;
 		// Gets input information, polls ContainsPoint, and invokes events.
 		// This returns true if the mouse is NOT currently inside (ContainsPoint) the object for recursion early exit.
 		// Does not exit early if object has OverflowChildHits set to true.
 		bool			RecursivelyProcessEvents(HitState &state);
+		// The main entry point for invoking events, updating layout and rendering.
+		void			RecursivelyRender(FrameState &state);
+		// Optional method for ui components to implement per-frame logic.
+		// Important: If changing Position or Scale inside the method, you MUST call UpdateWorldTransform afterwards or use SetPosition/SetScale.
+		virtual void	Update(FrameState &state) {}
+		// Draw component. Called every frame, in order: ProcessEvents (and thus ContainsPoint) -> Update -> Draw.
+		virtual void	Draw() = 0;
+		// Return whether or not point is on the drawn component. This is polled every frame and used to dispatch mouse events.
+		virtual bool	ContainsPoint(Math::Vec2 &point) = 0;
 		template		<typename T>
 		void			Animate(T *member, const T &startValue, const T &endValue, Time::Milliseconds duration, Easing easing)
 		{
