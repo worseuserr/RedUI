@@ -30,8 +30,6 @@ namespace RedUI
 		bool		MouseHovering = false;
 		// If mouse was hovering during event processing. Is reset at end of RecursivelyRender.
 		bool		HasHovered = false;
-		bool		HasLeftClicked = false;
-		bool		HasRightClicked = false;
 
 		static void	RegisterAnimation(AnimationOwner anim);
 
