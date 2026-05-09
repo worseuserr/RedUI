@@ -32,6 +32,7 @@ add_library(RedUI SHARED
 		src/RedUI/Input/Key.cpp
 		include/RedUI/Remove.h
 		src/RedUI/Remove.cpp
+		src/DllMain.cpp
 )
 
 target_include_directories(RedUI PUBLIC

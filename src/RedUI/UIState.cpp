@@ -2,6 +2,7 @@
 
 using namespace RedUI;
 
+bool								UIState::UpdateLoopEnabled = true;
 bool								UIState::IsUpdating = false;
 bool								UIState::CursorEnabled = false;
 bool								UIState::MouseInputsDisabled = false;

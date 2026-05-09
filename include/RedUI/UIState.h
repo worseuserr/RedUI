@@ -10,6 +10,7 @@ namespace RedUI
 	class	UIState
 	{
 	public:
+		static bool								UpdateLoopEnabled;
 		static bool								IsUpdating;
 		// Tracks whether mouse cursor should be enabled.
 		static bool								CursorEnabled;
