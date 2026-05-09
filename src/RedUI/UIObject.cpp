@@ -121,7 +121,7 @@ bool UIObject::RecursivelyProcessEvents(HitState &state)
 	bool	contains;
 
 	// Early exit and children.
-	if (state.FullyConsumed)
+	if (state.FullyConsumed || !Enabled)
 		return (false);
 	contains = ContainsPoint(state.Frame.MousePosition);
 	if (!OverflowChildHits && !contains)
@@ -130,6 +130,8 @@ bool UIObject::RecursivelyProcessEvents(HitState &state)
 	HasUpdatedWorldTransform = true;
 	for (const UIObjectOwner &child : Children)
 	{
+		if (!child->Enabled)
+			continue ;
 		child->RecursivelyProcessEvents(state);
 		if (state.FullyConsumed)
 			return (false);
