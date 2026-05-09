@@ -57,9 +57,9 @@ namespace RedUI
 		// Toggles only the visiblity of the object itself, not descendants.
 		bool			Visible = true;
 		// Toggles clicked events.
-		bool			Clickable = true;
+		bool			Clickable = false;
 		// Toggles hover events.
-		bool			Hoverable = true;
+		bool			Hoverable = false;
 		bool			BlocksClick = true;
 		bool			BlocksHover = true;
 		// If enabled, children that are physically outside the object can receive mouse events. Otherwise not. Performance heavy if enabled with many children.
