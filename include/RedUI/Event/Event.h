@@ -25,6 +25,11 @@ namespace RedUI::Event
 			Listeners = listeners;
 		}
 
+		~Connection()
+		{
+			Disconnect();
+		}
+
 		void	Disconnect()
 		{
 			if (Listeners == nullptr)
