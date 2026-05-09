@@ -3,8 +3,6 @@
 // Expose these in RedUI.h
 // ReSharper disable once CppUnusedIncludeDirective
 #include "RedUI/Remove.h"
-// ReSharper disable once CppUnusedIncludeDirective
-#include "RedUI/Update.h"
 
 namespace RedUI
 {
