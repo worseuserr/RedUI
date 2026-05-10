@@ -10,7 +10,7 @@ void UIObject::RegisterAnimation(AnimationOwner anim)
 	UIState::Animations.push_back(std::move(anim));
 }
 
-UIObject::UIObject(const Vec2 position, const Vec2 scale, const RGB color, const float alpha)
+UIObject::UIObject(const Vec2 &position, const Vec2 &scale, const RGB &color, const float alpha)
 {
 	Position = position;
 	Scale = scale;
@@ -94,6 +94,7 @@ void UIObject::RecursivelyRender(FrameState &state)
 			OnMouseLeave.Invoke(this, { .MousePosition = state.MousePosition });
 		MouseHovering = HasHovered;
 	}
+	HasHovered = false;
 	this->Update(state);
 	if (Visible)
 		this->Draw();
@@ -119,6 +120,7 @@ void UpdateHitState(HitState &state)
 bool UIObject::RecursivelyProcessEvents(HitState &state)
 {
 	bool	contains;
+	size_t	i;
 
 	// Early exit and children.
 	if (state.FullyConsumed || !Enabled)
@@ -128,8 +130,9 @@ bool UIObject::RecursivelyProcessEvents(HitState &state)
 		return (true);
 	UpdateWorldTransform();
 	HasUpdatedWorldTransform = true;
-	for (const UIObjectOwner &child : Children)
+	for (i = Children.size(); i-- > 0;)
 	{
+		const UIObjectOwner&	child = Children[i];
 		if (!child->Enabled)
 			continue ;
 		child->RecursivelyProcessEvents(state);
@@ -139,37 +142,27 @@ bool UIObject::RecursivelyProcessEvents(HitState &state)
 	if (!contains)
 		return (true);
 	// Process hit.
-	if (Clickable)
+
+	if (!state.LeftClickConsumed && state.Frame.IsLeftMouseClicked)
 	{
-		if (!state.LeftClickConsumed && state.Frame.IsLeftMouseClicked)
-		{
+		if (Clickable)
 			OnLeftClick.Invoke(this, { .IsLeft = true, .MousePosition = state.Frame.MousePosition });
-			if (BlocksClick)
-			{
-				state.LeftClickConsumed = true;
-				UpdateHitState(state);
-			}
-		}
-		if (!state.RightClickConsumed && state.Frame.IsRightMouseClicked)
-		{
+		if (BlocksClick)
+			state.LeftClickConsumed = true;
+	}
+	if (!state.RightClickConsumed && state.Frame.IsRightMouseClicked)
+	{
+		if (Clickable)
 			OnRightClick.Invoke(this, { .IsLeft = false, .MousePosition = state.Frame.MousePosition });
-			if (BlocksClick)
-			{
-				state.RightClickConsumed = true;
-				UpdateHitState(state);
-			}
-		}
+		if (BlocksClick)
+			state.RightClickConsumed = true;
 	}
 	// For hover, the events are called in RecursivelyRender to allow easy comparison between old and new state.
 	if (!state.HoverConsumed && Hoverable)
-	{
 		HasHovered = true;
-		if (BlocksHover)
-		{
-			state.HoverConsumed = true;
-			UpdateHitState(state);
-		}
-	}
+	if (BlocksHover)
+		state.HoverConsumed = true;
+	UpdateHitState(state);
 	return (false);
 }
 
