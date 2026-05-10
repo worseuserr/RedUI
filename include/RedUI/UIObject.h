@@ -90,18 +90,12 @@ namespace RedUI
 		{
 			RegisterAnimation(std::make_unique<Animation<T>>(member, duration, startValue, endValue, easing));
 		}
-		void			AnimatePositionFrom(const Math::Vec2 &startPosition, Time::Milliseconds duration, Easing easing = Easing::Linear);
-		void			AnimatePositionTo(const Math::Vec2 &endPosition, Time::Milliseconds duration, Easing easing = Easing::Linear);
-		void			AnimateRenderOffsetFrom(const Math::Vec2 &startOffset, Time::Milliseconds duration, Easing easing = Easing::Linear);
-		void			AnimateRenderOffsetTo(const Math::Vec2 &endOffset, Time::Milliseconds duration, Easing easing = Easing::Linear);
-		void			AnimateRenderScaleFrom(const Math::Vec2 &startScale, Time::Milliseconds duration, Easing easing = Easing::Linear);
-		void			AnimateRenderScaleTo(const Math::Vec2 &endScale, Time::Milliseconds duration, Easing easing = Easing::Linear);
-		void			AnimateScaleFrom(const Math::Vec2 &startScale, Time::Milliseconds duration, Easing easing = Easing::Linear);
-		void			AnimateScaleTo(const Math::Vec2 &endScale, Time::Milliseconds duration, Easing easing = Easing::Linear);
-		void			AnimateColorFrom(const Color::RGB &startColor, Time::Milliseconds duration, Easing easing = Easing::Linear);
-		void			AnimateColorTo(const Color::RGB &endColor, Time::Milliseconds duration, Easing easing = Easing::Linear);
-		void			AnimateAlphaFrom(float startAlpha, Time::Milliseconds duration, Easing easing = Easing::Linear);
-		void			AnimateAlphaTo(float endAlpha, Time::Milliseconds duration, Easing easing = Easing::Linear);
+		void			AnimatePosition(const Math::Vec2 &startPosition, const Math::Vec2 &endPosition, Time::Milliseconds duration, Easing easing = Easing::Linear);
+		void			AnimateRenderOffset(const Math::Vec2 &startOffset, const Math::Vec2 &endOffset,Time::Milliseconds duration, Easing easing = Easing::Linear);
+		void			AnimateRenderScale(const Math::Vec2 &startScale, const Math::Vec2 &endScale,Time::Milliseconds duration, Easing easing = Easing::Linear);
+		void			AnimateScale(const Math::Vec2 &startScale, const Math::Vec2 &endScale, Time::Milliseconds duration, Easing easing = Easing::Linear);
+		void			AnimateColor(const Color::RGB &startColor, const Color::RGB &endColor, Time::Milliseconds duration, Easing easing = Easing::Linear);
+		void			AnimateAlpha(float startAlpha, float endAlpha, Time::Milliseconds duration, Easing easing = Easing::Linear);
 		bool			IsMouseHovering() const;
 		// Set parent of object. Parent is root (unparented) if nullptr or no argument.
 		void			SetParent(UIObject *newParent = nullptr);
