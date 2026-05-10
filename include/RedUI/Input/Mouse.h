@@ -3,6 +3,12 @@
 #include "RedUI/Math/Vec2.h"
 #include "RedUI/Event/Event.h"
 
+#ifdef RedUI_EXPORTS // Define this in CMake only for the DLL target
+   #define API __declspec(dllexport)
+#else
+   #define API __declspec(dllimport)
+#endif
+
 namespace RedUI::Input
 {
 	constexpr Hash	INPUT_CURSOR_X = 0xD6C4ECDC;
@@ -10,7 +16,25 @@ namespace RedUI::Input
 	constexpr Hash	INPUT_AIM = 0xF84FA74F;
 	constexpr Hash	INPUT_ATTACK = 0x07CE1E61;
 
-	Math::Vec2		GetMousePosition();
-	bool			IsLeftMouseDown();
-	bool			IsRightMouseDown();
+	struct MouseChangedEventArgs
+	{
+		bool	WasDown;
+		bool	IsDown;
+	};
+
+	template	<typename TSender>
+	class MouseChangedEvent : public Event::Event<TSender, MouseChangedEventArgs> {};
+
+	Math::Vec2				GetMousePosition();
+	bool					IsLeftMouseDown();
+	bool					IsRightMouseDown();
+
+	class Events
+	{
+	public:
+		API static MouseChangedEvent<void>	OnLeftMouseDown;
+		API static MouseChangedEvent<void>	OnLeftMouseUp;
+		API static MouseChangedEvent<void>	OnRightMouseDown;
+		API static MouseChangedEvent<void>	OnRightMouseUp;
+	};
 }

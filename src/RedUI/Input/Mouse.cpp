@@ -36,3 +36,8 @@ bool Input::IsRightMouseDown()
 {
 	return (IsKeyDown(Key::MouseRight));
 }
+
+Input::MouseChangedEvent<void> Input::Events::OnLeftMouseDown;
+Input::MouseChangedEvent<void> Input::Events::OnLeftMouseUp;
+Input::MouseChangedEvent<void> Input::Events::OnRightMouseDown;
+Input::MouseChangedEvent<void> Input::Events::OnRightMouseUp;
