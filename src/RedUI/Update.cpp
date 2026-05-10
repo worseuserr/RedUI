@@ -5,6 +5,30 @@
 
 void RedUI::Update()
 {
+	static bool	LeftMouseDown = false;
+	static bool	RightMouseDown = false;
+	bool		LeftMouseDownNow;
+	bool		RightMouseDownNow;
+	size_t		i;
+
+	LeftMouseDownNow = Input::IsLeftMouseDown();
+	RightMouseDownNow = Input::IsRightMouseDown();
+	if (LeftMouseDownNow != LeftMouseDown)
+	{
+		if (LeftMouseDownNow)
+			Input::Events::OnLeftMouseDown.Invoke(nullptr, { LeftMouseDown, LeftMouseDownNow });
+		else
+			Input::Events::OnLeftMouseUp.Invoke(nullptr, { LeftMouseDown, LeftMouseDownNow });
+	}
+	if (RightMouseDownNow != RightMouseDown)
+	{
+		if (RightMouseDownNow)
+			Input::Events::OnRightMouseDown.Invoke(nullptr, { RightMouseDown, RightMouseDownNow });
+		else
+			Input::Events::OnRightMouseUp.Invoke(nullptr, { RightMouseDown, RightMouseDownNow });
+	}
+
+	// Render loop.
 	if (UIState::IsUpdating)
 		return ;
 	if (UIState::CursorEnabled)
@@ -21,10 +45,12 @@ void RedUI::Update()
 			UIState::QueuedFinishedAnimations.push_back(&anim); // Queue animation for removal if finished.
 	// Set worldpositions and draw objects.
 	FrameState	state = {
-		.IsLeftMouseClicked = Input::IsLeftMouseDown(),
-		.IsRightMouseClicked = Input::IsRightMouseDown(),
+		.IsLeftMouseClicked = !LeftMouseDown && LeftMouseDownNow,
+		.IsRightMouseClicked = !RightMouseDown && RightMouseDownNow,
 		.MousePosition = Input::GetMousePosition()
 	};
+	LeftMouseDown = LeftMouseDownNow;
+	RightMouseDown = RightMouseDownNow;
 	HitState	hitState = {
 		.Frame = state,
 		.LeftClickConsumed = false,
@@ -32,10 +58,15 @@ void RedUI::Update()
 		.HoverConsumed = false,
 		.FullyConsumed = false
 	};
-	for (const UIObjectOwner &obj : UIState::RootObjects)
+	// Process events backwards for newer children to occlude existing ones since that's how they render.
+	for (i = UIState::RootObjects.size(); i-- > 0;)
 	{
-		obj->RecursivelyProcessEvents(hitState);
-		obj->RecursivelyRender(state);
+		UIState::RootObjects[i]->RecursivelyProcessEvents(hitState);
+	}
+	// Render forwards.
+	for (i = 0; i < UIState::RootObjects.size(); i++)
+	{
+		UIState::RootObjects[i]->RecursivelyRender(state);
 	}
 	UIState::IsUpdating = false;
 
