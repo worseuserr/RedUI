@@ -18,11 +18,9 @@ namespace RedUI
 	// Creates a UI component on the heap and returns a raw pointer to it. If parent is nullptr, the component is root.
 	// Default UIObject constuctor parameters: Position, Scale, Color, Alpha
 	template <typename T, typename ...Args>
-	requires (std::derived_from<T, UIObject> && (std::is_abstract_v<T> || std::constructible_from<T, Args...>)) // Constructible check has to be here or bitchass resharper wont show parameter hints.
+	requires (std::derived_from<T, UIObject> && std::constructible_from<T, Args...>)
 	T		*Create(UIObject *parent, Args&&... args)
 	{
-		static_assert(!std::is_abstract_v<T>, "T is an abstract class. Did you forget to implement a pure virtual function?");
-		static_assert(std::is_constructible_v<T, Args...>, "T cannot be constructed with the provided arguments.");
 		T					*raw;
 		std::unique_ptr<T>	obj = std::make_unique<T>(std::forward<Args>(args)...);
 
