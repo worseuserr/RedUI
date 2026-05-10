@@ -8,6 +8,6 @@ namespace RedUI
 	public:
 		using	UIObject::UIObject;
 		void	Draw() override;
-		bool	ContainsPoint(Math::Vec2 &point) override;
+		bool	ContainsPoint(const Math::Vec2 &point) override;
 	};
 }

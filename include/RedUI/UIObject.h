@@ -56,9 +56,9 @@ namespace RedUI
 		Math::Vec2		Scale;
 		Color::RGB		Color;
 		float			Alpha;
-		// Purely visual offset that does not affect the position of an object's children.
+		// Purely visual offset that does not affect the position of an object's children, or hit detection.
 		Math::Vec2		RenderOffset = Math::Vec2();
-		// Purely visual scale multiplier that does not affect the position or scale of an object's children.
+		// Purely visual scale multiplier that does not affect the position or scale of an object's children, or hit detection.
 		Math::Vec2		RenderScale = Math::Vec2(1, 1);
 		// If true, skips UpdateWorldTransform call during render. This is for skipping objects that have been updated in the event processing.
 		bool			HasUpdatedWorldTransform = false;
@@ -84,7 +84,7 @@ namespace RedUI
 		// Draw component. Called every frame, in order: ProcessEvents (and thus ContainsPoint) -> Update -> Draw.
 		virtual void	Draw() = 0;
 		// Return whether or not point is on the drawn component. This is polled every frame and used to dispatch mouse events.
-		virtual bool	ContainsPoint(Math::Vec2 &point) = 0;
+		virtual bool	ContainsPoint(const Math::Vec2 &point) = 0;
 		template		<typename T>
 		void			Animate(T *member, const T &startValue, const T &endValue, Time::Milliseconds duration, Easing easing)
 		{

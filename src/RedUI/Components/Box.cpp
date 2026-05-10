@@ -15,15 +15,13 @@ void Box::Draw()
 		true, true);
 }
 
-bool Box::ContainsPoint(Math::Vec2 &point)
+bool Box::ContainsPoint(const Math::Vec2 &point)
 {
-	const Math::Vec2	pos = WorldPosition + RenderOffset;
-	const Math::Vec2	scale = WorldScale * RenderScale;
-	float				halfX;
-	float				halfY;
+	const Math::Vec2	pos = WorldPosition;
+	const Math::Vec2	scale = WorldScale;
+	const float			halfX = scale.X * 0.5f;
+	const float			halfY = scale.Y * 0.5f;
 
-	halfX = scale.X * 0.5f;
-	halfY = scale.Y * 0.5f;
 	return (
 		point.X > pos.X - halfX &&
 		point.X < pos.X + halfX &&
