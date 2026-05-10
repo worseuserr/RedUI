@@ -2,11 +2,12 @@
 #include "Sdk/natives.h"
 
 using namespace RedUI;
+using namespace RedUI::Math;
 
 void Box::Draw()
 {
-	const Math::Vec2	pos = WorldPosition + RenderOffset;
-	const Math::Vec2	scale = WorldScale * RenderScale;
+	const Vec2	pos = WorldPosition + RenderOffset;
+	const Vec2	scale = WorldScale * RenderScale;
 
 	GRAPHICS::DRAW_RECT(
 		pos.X, pos.Y, scale.X, scale.Y,
@@ -15,10 +16,10 @@ void Box::Draw()
 		true, true);
 }
 
-bool Box::ContainsPoint(const Math::Vec2 &point)
+bool Box::ContainsPoint(const Vec2 &point)
 {
-	const Math::Vec2	pos = WorldPosition;
-	const Math::Vec2	scale = WorldScale;
+	const Vec2	pos = WorldPosition;
+	const Vec2	scale = WorldScale;
 	const float			halfX = scale.X * 0.5f;
 	const float			halfY = scale.Y * 0.5f;
 
