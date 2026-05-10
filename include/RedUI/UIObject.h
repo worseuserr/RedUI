@@ -67,13 +67,13 @@ namespace RedUI
 		Event::MouseClickEvent<UIObject>	OnLeftClick;
 		Event::MouseClickEvent<UIObject>	OnRightClick;
 
-		UIObject(Math::Vec2 position = {}, Math::Vec2 scale = {1, 1},
-			Color::RGB color = {}, float alpha = 1.0f);
+		UIObject(const Math::Vec2 &position = {}, const Math::Vec2 &scale = {1, 1},
+			const Color::RGB &color = {}, float alpha = 1.0f);
 		virtual			~UIObject() = default;
 		// Updates world transform using local transforms and nearest parent.
 		void			UpdateWorldTransform();
 		// Gets input information, polls ContainsPoint, and invokes events.
-		// This returns true if the mouse is NOT currently inside (ContainsPoint) the object for recursion early exit.
+		// This returns true if the mouse is NOT currently inside (ContainsPoint) the object.
 		// Does not exit early if object has OverflowChildHits set to true.
 		bool			RecursivelyProcessEvents(HitState &state);
 		// The main entry point for invoking events, updating layout and rendering.
