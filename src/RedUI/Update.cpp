@@ -3,31 +3,49 @@
 #include "RedUI/Input/Mouse.h"
 #include "Sdk/natives.h"
 
+using namespace RedUI;
+
+BYTE ProcessStaticMouseEvents()
+{
+	static bool	wasLeftMouseDown = false;
+	static bool	wasRightMouseDown = false;
+	bool		isLeftMouseDown;
+	bool		isRightMouseDown;
+	BYTE		res;
+
+	isLeftMouseDown = Input::IsLeftMouseDown();
+	isRightMouseDown = Input::IsRightMouseDown();
+	if (isLeftMouseDown != wasLeftMouseDown)
+	{
+		if (isLeftMouseDown)
+			Input::Events::OnLeftMouseDown.Invoke(nullptr, { wasLeftMouseDown, isLeftMouseDown });
+		else
+			Input::Events::OnLeftMouseUp.Invoke(nullptr, { wasLeftMouseDown, isLeftMouseDown });
+	}
+	if (isRightMouseDown != wasRightMouseDown)
+	{
+		if (isRightMouseDown)
+			Input::Events::OnRightMouseDown.Invoke(nullptr, { wasRightMouseDown, isRightMouseDown });
+		else
+			Input::Events::OnRightMouseUp.Invoke(nullptr, { wasRightMouseDown, isRightMouseDown });
+	}
+	res = (0 |
+		((!wasLeftMouseDown && isLeftMouseDown) ? 0x01 : 0) |
+		((!wasRightMouseDown && isRightMouseDown) ? 0x02 : 0)
+		);
+	wasLeftMouseDown = isLeftMouseDown;
+	wasRightMouseDown = isRightMouseDown;
+	return (res);
+}
+
 void RedUI::Update()
 {
-	static bool	LeftMouseDown = false;
-	static bool	RightMouseDown = false;
-	bool		LeftMouseDownNow;
-	bool		RightMouseDownNow;
+	static constexpr short	LMB = 0x01;
+	static constexpr short	RMB = 0x02;
 	size_t		i;
+	BYTE		clicks;
 
-	LeftMouseDownNow = Input::IsLeftMouseDown();
-	RightMouseDownNow = Input::IsRightMouseDown();
-	if (LeftMouseDownNow != LeftMouseDown)
-	{
-		if (LeftMouseDownNow)
-			Input::Events::OnLeftMouseDown.Invoke(nullptr, { LeftMouseDown, LeftMouseDownNow });
-		else
-			Input::Events::OnLeftMouseUp.Invoke(nullptr, { LeftMouseDown, LeftMouseDownNow });
-	}
-	if (RightMouseDownNow != RightMouseDown)
-	{
-		if (RightMouseDownNow)
-			Input::Events::OnRightMouseDown.Invoke(nullptr, { RightMouseDown, RightMouseDownNow });
-		else
-			Input::Events::OnRightMouseUp.Invoke(nullptr, { RightMouseDown, RightMouseDownNow });
-	}
-
+	clicks = ProcessStaticMouseEvents();
 	// Render loop.
 	if (UIState::IsUpdating)
 		return ;
@@ -45,12 +63,10 @@ void RedUI::Update()
 			UIState::QueuedFinishedAnimations.push_back(&anim); // Queue animation for removal if finished.
 	// Set worldpositions and draw objects.
 	FrameState	state = {
-		.IsLeftMouseClicked = !LeftMouseDown && LeftMouseDownNow,
-		.IsRightMouseClicked = !RightMouseDown && RightMouseDownNow,
+		.IsLeftMouseClicked = (clicks & LMB) != 0,
+		.IsRightMouseClicked = (clicks & RMB) != 0,
 		.MousePosition = Input::GetMousePosition()
 	};
-	LeftMouseDown = LeftMouseDownNow;
-	RightMouseDown = RightMouseDownNow;
 	HitState	hitState = {
 		.Frame = state,
 		.LeftClickConsumed = false,
