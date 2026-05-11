@@ -3,6 +3,8 @@
 // Expose these in RedUI.h
 // ReSharper disable once CppUnusedIncludeDirective
 #include "RedUI/Remove.h"
+// ReSharper disable once CppUnusedIncludeDirective
+#include "RedUI/Create.h"
 
 namespace RedUI
 {
@@ -13,21 +15,6 @@ namespace RedUI
 	bool	CheckVersion(unsigned int version);
 	// Shows an error message and returns false if RedUI version is below passed version.
 	bool	RequireVersion(unsigned int version);
-	// Required to not copy static members of UIStates when compiling.
-	void	EmplaceNewObject(UIObject *parent, UIObjectOwner obj);
-	// Creates a UI component on the heap and returns a raw pointer to it. If parent is nullptr, the component is root.
-	// Default UIObject constuctor parameters: Position, Scale, Color, Alpha
-	template <typename T, typename ...Args>
-	requires (std::derived_from<T, UIObject> && std::constructible_from<T, Args...>)
-	T		*Create(UIObject *parent, Args&&... args)
-	{
-		T					*raw;
-		std::unique_ptr<T>	obj = std::make_unique<T>(std::forward<Args>(args)...);
-
-		raw = obj.get();
-		EmplaceNewObject(parent, std::move(obj));
-		return (raw);
-	}
 	// Force mouse cursor to show even while ingame.
 	void	EnableCursor();
 	// Disable forced cursor.

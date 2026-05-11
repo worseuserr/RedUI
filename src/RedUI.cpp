@@ -32,15 +32,6 @@ bool RedUI::RequireVersion(const unsigned int version)
 	return (false);
 }
 
-void RedUI::EmplaceNewObject(UIObject *parent, UIObjectOwner obj)
-{
-	obj->__RawSetParent(parent);
-	if (parent == nullptr)
-		UIState::RootObjects.push_back(std::move(obj));
-	else
-		parent->GetChildren().push_back(std::move(obj));
-}
-
 void RedUI::EnableCursor()
 {
 	UIState::CursorEnabled = true;
