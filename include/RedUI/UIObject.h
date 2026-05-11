@@ -5,6 +5,7 @@
 #include "Update.h"
 #include "Color/RGB.h"
 #include "Event/MouseEvent.h"
+#include "Graphics/Sprite.h"
 #include "Math/Vec2.h"
 #include "Time/Time.h"
 
