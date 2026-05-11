@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 #include <vector>
-#include "Animation.h"
+#include "Graphics/Animation.h"
 #include "Update.h"
 #include "Color/RGB.h"
 #include "Event/MouseEvent.h"

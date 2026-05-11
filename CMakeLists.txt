@@ -8,7 +8,7 @@ add_library(RedUI SHARED
 		src/RedUI.cpp
 		include/RedUI/UIState.h
 		include/RedUI/UIObject.h
-		include/RedUI/Animation.h
+		include/RedUI/Graphics/Animation.h
 		include/RedUI/Math/Vec2.h
 		include/RedUI/Color/RGB.h
 		src/RedUI/Math/Vec2.cpp
@@ -33,6 +33,8 @@ add_library(RedUI SHARED
 		include/RedUI/Remove.h
 		src/RedUI/Remove.cpp
 		src/DllMain.cpp
+		include/RedUI/Create.h
+		src/RedUI/Create.cpp
 )
 
 target_include_directories(RedUI PUBLIC

@@ -2,7 +2,7 @@
 #include <map>
 #include <vector>
 #include "UIObject.h"
-#include "Animation.h"
+#include "Graphics/Animation.h"
 
 namespace RedUI
 {
