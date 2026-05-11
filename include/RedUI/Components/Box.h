@@ -8,7 +8,7 @@ namespace RedUI
 	{
 	public:
 		// An optional sprite to display as the background instead of a solid color.
-		Sprite			*Sprite;
+		Sprite	*Sprite = nullptr;
 
 		using	UIObject::UIObject;
 		void	Draw() override;
