@@ -40,8 +40,8 @@ BYTE ProcessStaticMouseEvents()
 
 void RedUI::Update()
 {
-	static constexpr short	LMB = 0x01;
-	static constexpr short	RMB = 0x02;
+	static constexpr BYTE	LMB = 0;
+	static constexpr BYTE	RMB = 0x01;
 	size_t		i;
 	BYTE		clicks;
 
