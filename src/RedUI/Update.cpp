@@ -5,8 +5,8 @@
 
 using namespace RedUI;
 
-static constexpr BYTE	LMB = 0;
-static constexpr BYTE	RMB = 0x01;
+constexpr BYTE	LMB = 0;
+constexpr BYTE	RMB = 0x01;
 
 BYTE ProcessStaticMouseEvents()
 {
