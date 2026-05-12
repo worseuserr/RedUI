@@ -5,6 +5,9 @@
 
 using namespace RedUI;
 
+static constexpr BYTE	LMB = 0;
+static constexpr BYTE	RMB = 0x01;
+
 BYTE ProcessStaticMouseEvents()
 {
 	static bool	wasLeftMouseDown = false;
@@ -30,8 +33,8 @@ BYTE ProcessStaticMouseEvents()
 			Input::Events::OnRightMouseUp.Invoke(nullptr, { wasRightMouseDown, isRightMouseDown });
 	}
 	res = (0 |
-		((!wasLeftMouseDown && isLeftMouseDown) ? 0x01 : 0) |
-		((!wasRightMouseDown && isRightMouseDown) ? 0x02 : 0)
+		((!wasLeftMouseDown && isLeftMouseDown) ? LMB : 0) |
+		((!wasRightMouseDown && isRightMouseDown) ? RMB : 0)
 		);
 	wasLeftMouseDown = isLeftMouseDown;
 	wasRightMouseDown = isRightMouseDown;
@@ -40,8 +43,6 @@ BYTE ProcessStaticMouseEvents()
 
 void RedUI::Update()
 {
-	static constexpr BYTE	LMB = 0;
-	static constexpr BYTE	RMB = 0x01;
 	size_t		i;
 	BYTE		clicks;
 
