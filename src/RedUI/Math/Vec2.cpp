@@ -8,7 +8,7 @@ Vec2::Vec2(const float x, const float y)
 	Y = y;
 }
 
-Vec2	Vec2::Lerp(const Vec2 &dest, const float t) const
+Vec2 Vec2::Lerp(const Vec2 &dest, const float t) const
 {
 	return (Vec2(
 		X + (dest.X - X) * t,
