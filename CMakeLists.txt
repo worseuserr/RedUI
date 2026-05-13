@@ -37,6 +37,8 @@ add_library(RedUI SHARED
 		src/RedUI/Create.cpp
 		include/RedUI/Graphics/Sprite.h
 		src/RedUI/Graphics/Sprite.cpp
+		include/RedUI/Focus.h
+		src/RedUI/Focus.cpp
 )
 
 target_include_directories(RedUI PUBLIC
