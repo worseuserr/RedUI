@@ -36,8 +36,8 @@ namespace RedUI
 	public:
 		FocusHandle(Focus flags, bool isValid);
 		~FocusHandle();
-		void				Release();
-		explicit operator	bool() const;
+		void		Release();
+		explicit	operator bool() const;
 
 		// Non-copyable.
 		FocusHandle(const FocusHandle&) = delete;
