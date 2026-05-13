@@ -1,4 +1,5 @@
 #pragma once
+#include <windows.h>
 
 namespace RedUI::Math
 {
@@ -10,17 +11,17 @@ namespace RedUI::Math
 		float	Y;
 
 		Vec2(float x = 0, float y = 0);
-		Vec2	Lerp(const Vec2 &dest, float t) const;
-		bool	operator==(const Vec2 &other) const;
-		Vec2	operator+(const Vec2 &other) const;
-		Vec2	operator-(const Vec2 &other) const;
-		Vec2	operator*(const Vec2 &other) const;
-		Vec2	operator+(const float &other) const;
-		Vec2	operator-(const float &other) const;
-		Vec2	operator*(const float &other) const;
-		Vec2	&operator+=(const Vec2 &other);
-		Vec2	&operator-=(const Vec2 &other);
-		Vec2	&operator*=(const Vec2 &other);
+		Vec2		Lerp(const Vec2 &dest, float t) const;
+		bool		operator==(const Vec2 &other) const;
+		Vec2		operator+(const Vec2 &other) const;
+		Vec2		operator-(const Vec2 &other) const;
+		Vec2		operator*(const Vec2 &other) const;
+		Vec2		operator+(const float &other) const;
+		Vec2		operator-(const float &other) const;
+		Vec2		operator*(const float &other) const;
+		Vec2		&operator+=(const Vec2 &other);
+		Vec2		&operator-=(const Vec2 &other);
+		Vec2		&operator*=(const Vec2 &other);
 	};
 
 }
