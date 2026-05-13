@@ -25,7 +25,10 @@ namespace RedUI::Input
 	template	<typename TSender>
 	class MouseChangedEvent : public Event::Event<TSender, MouseChangedEventArgs> {};
 
+	// Returns width and height.
+	Math::Vec2				GetGameWindow(HWND &window, RECT &clientRect);
 	Math::Vec2				GetMousePosition();
+	void					SetMousePosition(const Math::Vec2 &position);
 	bool					IsLeftMouseDown();
 	bool					IsRightMouseDown();
 
