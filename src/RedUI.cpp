@@ -31,23 +31,3 @@ bool RedUI::RequireVersion(const unsigned int version)
 		);
 	return (false);
 }
-
-void RedUI::EnableCursor()
-{
-	UIState::CursorEnabled = true;
-}
-
-void RedUI::ResetCursor()
-{
-	UIState::CursorEnabled = false;
-}
-
-void RedUI::DisableMouseInputs()
-{
-	UIState::MouseInputsDisabled = true;
-}
-
-void RedUI::ResetMouseInputs()
-{
-	UIState::MouseInputsDisabled = false;
-}

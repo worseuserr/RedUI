@@ -16,12 +16,4 @@ namespace RedUI
 	bool	CheckVersion(unsigned int version);
 	// Shows an error message and returns false if RedUI version is below passed version.
 	bool	RequireVersion(unsigned int version);
-	// Force mouse cursor to show even while ingame.
-	void	EnableCursor();
-	// Disable forced cursor.
-	void	ResetCursor();
-	// Disable left and right clicks from registering ingame (shooting, aiming, etc).
-	void	DisableMouseInputs();
-	// Reallow ingame mouse inputs.
-	void	ResetMouseInputs();
 }
