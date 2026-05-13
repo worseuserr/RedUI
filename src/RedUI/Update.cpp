@@ -5,8 +5,8 @@
 
 using namespace RedUI;
 
-constexpr BYTE	LMB = 0;
-constexpr BYTE	RMB = 0x01;
+constexpr BYTE	LMB = 1 << 0;
+constexpr BYTE	RMB = 1 << 1;
 
 BYTE ProcessStaticMouseEvents()
 {
@@ -68,17 +68,20 @@ void RedUI::Update()
 		.IsRightMouseClicked = (clicks & RMB) != 0,
 		.MousePosition = Input::GetMousePosition()
 	};
-	HitState	hitState = {
-		.Frame = state,
-		.LeftClickConsumed = false,
-		.RightClickConsumed = false,
-		.HoverConsumed = false,
-		.FullyConsumed = false
-	};
-	// Process events backwards for newer children to occlude existing ones since that's how they render.
-	for (i = UIState::RootObjects.size(); i-- > 0;)
+	if (UIState::InteractionEnabled)
 	{
-		UIState::RootObjects[i]->RecursivelyProcessEvents(hitState);
+		HitState	hitState = {
+			.Frame = state,
+			.LeftClickConsumed = false,
+			.RightClickConsumed = false,
+			.HoverConsumed = false,
+			.FullyConsumed = false
+		};
+		// Process events backwards for newer children to occlude existing ones since that's how they render.
+		for (i = UIState::RootObjects.size(); i-- > 0;)
+		{
+			UIState::RootObjects[i]->RecursivelyProcessEvents(hitState);
+		}
 	}
 	// Render forwards.
 	for (i = 0; i < UIState::RootObjects.size(); i++)
