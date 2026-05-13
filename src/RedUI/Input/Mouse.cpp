@@ -11,8 +11,8 @@ Math::Vec2 Input::GetGameWindow(HWND& window, RECT &clientRect)
 		return (Math::Vec2());
 	GetClientRect(window, &clientRect);
 	return (Math::Vec2(
-		clientRect.bottom - clientRect.top,
-		clientRect.right - clientRect.left
+		clientRect.right - clientRect.left,
+		clientRect.bottom - clientRect.top
 		));
 }
 
