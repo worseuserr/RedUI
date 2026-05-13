@@ -2,9 +2,11 @@
 
 using namespace RedUI;
 
+FocusState							UIState::Focus = { 0, 0, 0 };
 bool								UIState::UpdateLoopEnabled = true;
 bool								UIState::IsUpdating = false;
 bool								UIState::CursorEnabled = false;
+bool								UIState::InteractionEnabled = false;
 bool								UIState::MouseInputsDisabled = false;
 float								UIState::ScreenVerticalRatio = 1.0f;
 std::vector<UIObjectOwner>			UIState::RootObjects = {};
