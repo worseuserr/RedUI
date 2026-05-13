@@ -48,6 +48,8 @@ namespace RedUI
 	};
 
 	// Get focus in the game window. You can use this function to enable the mouse cursor, enable UI interaction, and/or disable ingame mouse inputs.
-	// Returns a FocusHandle object that unfocuses when .Release() is called or when it goes out of scope.
+	// Returns a move-only FocusHandle object that unfocuses when .Release() is called or when it goes out of scope.
+	//
+	// It is recommended to also set the mouse position with RedUI::Input::SetMousePosition() when gaining focus.
 	FocusHandle	AcquireUIFocus(Focus flags = Focus::All);
 }
