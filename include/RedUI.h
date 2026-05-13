@@ -4,6 +4,8 @@
 #include "RedUI/Remove.h"
 // ReSharper disable once CppUnusedIncludeDirective
 #include "RedUI/Create.h"
+// ReSharper disable once CppUnusedIncludeDirective
+#include "RedUI/Focus.h"
 
 namespace RedUI
 {
