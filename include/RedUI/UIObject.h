@@ -29,7 +29,7 @@ namespace RedUI
 	{
 		// Tracks if mouse is hovering.
 		bool		MouseHovering = false;
-		// If mouse was hovering during event processing. Is reset at end of RecursivelyRender.
+		// If mouse was hovering during event processing this frame.
 		bool		HasHovered = false;
 
 		static void	RegisterAnimation(AnimationOwner anim);
@@ -98,6 +98,8 @@ namespace RedUI
 		void			AnimateColor(const Color::RGB &startColor, const Color::RGB &endColor, Time::Milliseconds duration, Easing easing = Easing::Linear);
 		void			AnimateAlpha(float startAlpha, float endAlpha, Time::Milliseconds duration, Easing easing = Easing::Linear);
 		bool			IsMouseHovering() const;
+		// Returns whether the mouse is hovering on the object this frame Unlike raw ContainsPoint, this is occluded by other objects.
+		bool			HasMouseHoveredThisFrame() const;
 		// Set parent of object. Parent is root (unparented) if nullptr or no argument.
 		void			SetParent(UIObject *newParent = nullptr);
 		UIObject		*GetParent() const;

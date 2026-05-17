@@ -171,6 +171,11 @@ bool UIObject::IsMouseHovering() const
 	return (MouseHovering);
 }
 
+bool UIObject::HasMouseHoveredThisFrame() const
+{
+	return (HasHovered);
+}
+
 void UIObject::AnimatePosition(const Vec2 &startPosition, const Vec2 &endPosition, const Time::Milliseconds duration, const Easing easing)
 	{ Animate<Vec2>(&Position, startPosition, endPosition, duration, easing); }
 
