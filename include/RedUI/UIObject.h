@@ -98,7 +98,7 @@ namespace RedUI
 		void			AnimateColor(const Color::RGB &startColor, const Color::RGB &endColor, Time::Milliseconds duration, Easing easing = Easing::Linear);
 		void			AnimateAlpha(float startAlpha, float endAlpha, Time::Milliseconds duration, Easing easing = Easing::Linear);
 		bool			IsMouseHovering() const;
-		// Returns whether the mouse is hovering on the object this frame Unlike raw ContainsPoint, this is occluded by other objects.
+		// Returns whether the mouse is hovering on the object this frame. Unlike raw ContainsPoint, this is occluded by other objects.
 		bool			HasMouseHoveredThisFrame() const;
 		// Set parent of object. Parent is root (unparented) if nullptr or no argument.
 		void			SetParent(UIObject *newParent = nullptr);
