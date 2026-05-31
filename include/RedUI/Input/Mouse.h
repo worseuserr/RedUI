@@ -2,6 +2,7 @@
 #include <Sdk/natives.h>
 #include "RedUI/Math/Vec2.h"
 #include "RedUI/Event/Event.h"
+#include "RedUI/Runtime.h"
 
 #ifdef RedUI_EXPORTS // Define this in CMake only for the DLL target
    #define API __declspec(dllexport)
@@ -31,6 +32,10 @@ namespace RedUI::Input
 	void		SetMousePosition(const Math::Vec2 &position);
 	bool		IsLeftMouseDown();
 	bool		IsRightMouseDown();
+
+	// Internal input tick.
+	// Mod developers, do not use.
+	void		Tick(FrameState &state);
 
 	// This may get changed back to a static class if a dynamic OnKeyPressed(key) or similar method is added.
 	namespace Events
