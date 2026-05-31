@@ -26,18 +26,18 @@ namespace RedUI::Input
 	class MouseChangedEvent : public Event::Event<TSender, MouseChangedEventArgs> {};
 
 	// Returns width and height.
-	Math::Vec2				GetGameWindow(HWND &window, RECT &clientRect);
-	Math::Vec2				GetMousePosition();
-	void					SetMousePosition(const Math::Vec2 &position);
-	bool					IsLeftMouseDown();
-	bool					IsRightMouseDown();
+	Math::Vec2	GetGameWindow(HWND &window, RECT &clientRect);
+	Math::Vec2	GetMousePosition();
+	void		SetMousePosition(const Math::Vec2 &position);
+	bool		IsLeftMouseDown();
+	bool		IsRightMouseDown();
 
-	class Events
+	// This may get changed back to a static class if a dynamic OnKeyPressed(key) or similar method is added.
+	namespace Events
 	{
-	public:
-		API static MouseChangedEvent<void>	OnLeftMouseDown;
-		API static MouseChangedEvent<void>	OnLeftMouseUp;
-		API static MouseChangedEvent<void>	OnRightMouseDown;
-		API static MouseChangedEvent<void>	OnRightMouseUp;
-	};
+		API extern MouseChangedEvent<void>	OnLeftMouseDown;
+		API extern MouseChangedEvent<void>	OnLeftMouseUp;
+		API extern MouseChangedEvent<void>	OnRightMouseDown;
+		API extern MouseChangedEvent<void>	OnRightMouseUp;
+	}
 }
