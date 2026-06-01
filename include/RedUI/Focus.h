@@ -3,26 +3,52 @@
 
 namespace RedUI
 {
-	enum class	Focus : uint16_t
+	class Focus
 	{
-		None = 0,
-		Cursor = 1 << 0,
-		Interaction = 1 << 1,
-		DisableInput = 1 << 2,
-		All = 0xFFFF
+		using			Type = uint16_t;
+		friend class	Runtime;
+		friend class	FocusHandle;
+
+		// Reference count indexed by the order in the enum.
+		static unsigned int		Refs[3];
+		// Active state of each type.
+		static Focus			State;
+		Type					Value = 0;
+
+		static void		Tick();
+
+	public:
+		enum	Value : uint16_t
+		{
+			None = 0,
+			Cursor = 1 << 0,
+			Interaction = 1 << 1,
+			DisableInput = 1 << 2,
+			All = 0xFFFF
+		};
+
+		Focus() {}
+		Focus(const uint16_t value) : Value(value) {}
+		static bool	IsEnabled(Focus flag);
+
+		Focus	operator|(const Focus rhs) const
+			{ return (this->Value | rhs.Value); }
+
+		Focus	operator&(const Focus rhs) const
+			{ return (this->Value | rhs.Value); }
+
+		Focus&	operator|=(const Focus rhs)
+			{ return (*this = *this | rhs); }
+
+		Focus&	operator&=(const Focus rhs)
+			{ return (*this = *this & rhs); }
+
+		bool	operator==(const Focus rhs) const
+			{ return (this->Value == rhs.Value); }
+
+		bool	operator!=(const Focus rhs) const
+			{ return (this->Value != rhs.Value); }
 	};
-
-	constexpr Focus		operator|(Focus lhs, Focus rhs)
-		{ return (static_cast<Focus>(static_cast<uint16_t>(lhs) | static_cast<uint16_t>(rhs))); }
-
-	constexpr Focus		operator&(Focus lhs, Focus rhs)
-		{ return (static_cast<Focus>(static_cast<uint16_t>(lhs) & static_cast<uint16_t>(rhs))); }
-
-	constexpr Focus&	operator|=(Focus &lhs, const Focus rhs)
-		{ return (lhs = lhs | rhs); }
-
-	constexpr Focus&	operator&=(Focus &lhs, const Focus rhs)
-		{ return (lhs = lhs & rhs); }
 
 	class	FocusHandle
 	{
@@ -31,6 +57,7 @@ namespace RedUI
 
 		void	RegisterFlags() const;
 		void	UnregisterFlags() const;
+		void	UpdateSingleState(int change, int index, Focus flag) const;
 		void	UpdateFocusState(int change) const;
 
 	public:

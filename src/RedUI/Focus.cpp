@@ -3,17 +3,34 @@
 
 using namespace RedUI;
 
+unsigned int	Focus::Refs[3]{0, 0, 0};
+Focus			Focus::State{};
+
+void Focus::Tick()
+{
+	if ((State & Cursor) != 0)
+		_NAMESPACE30::_SET_MOUSE_CURSOR_ACTIVE_THIS_FRAME();
+	if (UIState::MouseInputsDisabled)
+	{
+		PAD::DISABLE_CONTROL_ACTION(0, Input::INPUT_ATTACK, true);
+		PAD::DISABLE_CONTROL_ACTION(0, Input::INPUT_AIM, true);
+	}
+}
+
+void FocusHandle::UpdateSingleState(const int change, const int index, const Focus flag) const
+{
+	if ((Flags & flag) != Focus::None)
+		Focus::Refs[0] += change;
+	if (Focus::Refs[0] > 0)
+		Focus::State |= flag;
+}
+
 void FocusHandle::UpdateFocusState(const int change) const
 {
-	if ((Flags & Focus::Cursor) != Focus::None)
-		UIState::Focus.CursorRefs += change;
-	if ((Flags & Focus::Interaction) != Focus::None)
-		UIState::Focus.InteractionRefs += change;
-	if ((Flags & Focus::DisableInput) != Focus::None)
-		UIState::Focus.InputDisabledRefs += change;
-	UIState::CursorEnabled = UIState::Focus.CursorRefs > 0;
-	UIState::InteractionEnabled = UIState::Focus.InteractionRefs > 0;
-	UIState::MouseInputsDisabled = UIState::Focus.InputDisabledRefs > 0;
+	Focus::State = 0;
+	UpdateSingleState(change, 0, Focus::Cursor);
+	UpdateSingleState(change, 1, Focus::Interaction);
+	UpdateSingleState(change, 2, Focus::DisableInput);
 }
 
 void FocusHandle::UnregisterFlags() const

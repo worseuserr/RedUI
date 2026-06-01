@@ -38,13 +38,14 @@ namespace RedUI
 
 			Input::Tick(state); // Sets .IsLeftMouseClicked and .IsRightMouseClicked
 			// Scheduler::Tick(); For future coroutine scheduler.
-			Focus::Tick(state);
+			Focus::Tick();
 			UIObject::IsUpdateLocked = true;
-			UIObject::TickEvents(state);
-			UIObject::TickAnimation(state);
+			Animation::Tick();
+			if ((Focus::State & Focus::Interaction) != 0)
+				UIObject::TickEvents(state);
 			UIObject::TickRender(state);
 			UIObject::IsUpdateLocked = false;
-			UIObject::TickQueues(state);
+			UIObject::TickQueues();
 		}
 	};
 }
