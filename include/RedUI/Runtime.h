@@ -1,9 +1,6 @@
 #pragma once
-#include "Sdk/main.h"
 #include "RedUI/Math/Vec2.h"
-#include "RedUI/Input/Mouse.h"
 #include "RedUI/Focus.h"
-#include "RedUI/UIObject.h"
 
 namespace RedUI
 {
@@ -21,31 +18,9 @@ namespace RedUI
 		static bool	UpdateLoopEnabled;
 
 	public:
-		[[noreturn]] static void	RedUILoop()
-		{
-			while (true)
-			{
-				if (UpdateLoopEnabled)
-					ProcessTick();
-				WAIT(0);
-			}
-		}
-
+		// Main loop that gets registered to scripthook.
+		[[noreturn]] static void	RedUILoop();
 		// Process every core system in a specified order.
-		static void	ProcessTick()
-		{
-			FrameState	state = { .MousePosition = Input::GetMousePosition() };
-
-			Input::Tick(state); // Sets .IsLeftMouseClicked and .IsRightMouseClicked
-			// Scheduler::Tick(); For future coroutine scheduler.
-			Focus::Tick();
-			UIObject::IsUpdateLocked = true;
-			Animation::Tick();
-			if ((Focus::State & Focus::Interaction) != 0)
-				UIObject::TickEvents(state);
-			UIObject::TickRender(state);
-			UIObject::IsUpdateLocked = false;
-			UIObject::TickQueues();
-		}
+		static void					ProcessTick();
 	};
 }

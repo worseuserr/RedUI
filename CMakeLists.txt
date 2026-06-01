@@ -40,6 +40,7 @@ add_library(RedUI SHARED
 		include/RedUI/Focus.h
 		src/RedUI/Focus.cpp
 		include/RedUI/Runtime.h
+		src/RedUI/Runtime.cpp
 )
 
 target_include_directories(RedUI PUBLIC
