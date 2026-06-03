@@ -38,6 +38,8 @@ namespace RedUI
 		bool	MouseHovering = false;
 		// If mouse was hovering during event processing this frame.
 		bool	HasHovered = false;
+		// If true, skips UpdateWorldTransform call during render. This is for skipping objects that have been updated in the event processing.
+		bool			HasUpdatedWorldTransform = false;
 
 		// Gets input information, polls ContainsPoint, and invokes events.
 		// This returns true if the mouse is NOT currently inside (ContainsPoint) the object.
@@ -83,8 +85,6 @@ namespace RedUI
 		Math::Vec2		RenderOffset = Math::Vec2();
 		// Purely visual scale multiplier that does not affect the position or scale of an object's children, or hit detection.
 		Math::Vec2		RenderScale = Math::Vec2(1, 1);
-		// If true, skips UpdateWorldTransform call during render. This is for skipping objects that have been updated in the event processing.
-		bool			HasUpdatedWorldTransform = false;
 		Event::MouseHoverEvent<UIObject>	OnMouseEnter;
 		Event::MouseHoverEvent<UIObject>	OnMouseLeave;
 		Event::MouseClickEvent<UIObject>	OnLeftClick;
