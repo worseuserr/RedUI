@@ -41,6 +41,7 @@ add_library(RedUI SHARED
 		src/RedUI/Focus.cpp
 		include/RedUI/Runtime.h
 		src/RedUI/Runtime.cpp
+		src/RedUI/Graphics/Animation.cpp
 )
 
 target_include_directories(RedUI PUBLIC

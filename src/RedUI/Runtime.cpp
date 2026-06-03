@@ -27,5 +27,6 @@ void Runtime::ProcessTick()
 		UIObject::TickEvents(state);
 	UIObject::TickRender(state);
 	UIObject::IsUpdateLocked = false;
-	UIObject::TickQueues();
+	IAnimation::TickQueue();
+	UIObject::TickQueue();
 }

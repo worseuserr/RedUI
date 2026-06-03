@@ -20,10 +20,21 @@ namespace RedUI
 		BackInOut,
 	};
 
+	class	IAnimation;
+	using	AnimationOwner = std::unique_ptr<IAnimation>;
+
 	class	IAnimation
 	{
+		friend class							Runtime;
+		static std::vector<AnimationOwner>		All;
+		static std::vector<AnimationOwner *>	FinishedQueue;
+
+		static void		Tick();
+		static void		TickQueue();
+
 	public:
 		virtual			~IAnimation() = default;
+		// Returns true if animation finished, otherwise false.
 		virtual bool	Update() = 0;
 	};
 
@@ -112,6 +123,4 @@ namespace RedUI
 			return (StartValue + (EndValue - StartValue) * t);
 		}
 	};
-
-	using AnimationOwner = std::unique_ptr<IAnimation>;
 }
