@@ -23,9 +23,7 @@ void UIObject::TickEvents(FrameState &state)
 
 	// Process events backwards for newer children to occlude existing ones since that's how they render.
 	for (i = RootObjects.size(); i-- > 0;)
-	{
 		RootObjects[i]->RecursivelyProcessEvents(hitState);
-	}
 }
 
 void UIObject::TickRender(FrameState &state)
@@ -33,9 +31,7 @@ void UIObject::TickRender(FrameState &state)
 	int	i;
 
 	for (i = 0; i < RootObjects.size(); i++)
-	{
 		RootObjects[i]->RecursivelyRender(state);
-	}
 }
 
 void UIObject::TickQueue()
@@ -43,7 +39,7 @@ void UIObject::TickQueue()
 	for (UIObject *obj: DeletionQueue)
 		Remove(obj);
 	for (const auto &[obj, newParent] : ReparentQueue)
-		obj->SetParent(newParent);
+		obj->SetParent(newParent, true);
 	DeletionQueue.clear();
 	ReparentQueue.clear();
 }
