@@ -56,9 +56,9 @@ UIObject::UIObject(const Vec2 &position, const Vec2 &scale, const RGB &color, co
 	Alpha = alpha;
 }
 
-void UIObject::SetParent(UIObject *newParent)
+void UIObject::SetParent(UIObject *newParent, const bool evenIfIdentical)
 {
-	if (newParent == Parent)
+	if (!evenIfIdentical && newParent == Parent)
 		return ;
 	if (IsTickLocked)
 	{
@@ -66,18 +66,13 @@ void UIObject::SetParent(UIObject *newParent)
 		return ;
 	}
 	if (newParent == nullptr)
-	{
 		RootObjects.push_back(std::move(*GetChildHandle(Parent->Children, this)));
-		std::erase(Parent->Children, nullptr);
-	}
 	else
-	{
 		newParent->Children.push_back(std::move(*GetChildHandle(Parent->Children, this)));
-		if (Parent == nullptr)
-			std::erase(RootObjects, nullptr);
-		else
-			std::erase(Parent->Children, nullptr);
-	}
+	if (Parent == nullptr)
+		std::erase(RootObjects, nullptr);
+	else
+		std::erase(Parent->Children, nullptr);
 	Parent = newParent;
 	UpdateWorldTransform();
 }
