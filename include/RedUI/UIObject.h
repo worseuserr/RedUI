@@ -1,11 +1,11 @@
 #pragma once
+#include <map>
 #include <memory>
 #include <vector>
 #include "Graphics/Animation.h"
-#include "Update.h"
+#include "RedUI/Runtime.h"
 #include "Color/RGB.h"
 #include "Event/MouseEvent.h"
-#include "Graphics/Sprite.h"
 #include "Math/Vec2.h"
 #include "Time/Time.h"
 
@@ -27,18 +27,41 @@ namespace RedUI
 	// Base class for all ui components.
 	class	UIObject
 	{
+		friend class							Runtime;
+		// static std::vector<UIObject *>		All; // Should add this.
+		// Lock changes to static containers while ticking.
+		static bool								IsTickLocked;
+		static std::vector<UIObjectOwner>		RootObjects;
+		static std::vector<UIObject *>			DeletionQueue;
+		static std::map<UIObject *, UIObject *>	ReparentQueue;
 		// Tracks if mouse is hovering.
-		bool		MouseHovering = false;
+		bool	MouseHovering = false;
 		// If mouse was hovering during event processing this frame.
-		bool		HasHovered = false;
+		bool	HasHovered = false;
 
-		static void	RegisterAnimation(AnimationOwner anim);
+		// Gets input information, polls ContainsPoint, and invokes events.
+		// This returns true if the mouse is NOT currently inside (ContainsPoint) the object.
+		// Does not exit early if object has OverflowChildHits set to true.
+		// For now, the return value is not used and may be set to void in the future.
+		bool		RecursivelyProcessEvents(HitState &state);
+		// The main entry point for invoking events, updating layout and rendering.
+		void		RecursivelyRender(FrameState &state);
+		static void	TickEvents(FrameState &state);
+		static void	TickRender(FrameState &state);
+		static void	TickQueue();
 
 	protected:
 		UIObject					*Parent = nullptr;
 		std::vector<UIObjectOwner>	Children = {};
 		Math::Vec2					WorldPosition = Math::Vec2();
 		Math::Vec2					WorldScale = Math::Vec2();
+
+		// Optional method for ui components to implement per-frame logic.
+		// Important: If changing Position or Scale inside the method, you MUST call UpdateWorldTransform afterwards or use SetPosition/SetScale.
+		virtual void	Update(FrameState &state) {}
+		// Draw component. Called every frame, in order: ProcessEvents (and thus ContainsPoint) -> Update -> Draw.
+		virtual void	Draw() = 0;
+		static void		RegisterAnimation(AnimationOwner anim);
 
 	public:
 		// Toggles visibility and functionality of object AND its descendants.
@@ -73,17 +96,6 @@ namespace RedUI
 		virtual			~UIObject() = default;
 		// Updates world transform using local transforms and nearest parent.
 		void			UpdateWorldTransform();
-		// Gets input information, polls ContainsPoint, and invokes events.
-		// This returns true if the mouse is NOT currently inside (ContainsPoint) the object.
-		// Does not exit early if object has OverflowChildHits set to true.
-		bool			RecursivelyProcessEvents(HitState &state);
-		// The main entry point for invoking events, updating layout and rendering.
-		void			RecursivelyRender(FrameState &state);
-		// Optional method for ui components to implement per-frame logic.
-		// Important: If changing Position or Scale inside the method, you MUST call UpdateWorldTransform afterwards or use SetPosition/SetScale.
-		virtual void	Update(FrameState &state) {}
-		// Draw component. Called every frame, in order: ProcessEvents (and thus ContainsPoint) -> Update -> Draw.
-		virtual void	Draw() = 0;
 		// Return whether or not point is on the drawn component. This is polled every frame and used to dispatch mouse events.
 		virtual bool	ContainsPoint(const Math::Vec2 &point) = 0;
 		template		<typename T>
@@ -98,7 +110,7 @@ namespace RedUI
 		void			AnimateColor(const Color::RGB &startColor, const Color::RGB &endColor, Time::Milliseconds duration, Easing easing = Easing::Linear);
 		void			AnimateAlpha(float startAlpha, float endAlpha, Time::Milliseconds duration, Easing easing = Easing::Linear);
 		bool			IsMouseHovering() const;
-		// Returns whether the mouse is hovering on the object this frame. Unlike raw ContainsPoint, this is occluded by other objects.
+		// Returns whether the mouse is hovering on the object this frame. Unlike a raw ContainsPoint call, this is occluded by other objects.
 		bool			HasMouseHoveredThisFrame() const;
 		// Set parent of object. Parent is root (unparented) if nullptr or no argument.
 		void			SetParent(UIObject *newParent = nullptr);
@@ -109,8 +121,5 @@ namespace RedUI
 		void			SetScale(const Math::Vec2 &scale);
 		std::vector<UIObjectOwner>	&GetChildren();
 		static UIObjectOwner		*GetChildHandle(std::vector<UIObjectOwner> &children, UIObject *child);
-
-		// Internal raw set parent. Do not use outside of core systems.
-		void			__RawSetParent(UIObject *newParent = nullptr);
 	};
 }

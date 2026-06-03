@@ -1,13 +1,51 @@
 #include "RedUI/UIObject.h"
-#include "RedUI/UIState.h"
+#include "RedUI/Remove.h"
 
 using namespace RedUI;
 using namespace RedUI::Math;
 using namespace RedUI::Color;
 
-void UIObject::RegisterAnimation(AnimationOwner anim)
+bool								UIObject::IsTickLocked = false;
+std::vector<UIObjectOwner>			UIObject::RootObjects = {};
+std::vector<UIObject *>				UIObject::DeletionQueue = {};
+std::map<UIObject *, UIObject *>	UIObject::ReparentQueue = {};
+
+void UIObject::TickEvents(FrameState &state)
 {
-	UIState::Animations.push_back(std::move(anim));
+	int			i;
+	HitState	hitState = {
+		.Frame = state,
+		.LeftClickConsumed = false,
+		.RightClickConsumed = false,
+		.HoverConsumed = false,
+		.FullyConsumed = false
+	};
+
+	// Process events backwards for newer children to occlude existing ones since that's how they render.
+	for (i = RootObjects.size(); i-- > 0;)
+	{
+		RootObjects[i]->RecursivelyProcessEvents(hitState);
+	}
+}
+
+void UIObject::TickRender(FrameState &state)
+{
+	int	i;
+
+	for (i = 0; i < RootObjects.size(); i++)
+	{
+		RootObjects[i]->RecursivelyRender(state);
+	}
+}
+
+void UIObject::TickQueue()
+{
+	for (UIObject *obj: DeletionQueue)
+		Remove(obj);
+	for (const auto &[obj, newParent] : ReparentQueue)
+		obj->SetParent(newParent);
+	DeletionQueue.clear();
+	ReparentQueue.clear();
 }
 
 UIObject::UIObject(const Vec2 &position, const Vec2 &scale, const RGB &color, const float alpha)
@@ -18,30 +56,30 @@ UIObject::UIObject(const Vec2 &position, const Vec2 &scale, const RGB &color, co
 	Alpha = alpha;
 }
 
-void UIObject::__RawSetParent(UIObject *newParent)
+void UIObject::RegisterAnimation(AnimationOwner anim)
 {
-	Parent = newParent;
+	UIState::Animations.push_back(std::move(anim));
 }
 
 void UIObject::SetParent(UIObject *newParent)
 {
 	if (newParent == Parent)
 		return ;
-	if (UIState::IsUpdating)
+	if (IsTickLocked)
 	{
-		UIState::QueuedHierarchyChanges[this] = newParent;
+		ReparentQueue[this] = newParent;
 		return ;
 	}
 	if (newParent == nullptr)
 	{
-		UIState::RootObjects.push_back(std::move(*GetChildHandle(Parent->Children, this)));
+		RootObjects.push_back(std::move(*GetChildHandle(Parent->Children, this)));
 		std::erase(Parent->Children, nullptr);
 	}
 	else
 	{
 		newParent->Children.push_back(std::move(*GetChildHandle(Parent->Children, this)));
 		if (Parent == nullptr)
-			std::erase(UIState::RootObjects, nullptr);
+			std::erase(RootObjects, nullptr);
 		else
 			std::erase(Parent->Children, nullptr);
 	}
