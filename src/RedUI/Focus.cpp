@@ -1,5 +1,5 @@
 #include "RedUI/Focus.h"
-#include "RedUI/UIState.h"
+#include "RedUI/Input/Mouse.h"
 
 using namespace RedUI;
 
@@ -8,20 +8,25 @@ Focus			Focus::State{};
 
 void Focus::Tick()
 {
-	if ((State & Cursor) != 0)
+	if (IsEnabled(Cursor))
 		_NAMESPACE30::_SET_MOUSE_CURSOR_ACTIVE_THIS_FRAME();
-	if (UIState::MouseInputsDisabled)
+	if (IsEnabled(DisableInput))
 	{
 		PAD::DISABLE_CONTROL_ACTION(0, Input::INPUT_ATTACK, true);
 		PAD::DISABLE_CONTROL_ACTION(0, Input::INPUT_AIM, true);
 	}
 }
 
+bool Focus::IsEnabled(const Focus flag)
+{
+	return ((State & flag) != 0);
+}
+
 void FocusHandle::UpdateSingleState(const int change, const int index, const Focus flag) const
 {
 	if ((Flags & flag) != Focus::None)
-		Focus::Refs[0] += change;
-	if (Focus::Refs[0] > 0)
+		Focus::Refs[index] += change;
+	if (Focus::Refs[index] > 0)
 		Focus::State |= flag;
 }
 
