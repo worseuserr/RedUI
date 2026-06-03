@@ -6,7 +6,6 @@ THIS FILE IS A MODIFIED PART OF RDR 2 SCRIPT HOOK SDK
 
 #include <Sdk/main.h>
 #include "RedUI/Runtime.h"
-#include "RedUI/UIState.h"
 
 constexpr int	KEYS_SIZE = 255;
 
