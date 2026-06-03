@@ -4,6 +4,8 @@
 
 using namespace RedUI;
 
+bool Runtime::UpdateLoopEnabled = true;
+
 void Runtime::RedUILoop()
 {
 	while (true)
