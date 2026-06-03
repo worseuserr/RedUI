@@ -16,7 +16,7 @@ namespace RedUI
 		std::unique_ptr<T>	obj = std::make_unique<T>(std::forward<Args>(args)...);
 
 		raw = obj.get();
-		EmplaceNewObject(parent, std::move(obj));
+		obj->SetParent(parent, true);
 		return (raw);
 	}
 }

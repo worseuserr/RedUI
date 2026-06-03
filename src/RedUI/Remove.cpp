@@ -1,20 +1,23 @@
 #include "RedUI/Remove.h"
-#include "RedUI/UIState.h"
+// #include "RedUI/UIState.h"
+
+// TODO!!!: This needs a full rework into a method of UIObject.
 
 void RedUI::RemoveInternal(UIObject *object)
 {
-	object->Enabled = false;
-	if (UIState::IsUpdating)
-	{
-		UIState::QueuedObjectDeletions.push_back(object);
-		return ;
-	}
-	if (object->GetParent() == nullptr)
-		std::erase_if(UIState::RootObjects, [object](const UIObjectOwner &ptr){
-			return (object == ptr.get());
-		});
-	else
-		std::erase_if(object->GetParent()->GetChildren(), [object](const UIObjectOwner &ptr){
-			return (object == ptr.get());
-		});
+	throw std::logic_error("Not implemented");
+	// object->Enabled = false;
+	// if (UIState::IsUpdating)
+	// {
+	// 	UIState::QueuedObjectDeletions.push_back(object);
+	// 	return ;
+	// }
+	// if (object->GetParent() == nullptr)
+	// 	std::erase_if(UIState::RootObjects, [object](const UIObjectOwner &ptr){
+	// 		return (object == ptr.get());
+	// 	});
+	// else
+	// 	std::erase_if(object->GetParent()->GetChildren(), [object](const UIObjectOwner &ptr){
+	// 		return (object == ptr.get());
+	// 	});
 }

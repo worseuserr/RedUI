@@ -5,18 +5,7 @@ THIS FILE IS A MODIFIED PART OF RDR 2 SCRIPT HOOK SDK
 */
 
 #include <Sdk/main.h>
-#include "RedUI.h"
-#include "RedUI/UIState.h"
-
-[[noreturn]] void UpdateLoop()
-{
-	while (true)
-	{
-		if (RedUI::UIState::UpdateLoopEnabled)
-			RedUI::Update();
-		WAIT(0);
-	}
-}
+#include "RedUI/Runtime.h"
 
 constexpr int	KEYS_SIZE = 255;
 
@@ -43,7 +32,7 @@ BOOL APIENTRY DllMain(const HMODULE hInstance, const DWORD reason, LPVOID lpRese
 	switch (reason)
 	{
 		case (DLL_PROCESS_ATTACH):
-			scriptRegister(hInstance, UpdateLoop);
+			scriptRegister(hInstance, RedUI::Runtime::RedUILoop);
 			keyboardHandlerRegister(OnKeyboardMessage);
 			break;
 		case (DLL_PROCESS_DETACH):

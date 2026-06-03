@@ -60,6 +60,35 @@ bool Input::IsRightMouseDown()
 	return (IsKeyDown(Key::MouseRight));
 }
 
+void Input::Tick(FrameState &state)
+{
+	static bool	wasLeftMouseDown = false;
+	static bool	wasRightMouseDown = false;
+	bool		isLeftMouseDown;
+	bool		isRightMouseDown;
+
+	isLeftMouseDown = IsLeftMouseDown();
+	isRightMouseDown = IsRightMouseDown();
+	if (isLeftMouseDown != wasLeftMouseDown)
+	{
+		if (isLeftMouseDown)
+			Events::OnLeftMouseDown.Invoke(nullptr, { wasLeftMouseDown, isLeftMouseDown });
+		else
+			Events::OnLeftMouseUp.Invoke(nullptr, { wasLeftMouseDown, isLeftMouseDown });
+	}
+	if (isRightMouseDown != wasRightMouseDown)
+	{
+		if (isRightMouseDown)
+			Events::OnRightMouseDown.Invoke(nullptr, { wasRightMouseDown, isRightMouseDown });
+		else
+			Events::OnRightMouseUp.Invoke(nullptr, { wasRightMouseDown, isRightMouseDown });
+	}
+	state.IsLeftMouseClicked = !wasLeftMouseDown && isLeftMouseDown;
+	state.IsRightMouseClicked = !wasRightMouseDown && isRightMouseDown;
+	wasLeftMouseDown = isLeftMouseDown;
+	wasRightMouseDown = isRightMouseDown;
+}
+
 Input::MouseChangedEvent<void> Input::Events::OnLeftMouseDown;
 Input::MouseChangedEvent<void> Input::Events::OnLeftMouseUp;
 Input::MouseChangedEvent<void> Input::Events::OnRightMouseDown;

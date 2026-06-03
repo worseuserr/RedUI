@@ -1,7 +1,6 @@
 #include <iostream>
 #include <windows.h>
 #include "RedUI.h"
-#include "RedUI/UIState.h"
 
 bool RedUI::CheckVersion(const unsigned int version)
 {
