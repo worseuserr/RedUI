@@ -80,6 +80,7 @@ namespace RedUI
 			static constexpr float	BackOvershoot = 1.5f;
 			static constexpr float	OvershootAdd = BackOvershoot + 1.0f;
 			static constexpr float	OvershootMult = BackOvershoot * 1.525f;
+			static float			temp; // Variable to hold temporary values for cheaper exponentiation.
 
 			// Big credit to https://easings.net/ for all these.
 			switch (EasingMethod)
@@ -105,18 +106,27 @@ namespace RedUI
 					t = (1 - (1 - t) * (1 - t));
 					break ;
 				case Easing::QuadInOut:
-					t = (t < 0.5f ? 2.0f * t * t : 1.0f - pow(-2.0f * t + 2.0f, 2.0f) / 2.0f);
+					temp = -2.0f * t + 2.0f;
+					t = (t < 0.5f ? 2.0f * t * t : 1.0f - (temp * temp) / 2.0f);
 					break ;
 				case Easing::BackIn:
 					t = (BackOvershoot * t * t * t - OvershootAdd * t * t);
 					break ;
 				case Easing::BackOut:
-					t = (1.0f + OvershootAdd * pow(t - 1.0f, 3.0f) + BackOvershoot * pow(t - 1.0f, 2.0f));
+					temp = t - 1.0f;
+					t = (1.0f + OvershootAdd * (temp * temp * temp) + BackOvershoot * (temp * temp));
 					break ;
 				case Easing::BackInOut:
-					t = (t < 0.5f
-					  ? (pow(2.0f * t, 2.0f) * ((OvershootMult + 1.0f) * 2.0f * t - OvershootMult)) / 2.0f
-					  : (pow(2.0f * t - 2.0f, 2.0f) * ((OvershootMult + 1.0f) * (t * 2.0f - 2.0f) + OvershootMult) + 2.0f) / 2.0f);
+					if (t < 0.5)
+					{
+						temp = 2.0f * t;
+						t = ((temp * temp) * ((OvershootMult + 1.0f) * 2.0f * t - OvershootMult)) / 2.0f;
+					}
+					else
+					{
+						temp = 2.0f * t - 2.0f;
+						t = ((temp * temp) * ((OvershootMult + 1.0f) * (t * 2.0f - 2.0f) + OvershootMult) + 2.0f) / 2.0f;
+					}
 					break ;
 				default:
 					return (EndValue);
