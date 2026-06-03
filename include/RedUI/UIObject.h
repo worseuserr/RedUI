@@ -39,7 +39,7 @@ namespace RedUI
 		// If mouse was hovering during event processing this frame.
 		bool	HasHovered = false;
 		// If true, skips UpdateWorldTransform call during render. This is for skipping objects that have been updated in the event processing.
-		bool			HasUpdatedWorldTransform = false;
+		bool	HasUpdatedWorldTransform = false;
 
 		// Gets input information, polls ContainsPoint, and invokes events.
 		// This returns true if the mouse is NOT currently inside (ContainsPoint) the object.
