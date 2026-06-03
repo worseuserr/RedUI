@@ -56,11 +56,6 @@ UIObject::UIObject(const Vec2 &position, const Vec2 &scale, const RGB &color, co
 	Alpha = alpha;
 }
 
-void UIObject::RegisterAnimation(AnimationOwner anim)
-{
-	UIState::Animations.push_back(std::move(anim));
-}
-
 void UIObject::SetParent(UIObject *newParent)
 {
 	if (newParent == Parent)

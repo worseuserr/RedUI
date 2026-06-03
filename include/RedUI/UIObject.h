@@ -61,7 +61,6 @@ namespace RedUI
 		virtual void	Update(FrameState &state) {}
 		// Draw component. Called every frame, in order: ProcessEvents (and thus ContainsPoint) -> Update -> Draw.
 		virtual void	Draw() = 0;
-		static void		RegisterAnimation(AnimationOwner anim);
 
 	public:
 		// Toggles visibility and functionality of object AND its descendants.
@@ -101,7 +100,7 @@ namespace RedUI
 		template		<typename T>
 		void			Animate(T *member, const T &startValue, const T &endValue, Time::Milliseconds duration, Easing easing)
 		{
-			RegisterAnimation(std::make_unique<Animation<T>>(member, duration, startValue, endValue, easing));
+			IAnimation::Register(std::make_unique<Animation<T>>(member, duration, startValue, endValue, easing));
 		}
 		void			AnimatePosition(const Math::Vec2 &startPosition, const Math::Vec2 &endPosition, Time::Milliseconds duration, Easing easing = Easing::Linear);
 		void			AnimateRenderOffset(const Math::Vec2 &startOffset, const Math::Vec2 &endOffset,Time::Milliseconds duration, Easing easing = Easing::Linear);

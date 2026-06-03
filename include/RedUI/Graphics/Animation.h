@@ -36,6 +36,7 @@ namespace RedUI
 		virtual			~IAnimation() = default;
 		// Returns true if animation finished, otherwise false.
 		virtual bool	Update() = 0;
+		static void		Register(AnimationOwner anim);
 	};
 
 	// Class to hold animation data and methods. T is the type of the member that is being animated.
