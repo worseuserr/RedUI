@@ -21,12 +21,12 @@ void Runtime::ProcessTick()
 	Input::Tick(state); // Sets .IsLeftMouseClicked and .IsRightMouseClicked
 	// Scheduler::Tick(); For future coroutine scheduler.
 	Focus::Tick();
-	UIObject::IsUpdateLocked = true;
+	UIObject::IsTickLocked = true;
 	IAnimation::Tick();
 	if ((Focus::State & Focus::Interaction) != 0)
 		UIObject::TickEvents(state);
 	UIObject::TickRender(state);
-	UIObject::IsUpdateLocked = false;
+	UIObject::IsTickLocked = false;
 	IAnimation::TickQueue();
 	UIObject::TickQueue();
 }
