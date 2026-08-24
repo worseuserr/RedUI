@@ -7,7 +7,7 @@ namespace RedUI
 	void	EmplaceNewObject(UIObject *parent, UIObjectOwner obj);
 
 	// Creates a UI component on the heap and returns a raw pointer to it. If parent is nullptr, the component is root.
-	// Default UIObject constuctor parameters: Position, Scale, Color, Alpha
+	// Default UIObject constructor parameters: Position, Scale, Color, Alpha
 	template <typename T, typename ...Args>
 	requires (std::derived_from<T, UIObject> && std::constructible_from<T, Args...>)
 	T		*Create(UIObject *parent, Args&&... args)
