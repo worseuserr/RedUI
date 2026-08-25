@@ -60,6 +60,7 @@ void UIObject::SetParent(UIObject *newParent, const bool evenIfIdentical)
 		ReparentQueue[this] = newParent;
 		return ;
 	}
+	// TODO: Rewrite this because it doesnt take into account root objectas
 	if (newParent == nullptr)
 		RootObjects.push_back(std::move(*GetChildHandle(Parent->Children, this)));
 	else
@@ -132,18 +133,18 @@ void UIObject::RecursivelyRender(FrameState &state)
 
 void UIObject::Destroy()
 {
-	Enabled = false;
+	// Enabled = false;
 	if (IsTickLocked)
 	{
 		DeletionQueue.push_back(this);
 		return ;
 	}
-	if (this->GetParent() == nullptr)
+	if (Parent == nullptr)
 		std::erase_if(RootObjects, [this](const UIObjectOwner &ptr){
 			return (this == ptr.get());
 		});
 	else
-		std::erase_if(this->GetParent()->GetChildren(), [this](const UIObjectOwner &ptr){
+		std::erase_if(Parent->GetChildren(), [this](const UIObjectOwner &ptr){
 			return (this == ptr.get());
 		});
 }
