@@ -38,7 +38,7 @@ void UIObject::TickQueue()
 	for (UIObject *obj: DeletionQueue)
 		obj->Destroy();
 	for (const auto &[obj, newParent] : ReparentQueue)
-		obj->SetParent(newParent, true);
+		obj->SetParent(newParent);
 	DeletionQueue.clear();
 	ReparentQueue.clear();
 }
@@ -51,24 +51,25 @@ UIObject::UIObject(const Vec2 &position, const Vec2 &scale, const RGB &color, co
 	Alpha = alpha;
 }
 
-void UIObject::SetParent(UIObject *newParent, const bool evenIfIdentical)
+void UIObject::SetParent(UIObject *newParent)
 {
-	if (!evenIfIdentical && newParent == Parent)
+	if (newParent == Parent)
 		return ;
 	if (IsTickLocked)
 	{
 		ReparentQueue[this] = newParent;
 		return ;
 	}
-	// TODO: Rewrite this because it doesnt take into account root objectas
-	if (newParent == nullptr)
-		RootObjects.push_back(std::move(*GetChildHandle(Parent->Children, this)));
-	else
-		newParent->Children.push_back(std::move(*GetChildHandle(Parent->Children, this)));
 	if (Parent == nullptr)
+	{
+		newParent->Children.push_back(std::move(*GetChildHandle(RootObjects, this)));
 		std::erase(RootObjects, nullptr);
+	}
 	else
+	{
+		RootObjects.push_back(std::move(*GetChildHandle(Parent->Children, this)));
 		std::erase(Parent->Children, nullptr);
+	}
 	Parent = newParent;
 	UpdateWorldTransform();
 }

@@ -116,7 +116,7 @@ namespace RedUI::Object
 		// Returns whether the mouse is hovering on the object this frame. Unlike a raw ContainsPoint call, this is occluded by other objects.
 		bool			HasMouseHoveredThisFrame() const;
 		// Set parent of object. Parent is root (unparented) if nullptr or no argument.
-		void			SetParent(UIObject *newParent = nullptr, bool evenIfIdentical = false);
+		void			SetParent(UIObject *newParent = nullptr);
 		UIObject		*GetParent() const;
 		// Safely set position by immediately updating world transform afterwards.
 		void			SetPosition(const Math::Vec2 &position);
