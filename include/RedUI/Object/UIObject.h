@@ -69,7 +69,7 @@ namespace RedUI::Object
 	public:
 		// Toggles visibility and functionality of object AND its descendants.
 		bool			Enabled = true;
-		// Toggles only the visiblity of the object itself, not descendants.
+		// Toggles only the visibility of the object itself, not descendants.
 		bool			Visible = true;
 		// Toggles clicked events.
 		bool			Clickable = false;
