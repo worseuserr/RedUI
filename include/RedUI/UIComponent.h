@@ -5,6 +5,7 @@
 
 namespace RedUI
 {
+	// RAII handle for created UI objects.
 	template <typename T>
 	class	UIHandle
 	{
@@ -109,11 +110,17 @@ namespace RedUI
 	// 	}
 	// };
 
+	// Adds the UIComponent::Create function to a component type.
+	// This is required when defining a custom component, in order to make component instantiation easy.
+	//
+	// See the custom component creation guide (or the source code of an existing component) for usage.
 	#define UI_CREATE(Type) \
+		/* Instantiates a UI component internally and returns a RAII handle to it. */ \
 		template <typename... Args> \
 		requires (std::constructible_from<Type, Args...>) \
 		static RedUI::UIHandle<Type>	Create(RedUI::Object::UIObject *parent, Args&&... args) \
 		{ \
 			return (RedUI::UIHandle(RedUI::Object::Create<Type>(parent, std::forward<Args>(args)...))); \
-		}
+		} \
+		//
 }
