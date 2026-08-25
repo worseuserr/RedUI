@@ -1,10 +1,6 @@
 #pragma once
 // Includes to expose in RedUI.h
 // ReSharper disable once CppUnusedIncludeDirective
-#include "RedUI/Object/Destroy.h"
-// ReSharper disable once CppUnusedIncludeDirective
-#include "RedUI/Object/Create.h"
-// ReSharper disable once CppUnusedIncludeDirective
 #include "RedUI/Focus.h"
 
 namespace RedUI
