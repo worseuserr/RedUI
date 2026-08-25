@@ -51,6 +51,7 @@ namespace RedUI
 		UIHandle(UIHandle&& other) noexcept
 		{
 			OrgPtr = other.OrgPtr;
+			other.OrgPtr = nullptr;
 		}
 
 		UIHandle&	operator=(UIHandle&& other) noexcept
@@ -111,8 +112,8 @@ namespace RedUI
 	#define UI_CREATE(Type) \
 		template <typename... Args> \
 		requires (std::constructible_from<Type, Args...>) \
-		static UIHandle<Type>	Create(Object::UIObject *parent, Args&&... args) \
+		static RedUI::UIHandle<Type>	Create(RedUI::Object::UIObject *parent, Args&&... args) \
 		{ \
-			return (UIHandle(Object::Create<Type>(parent, std::forward<Args>(args)...))); \
+			return (RedUI::UIHandle(RedUI::Object::Create<Type>(parent, std::forward<Args>(args)...))); \
 		}
 }
