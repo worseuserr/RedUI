@@ -1,7 +1,6 @@
-#include "RedUI/UIObject.h"
-#include "RedUI/Remove.h"
+#include "RedUI/Object/UIObject.h"
 
-using namespace RedUI;
+using namespace RedUI::Object;
 using namespace RedUI::Math;
 using namespace RedUI::Color;
 
@@ -37,7 +36,7 @@ void UIObject::TickRender(FrameState &state)
 void UIObject::TickQueue()
 {
 	for (UIObject *obj: DeletionQueue)
-		Remove(obj);
+		obj->Destroy();
 	for (const auto &[obj, newParent] : ReparentQueue)
 		obj->SetParent(newParent, true);
 	DeletionQueue.clear();
@@ -102,6 +101,11 @@ UIObjectOwner *UIObject::GetChildHandle(std::vector<UIObjectOwner> &children, UI
 	return (it != children.end() ? &(*it) : nullptr);
 }
 
+bool UIObject::IsInTick()
+{
+	return (IsTickLocked);
+}
+
 void UIObject::RecursivelyRender(FrameState &state)
 {
 	if (!Enabled)
@@ -124,6 +128,24 @@ void UIObject::RecursivelyRender(FrameState &state)
 		this->Draw();
 	for (const UIObjectOwner &child : Children)
 		child->RecursivelyRender(state);
+}
+
+void UIObject::Destroy()
+{
+	Enabled = false;
+	if (IsTickLocked)
+	{
+		DeletionQueue.push_back(this);
+		return ;
+	}
+	if (this->GetParent() == nullptr)
+		std::erase_if(RootObjects, [this](const UIObjectOwner &ptr){
+			return (this == ptr.get());
+		});
+	else
+		std::erase_if(this->GetParent()->GetChildren(), [this](const UIObjectOwner &ptr){
+			return (this == ptr.get());
+		});
 }
 
 void UIObject::UpdateWorldTransform()

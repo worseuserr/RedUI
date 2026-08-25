@@ -2,14 +2,14 @@
 #include <map>
 #include <memory>
 #include <vector>
-#include "Graphics/Animation.h"
+#include "../Graphics/Animation.h"
 #include "RedUI/Runtime.h"
-#include "Color/RGB.h"
-#include "Event/MouseEvent.h"
-#include "Math/Vec2.h"
-#include "Time/Time.h"
+#include "../Color/RGB.h"
+#include "../Event/MouseEvent.h"
+#include "../Math/Vec2.h"
+#include "../Time/Time.h"
 
-namespace RedUI
+namespace RedUI::Object
 {
 	class	UIObject;
 	using	UIObjectOwner = std::unique_ptr<UIObject>;
@@ -27,7 +27,9 @@ namespace RedUI
 	// Base class for all ui components.
 	class	UIObject
 	{
-		friend class							Runtime;
+		friend class	RedUI::Runtime;
+		friend void		ParentNewUIObject(UIObjectOwner obj, UIObject *newParent);
+
 		// static std::vector<UIObject *>		All; // Should add this.
 		// Lock changes to static containers while ticking.
 		static bool								IsTickLocked;
@@ -93,6 +95,8 @@ namespace RedUI
 		UIObject(const Math::Vec2 &position = {}, const Math::Vec2 &scale = {1, 1},
 			const Color::RGB &color = {}, float alpha = 1.0f);
 		virtual			~UIObject() = default;
+		// Destroy object.
+		void			Destroy();
 		// Updates world transform using local transforms and nearest parent.
 		void			UpdateWorldTransform();
 		// Return whether or not point is on the drawn component. This is polled every frame and used to dispatch mouse events.
@@ -120,5 +124,6 @@ namespace RedUI
 		void			SetScale(const Math::Vec2 &scale);
 		std::vector<UIObjectOwner>	&GetChildren();
 		static UIObjectOwner		*GetChildHandle(std::vector<UIObjectOwner> &children, UIObject *child);
+		static bool					IsInTick();
 	};
 }

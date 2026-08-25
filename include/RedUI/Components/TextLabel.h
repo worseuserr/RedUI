@@ -2,7 +2,7 @@
 #include "RedUI/Components/Box.h"
 #include "RedUI/Color/Dropshadow.h"
 
-namespace RedUI
+namespace RedUI::Components
 {
 	class	TextLabel : public Box
 	{
@@ -10,6 +10,7 @@ namespace RedUI
 		void	Draw() override;
 
 	public:
+		UI_CREATE(TextLabel)
 		Color::Dropshadow	Dropshadow;
 		float				TextScale;
 		Color::RGB			TextColor;
