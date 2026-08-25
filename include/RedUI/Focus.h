@@ -27,7 +27,7 @@ namespace RedUI
 			All = 0xFFFF
 		};
 
-		Focus() {}
+		Focus() = default;
 		Focus(const uint16_t value) : Value(value) {}
 		static bool	IsEnabled(Focus flag);
 
@@ -35,7 +35,7 @@ namespace RedUI
 			{ return (this->Value | rhs.Value); }
 
 		Focus	operator&(const Focus rhs) const
-			{ return (this->Value | rhs.Value); }
+			{ return (this->Value & rhs.Value); }
 
 		Focus&	operator|=(const Focus rhs)
 			{ return (*this = *this | rhs); }
