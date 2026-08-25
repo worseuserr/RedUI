@@ -26,7 +26,6 @@ add_library(RedUI SHARED
 		include/RedUI/Event/MouseEvent.h
 		include/RedUI/Input/Key.h
 		src/RedUI/Input/Key.cpp
-		include/RedUI/Object/Destroy.h
 		src/DllMain.cpp
 		include/RedUI/Object/Create.h
 		include/RedUI/Graphics/Sprite.h
