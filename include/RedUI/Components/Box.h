@@ -15,12 +15,12 @@ namespace RedUI::Components
 		UI_CREATE(Box)
 		using			UIComponent::UIComponent;
 		Color::RGB		SpriteColor;
-		float			SpriteAlpha;
+		float			SpriteOpacity;
 
 		bool			ContainsPoint(const Math::Vec2 &point) override;
 		void			SetSprite(RedUI::Sprite *sprite);
 		RedUI:: Sprite	*GetSprite() const;
-		void			AnimateSpriteColor(const Color::RGB &startColor, const Color::RGB &endColor, Time::Milliseconds duration, Easing easing = Easing::Linear);
-		void			AnimateSpriteAlpha(float startAlpha, float endAlpha, Time::Milliseconds duration, Easing easing = Easing::Linear);
+		void			AnimateSpriteColor(const Color::RGB &startValue, const Color::RGB &endValue, Time::Milliseconds duration, Easing easing = Easing::Linear);
+		void			AnimateSpriteOpacity(float startValue, float endValue, Time::Milliseconds duration, Easing easing = Easing::Linear);
 	};
 }

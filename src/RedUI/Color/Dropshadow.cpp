@@ -2,11 +2,11 @@
 
 using namespace RedUI::Color;
 
-Dropshadow::Dropshadow(const unsigned char distance, const RGB color, const float alpha)
+Dropshadow::Dropshadow(const unsigned char distance, const RGB color, const float opacity)
 {
 	Distance = distance;
 	Color = color;
-	Alpha = alpha;
+	Opacity = opacity;
 }
 
 bool Dropshadow::operator==(const Dropshadow &other) const
@@ -14,7 +14,7 @@ bool Dropshadow::operator==(const Dropshadow &other) const
 	return (
 		Distance == other.Distance &&
 		Color == other.Color &&
-		Alpha == other.Alpha
+		Opacity == other.Opacity
 	);
 }
 
@@ -41,7 +41,7 @@ Dropshadow Dropshadow::operator+(const Dropshadow &other) const
 	return (Dropshadow(
 		Clamp(static_cast<int>(Distance) + other.Distance),
 		Color + other.Color,
-		FClamp(Alpha + other.Alpha)
+		FClamp(Opacity + other.Opacity)
 	));
 }
 
@@ -50,7 +50,7 @@ Dropshadow Dropshadow::operator-(const Dropshadow &other) const
 	return (Dropshadow(
 		Clamp(static_cast<int>(Distance) - other.Distance),
 		Color - other.Color,
-		FClamp(Alpha - other.Alpha)
+		FClamp(Opacity - other.Opacity)
 	));
 }
 
@@ -59,7 +59,7 @@ Dropshadow Dropshadow::operator*(const Dropshadow &other) const
 	return (Dropshadow(
 		Clamp(static_cast<int>(Distance) * other.Distance),
 		Color * other.Color,
-		FClamp(Alpha * other.Alpha)
+		FClamp(Opacity * other.Opacity)
 	));
 }
 
@@ -67,7 +67,7 @@ Dropshadow &Dropshadow::operator+=(const Dropshadow &other)
 {
 	Distance = Clamp(static_cast<int>(Distance) + other.Distance);
 	Color = Color + other.Color;
-	Alpha = FClamp(Alpha + other.Alpha);
+	Opacity = FClamp(Opacity + other.Opacity);
 	return (*this);
 }
 
@@ -75,7 +75,7 @@ Dropshadow &Dropshadow::operator-=(const Dropshadow &other)
 {
 	Distance = Clamp(static_cast<int>(Distance) - other.Distance);
 	Color = Color - other.Color;
-	Alpha = FClamp(Alpha - other.Alpha);
+	Opacity = FClamp(Opacity - other.Opacity);
 	return (*this);
 }
 
@@ -83,6 +83,6 @@ Dropshadow &Dropshadow::operator*=(const Dropshadow &other)
 {
 	Distance = Clamp(static_cast<int>(Distance) * other.Distance);
 	Color = Color * other.Color;
-	Alpha = FClamp(Alpha * other.Alpha);
+	Opacity = FClamp(Opacity * other.Opacity);
 	return (*this);
 }

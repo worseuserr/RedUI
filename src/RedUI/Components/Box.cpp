@@ -12,7 +12,7 @@ void Box::Draw()
 	GRAPHICS::DRAW_RECT(
 		pos.X, pos.Y, scale.X, scale.Y,
 		Color.R, Color.G, Color.B,
-		static_cast<int>(Alpha * 255),
+		static_cast<int>(Opacity * 255),
 		true, true);
 	if (Sprite != nullptr)
 		GRAPHICS::DRAW_SPRITE(
@@ -21,7 +21,7 @@ void Box::Draw()
 			pos.X, pos.Y, scale.X, scale.Y,
 			Sprite->Heading,
 			SpriteColor.R, SpriteColor.G, SpriteColor.B,
-			static_cast<int>(SpriteAlpha * 255),
+			static_cast<int>(SpriteOpacity * 255),
 			true);
 }
 
@@ -50,8 +50,8 @@ RedUI::Sprite *Box::GetSprite() const
 	return (Sprite);
 }
 
-void Box::AnimateSpriteColor(const Color::RGB &startColor, const Color::RGB &endColor, const Time::Milliseconds duration, const Easing easing)
-	{ Animate<Color::RGB>(&SpriteColor, startColor, endColor, duration, easing); }
+void Box::AnimateSpriteColor(const Color::RGB &startValue, const Color::RGB &endValue, const Time::Milliseconds duration, const Easing easing)
+	{ Animate<Color::RGB>(&SpriteColor, startValue, endValue, duration, easing); }
 
-void Box::AnimateSpriteAlpha(const float startAlpha, const float endAlpha, const Time::Milliseconds duration, const Easing easing)
-	{ Animate<float>(&SpriteAlpha, startAlpha, endAlpha, duration, easing); }
+void Box::AnimateSpriteOpacity(const float startValue, const float endValue, const Time::Milliseconds duration, const Easing easing)
+	{ Animate<float>(&SpriteOpacity, startValue, endValue, duration, easing); }

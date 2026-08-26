@@ -43,12 +43,12 @@ void UIObject::TickQueue()
 	ReparentQueue.clear();
 }
 
-UIObject::UIObject(const Vec2 &position, const Vec2 &scale, const RGB &color, const float alpha)
+UIObject::UIObject(const Vec2 &position, const Vec2 &scale, const RGB &color, const float opacity)
 {
 	Position = position;
 	Scale = scale;
 	Color = color;
-	Alpha = alpha;
+	Opacity = opacity;
 }
 
 void UIObject::SetParent(UIObject *newParent)
@@ -144,7 +144,7 @@ void UIObject::RecursivelyRender(FrameState &state)
 
 void UIObject::Destroy()
 {
-	// Enabled = false;
+	Enabled = false;
 	if (IsTickLocked)
 	{
 		DeletionQueue.push_back(this);
@@ -234,20 +234,20 @@ bool UIObject::HasMouseHoveredThisFrame() const
 	return (HasHovered);
 }
 
-void UIObject::AnimatePosition(const Vec2 &startPosition, const Vec2 &endPosition, const Time::Milliseconds duration, const Easing easing)
-	{ Animate<Vec2>(&Position, startPosition, endPosition, duration, easing); }
+void UIObject::AnimatePosition(const Vec2 &startValue, const Vec2 &endValue, const Time::Milliseconds duration, const Easing easing)
+	{ Animate<Vec2>(&Position, startValue, endValue, duration, easing); }
 
-void UIObject::AnimateRenderOffset(const Vec2 &startOffset, const Vec2 &endOffset, const Time::Milliseconds duration, const Easing easing)
-	{ Animate<Vec2>(&RenderOffset, startOffset, endOffset, duration, easing); }
+void UIObject::AnimateRenderOffset(const Vec2 &startValue, const Vec2 &endValue, const Time::Milliseconds duration, const Easing easing)
+	{ Animate<Vec2>(&RenderOffset, startValue, endValue, duration, easing); }
 
-void UIObject::AnimateRenderScale(const Vec2 &startScale, const Vec2 &endScale, const Time::Milliseconds duration, const Easing easing)
-	{ Animate<Vec2>(&RenderScale, startScale, endScale, duration, easing); }
+void UIObject::AnimateRenderScale(const Vec2 &startValue, const Vec2 &endValue, const Time::Milliseconds duration, const Easing easing)
+	{ Animate<Vec2>(&RenderScale, startValue, endValue, duration, easing); }
 
-void UIObject::AnimateScale(const Vec2 &startScale, const Vec2 &endScale, const Time::Milliseconds duration, const Easing easing)
-	{ Animate<Vec2>(&Scale, startScale, endScale, duration, easing); }
+void UIObject::AnimateScale(const Vec2 &startValue, const Vec2 &endValue, const Time::Milliseconds duration, const Easing easing)
+	{ Animate<Vec2>(&Scale, startValue, endValue, duration, easing); }
 
-void UIObject::AnimateColor(const RGB &startColor, const RGB &endColor, const Time::Milliseconds duration, const Easing easing)
-	{ Animate<RGB>(&Color, startColor, endColor, duration, easing); }
+void UIObject::AnimateColor(const RGB &startValue, const RGB &endValue, const Time::Milliseconds duration, const Easing easing)
+	{ Animate<RGB>(&Color, startValue, endValue, duration, easing); }
 
-void UIObject::AnimateAlpha(const float startAlpha, const float endAlpha, const Time::Milliseconds duration, const Easing easing)
-	{ Animate<float>(&Alpha, startAlpha, endAlpha, duration, easing); }
+void UIObject::AnimateOpacity(const float startValue, const float endValue, const Time::Milliseconds duration, const Easing easing)
+	{ Animate<float>(&Opacity, startValue, endValue, duration, easing); }

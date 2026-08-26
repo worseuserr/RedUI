@@ -82,7 +82,7 @@ namespace RedUI::Object
 		// If enabled, children that are physically outside the object can receive mouse events. Otherwise not. Performance heavy if enabled with many children.
 		bool			OverflowChildHits = false;
 		Color::RGB		Color;
-		float			Alpha;
+		float			Opacity;
 		// Purely visual offset that does not affect the position of an object's children (or hit detection if RenderTransformAffectsHits is false).
 		Math::Vec2		RenderOffset = Math::Vec2(0, 0);
 		// Purely visual scale multiplier that does not affect the position or scale of an object's children (or hit detection if RenderTransformAffectsHits is false).
@@ -94,7 +94,7 @@ namespace RedUI::Object
 		Event::MouseClickEvent<UIObject>	OnRightClick;
 
 		UIObject(const Math::Vec2 &position = {}, const Math::Vec2 &scale = {1, 1},
-			const Color::RGB &color = {}, float alpha = 1.0f);
+			const Color::RGB &color = {}, float opacity = 1.0f);
 		virtual			~UIObject() = default;
 		// Destroy object.
 		void			Destroy();
@@ -107,12 +107,12 @@ namespace RedUI::Object
 		{
 			IAnimation::Register(std::make_unique<Animation<T>>(member, duration, startValue, endValue, easing));
 		}
-		void			AnimatePosition(const Math::Vec2 &startPosition, const Math::Vec2 &endPosition, Time::Milliseconds duration, Easing easing = Easing::Linear);
-		void			AnimateRenderOffset(const Math::Vec2 &startOffset, const Math::Vec2 &endOffset,Time::Milliseconds duration, Easing easing = Easing::Linear);
-		void			AnimateRenderScale(const Math::Vec2 &startScale, const Math::Vec2 &endScale,Time::Milliseconds duration, Easing easing = Easing::Linear);
-		void			AnimateScale(const Math::Vec2 &startScale, const Math::Vec2 &endScale, Time::Milliseconds duration, Easing easing = Easing::Linear);
-		void			AnimateColor(const Color::RGB &startColor, const Color::RGB &endColor, Time::Milliseconds duration, Easing easing = Easing::Linear);
-		void			AnimateAlpha(float startAlpha, float endAlpha, Time::Milliseconds duration, Easing easing = Easing::Linear);
+		void			AnimatePosition(const Math::Vec2 &startValue, const Math::Vec2 &endValue, Time::Milliseconds duration, Easing easing = Easing::Linear);
+		void			AnimateRenderOffset(const Math::Vec2 &startValue, const Math::Vec2 &endValue,Time::Milliseconds duration, Easing easing = Easing::Linear);
+		void			AnimateRenderScale(const Math::Vec2 &startValue, const Math::Vec2 &endValue,Time::Milliseconds duration, Easing easing = Easing::Linear);
+		void			AnimateScale(const Math::Vec2 &startValue, const Math::Vec2 &endValue, Time::Milliseconds duration, Easing easing = Easing::Linear);
+		void			AnimateColor(const Color::RGB &startValue, const Color::RGB &endValue, Time::Milliseconds duration, Easing easing = Easing::Linear);
+		void			AnimateOpacity(float startValue, float endValue, Time::Milliseconds duration, Easing easing = Easing::Linear);
 		bool			IsMouseHovering() const;
 		// Returns whether the mouse is hovering on the object this frame. Unlike a raw ContainsPoint call, this is occluded by other objects.
 		bool			HasMouseHoveredThisFrame() const;
