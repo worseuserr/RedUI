@@ -5,6 +5,8 @@
 
 namespace RedUI::Event
 {
+	using	NO_SENDER = void *;
+
 	template	<typename TSender, typename TArgs>
 	struct		Listener
 	{
