@@ -59,6 +59,8 @@ namespace RedUI::Object
 		std::vector<UIObjectOwner>	Children = {};
 		Math::Vec2					WorldPosition = Math::Vec2();
 		Math::Vec2					WorldScale = Math::Vec2();
+		Math::Vec2					Position;
+		Math::Vec2					Scale;
 
 		// Optional method for ui components to implement per-frame logic.
 		// Important: If changing Position or Scale inside the method, you MUST call UpdateWorldTransform afterwards or use SetPosition/SetScale.
@@ -79,14 +81,13 @@ namespace RedUI::Object
 		bool			BlocksHover = true;
 		// If enabled, children that are physically outside the object can receive mouse events. Otherwise not. Performance heavy if enabled with many children.
 		bool			OverflowChildHits = false;
-		Math::Vec2		Position;
-		Math::Vec2		Scale;
 		Color::RGB		Color;
 		float			Alpha;
-		// Purely visual offset that does not affect the position of an object's children, or hit detection.
-		Math::Vec2		RenderOffset = Math::Vec2();
-		// Purely visual scale multiplier that does not affect the position or scale of an object's children, or hit detection.
+		// Purely visual offset that does not affect the position of an object's children (or hit detection if RenderTransformAffectsHits is false).
+		Math::Vec2		RenderOffset = Math::Vec2(0, 0);
+		// Purely visual scale multiplier that does not affect the position or scale of an object's children (or hit detection if RenderTransformAffectsHits is false).
 		Math::Vec2		RenderScale = Math::Vec2(1, 1);
+		bool			RenderTransformAffectsHits = true;
 		Event::MouseHoverEvent<UIObject>	OnMouseEnter;
 		Event::MouseHoverEvent<UIObject>	OnMouseLeave;
 		Event::MouseClickEvent<UIObject>	OnLeftClick;
@@ -120,8 +121,10 @@ namespace RedUI::Object
 		UIObject		*GetParent() const;
 		// Safely set position by immediately updating world transform afterwards.
 		void			SetPosition(const Math::Vec2 &position);
+		Math::Vec2		GetPosition() const;
 		// Safely set scale by immediately updating world transform afterwards.
 		void			SetScale(const Math::Vec2 &scale);
+		Math::Vec2		GetScale() const;
 		std::vector<UIObjectOwner>	&GetChildren();
 		static UIObjectOwner		*GetChildHandle(std::vector<UIObjectOwner> &children, UIObject *child);
 		static bool					IsInTick();

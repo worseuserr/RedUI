@@ -85,6 +85,16 @@ void UIObject::SetPosition(const Vec2 &position)
 	UpdateWorldTransform();
 }
 
+Vec2 UIObject::GetPosition() const
+{
+	return (Position);
+}
+
+Vec2 UIObject::GetScale() const
+{
+	return (Scale);
+}
+
 void UIObject::SetScale(const Vec2 &scale)
 {
 	Scale = scale;
