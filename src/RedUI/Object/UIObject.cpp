@@ -1,7 +1,6 @@
-#include "RedUI/UIObject.h"
-#include "RedUI/Remove.h"
+#include "RedUI/Object/UIObject.h"
 
-using namespace RedUI;
+using namespace RedUI::Object;
 using namespace RedUI::Math;
 using namespace RedUI::Color;
 
@@ -37,9 +36,9 @@ void UIObject::TickRender(FrameState &state)
 void UIObject::TickQueue()
 {
 	for (UIObject *obj: DeletionQueue)
-		Remove(obj);
+		obj->Destroy();
 	for (const auto &[obj, newParent] : ReparentQueue)
-		obj->SetParent(newParent, true);
+		obj->SetParent(newParent);
 	DeletionQueue.clear();
 	ReparentQueue.clear();
 }
@@ -52,23 +51,25 @@ UIObject::UIObject(const Vec2 &position, const Vec2 &scale, const RGB &color, co
 	Alpha = alpha;
 }
 
-void UIObject::SetParent(UIObject *newParent, const bool evenIfIdentical)
+void UIObject::SetParent(UIObject *newParent)
 {
-	if (!evenIfIdentical && newParent == Parent)
+	if (newParent == Parent)
 		return ;
 	if (IsTickLocked)
 	{
 		ReparentQueue[this] = newParent;
 		return ;
 	}
-	if (newParent == nullptr)
-		RootObjects.push_back(std::move(*GetChildHandle(Parent->Children, this)));
-	else
-		newParent->Children.push_back(std::move(*GetChildHandle(Parent->Children, this)));
 	if (Parent == nullptr)
+	{
+		newParent->Children.push_back(std::move(*GetChildHandle(RootObjects, this)));
 		std::erase(RootObjects, nullptr);
+	}
 	else
+	{
+		RootObjects.push_back(std::move(*GetChildHandle(Parent->Children, this)));
 		std::erase(Parent->Children, nullptr);
+	}
 	Parent = newParent;
 	UpdateWorldTransform();
 }
@@ -102,6 +103,11 @@ UIObjectOwner *UIObject::GetChildHandle(std::vector<UIObjectOwner> &children, UI
 	return (it != children.end() ? &(*it) : nullptr);
 }
 
+bool UIObject::IsInTick()
+{
+	return (IsTickLocked);
+}
+
 void UIObject::RecursivelyRender(FrameState &state)
 {
 	if (!Enabled)
@@ -124,6 +130,24 @@ void UIObject::RecursivelyRender(FrameState &state)
 		this->Draw();
 	for (const UIObjectOwner &child : Children)
 		child->RecursivelyRender(state);
+}
+
+void UIObject::Destroy()
+{
+	// Enabled = false;
+	if (IsTickLocked)
+	{
+		DeletionQueue.push_back(this);
+		return ;
+	}
+	if (Parent == nullptr)
+		std::erase_if(RootObjects, [this](const UIObjectOwner &ptr){
+			return (this == ptr.get());
+		});
+	else
+		std::erase_if(Parent->GetChildren(), [this](const UIObjectOwner &ptr){
+			return (this == ptr.get());
+		});
 }
 
 void UIObject::UpdateWorldTransform()

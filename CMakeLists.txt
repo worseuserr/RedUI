@@ -6,13 +6,13 @@ set(CMAKE_CXX_STANDARD 20)
 add_library(RedUI SHARED
 		include/RedUI.h
 		src/RedUI.cpp
-		include/RedUI/UIObject.h
+		include/RedUI/Object/UIObject.h
 		include/RedUI/Graphics/Animation.h
 		include/RedUI/Math/Vec2.h
 		include/RedUI/Color/RGB.h
 		src/RedUI/Math/Vec2.cpp
 		src/RedUI/Color/RGB.cpp
-		src/RedUI/UIObject.cpp
+		src/RedUI/Object/UIObject.cpp
 		include/RedUI/Time/Time.h
 		include/RedUI/Components/Box.h
 		src/RedUI/Components/Box.cpp
@@ -26,10 +26,8 @@ add_library(RedUI SHARED
 		include/RedUI/Event/MouseEvent.h
 		include/RedUI/Input/Key.h
 		src/RedUI/Input/Key.cpp
-		include/RedUI/Remove.h
-		src/RedUI/Remove.cpp
 		src/DllMain.cpp
-		include/RedUI/Create.h
+		include/RedUI/Object/Create.h
 		include/RedUI/Graphics/Sprite.h
 		src/RedUI/Graphics/Sprite.cpp
 		include/RedUI/Focus.h
@@ -37,6 +35,8 @@ add_library(RedUI SHARED
 		include/RedUI/Runtime.h
 		src/RedUI/Runtime.cpp
 		src/RedUI/Graphics/Animation.cpp
+		include/RedUI/UIComponent.h
+		src/RedUI/Object/Create.cpp
 )
 
 target_include_directories(RedUI PUBLIC

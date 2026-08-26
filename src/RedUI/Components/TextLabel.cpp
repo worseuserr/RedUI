@@ -1,7 +1,7 @@
 #include "RedUI/Components/TextLabel.h"
 #include "Sdk/natives.h"
 
-using namespace RedUI;
+using namespace RedUI::Components;
 using namespace RedUI::Math;
 using namespace RedUI::Color;
 

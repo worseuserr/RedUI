@@ -1,8 +1,9 @@
 #include "RedUI/Runtime.h"
-#include "RedUI/UIObject.h"
+#include "RedUI/Object/UIObject.h"
 #include "RedUI/Input/Mouse.h"
 
 using namespace RedUI;
+using namespace RedUI::Object;
 
 bool Runtime::UpdateLoopEnabled = true;
 

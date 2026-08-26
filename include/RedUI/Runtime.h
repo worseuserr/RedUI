@@ -1,10 +1,18 @@
 #pragma once
+#include <memory>
+#include <vector>
+#include <type_traits>
 #include "RedUI/Math/Vec2.h"
 #include "RedUI/Focus.h"
 
 namespace RedUI
 {
-	struct		FrameState
+	namespace Object
+	{
+		class UIObject;
+	}
+
+	struct	FrameState
 	{
 		// This is only true for the first frame that the mouse button has been down.
 		bool		IsLeftMouseClicked;
@@ -13,7 +21,7 @@ namespace RedUI
 		Math::Vec2	MousePosition;
 	};
 
-	class Runtime
+	class	Runtime
 	{
 		static bool	UpdateLoopEnabled;
 
