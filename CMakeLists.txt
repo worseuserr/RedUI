@@ -9,21 +9,20 @@ add_library(RedUI SHARED
 		include/RedUI/Object/UIObject.h
 		include/RedUI/Graphics/Animation.h
 		include/RedUI/Math/Vec2.h
-		include/RedUI/Color/RGB.h
+		include/RedUI/Graphics/RGB.h
 		src/RedUI/Math/Vec2.cpp
-		src/RedUI/Color/RGB.cpp
+		src/RedUI/Graphics/RGB.cpp
 		src/RedUI/Object/UIObject.cpp
 		include/RedUI/Time/Time.h
 		include/RedUI/Components/Box.h
 		src/RedUI/Components/Box.cpp
 		include/RedUI/Components/TextLabel.h
 		src/RedUI/Components/TextLabel.cpp
-		include/RedUI/Color/Dropshadow.h
-		src/RedUI/Color/Dropshadow.cpp
+		include/RedUI/Graphics/Dropshadow.h
+		src/RedUI/Graphics/Dropshadow.cpp
 		include/RedUI/Input/Mouse.h
 		src/RedUI/Input/Mouse.cpp
 		include/RedUI/Event/Event.h
-		include/RedUI/Event/MouseEvent.h
 		include/RedUI/Input/Key.h
 		src/RedUI/Input/Key.cpp
 		src/DllMain.cpp

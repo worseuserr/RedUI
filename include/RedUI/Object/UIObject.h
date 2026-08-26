@@ -2,12 +2,12 @@
 #include <map>
 #include <memory>
 #include <vector>
-#include "../Graphics/Animation.h"
+#include "RedUI/Graphics/Animation.h"
 #include "RedUI/Runtime.h"
-#include "../Color/RGB.h"
-#include "../Event/MouseEvent.h"
-#include "../Math/Vec2.h"
-#include "../Time/Time.h"
+#include "RedUI/Graphics/RGB.h"
+#include "RedUI/Input//Mouse.h"
+#include "RedUI/Math/Vec2.h"
+#include "RedUI/Time/Time.h"
 
 namespace RedUI::Object
 {
@@ -91,10 +91,10 @@ namespace RedUI::Object
 		// Purely visual scale multiplier that does not affect the position or scale of an object's children (or hit detection if RenderTransformAffectsHits is false).
 		Math::Vec2		RenderScale = Math::Vec2(1, 1);
 		bool			RenderTransformAffectsHits = true;
-		Event::MouseHoverEvent<UIObject>	OnMouseEnter;
-		Event::MouseHoverEvent<UIObject>	OnMouseLeave;
-		Event::MouseClickEvent<UIObject>	OnLeftClick;
-		Event::MouseClickEvent<UIObject>	OnRightClick;
+		Input::MouseHoverEvent<UIObject>	OnMouseEnter;
+		Input::MouseHoverEvent<UIObject>	OnMouseLeave;
+		Input::MouseClickEvent<UIObject>	OnLeftClick;
+		Input::MouseClickEvent<UIObject>	OnRightClick;
 
 		UIObject(const Math::Vec2 &position = {}, const Math::Vec2 &scale = {1, 1},
 			const Color::RGB &color = {}, float opacity = 1.0f);

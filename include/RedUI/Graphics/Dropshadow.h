@@ -1,5 +1,5 @@
 #pragma once
-#include "RedUI/Color/RGB.h"
+#include "RGB.h"
 
 namespace RedUI::Color
 {

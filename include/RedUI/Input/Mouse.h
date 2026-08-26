@@ -17,12 +17,27 @@ namespace RedUI::Input
 	constexpr Hash	INPUT_AIM = 0xF84FA74F;
 	constexpr Hash	INPUT_ATTACK = 0x07CE1E61;
 
+	struct	MouseHoverEventArgs
+	{
+		Math::Vec2	MousePosition;
+	};
+
+	struct	MouseClickEventArgs
+	{
+		bool		IsLeft;
+		Math::Vec2	MousePosition;
+	};
+
 	struct MouseChangedEventArgs
 	{
 		bool	WasDown;
 		bool	IsDown;
 	};
 
+	template	<typename TSender>
+	class	MouseHoverEvent : public Event::Event<TSender, MouseHoverEventArgs> {};
+	template	<typename TSender>
+	class	MouseClickEvent : public Event::Event<TSender, MouseClickEventArgs> {};
 	template	<typename TSender>
 	class MouseChangedEvent : public Event::Event<TSender, MouseChangedEventArgs> {};
 

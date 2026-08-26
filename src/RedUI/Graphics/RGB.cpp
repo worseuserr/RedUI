@@ -1,4 +1,4 @@
-#include "RedUI/Color/RGB.h"
+#include "../../../include/RedUI/Graphics/RGB.h"
 
 using namespace RedUI::Color;
 

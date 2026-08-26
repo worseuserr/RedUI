@@ -1,6 +1,6 @@
 #pragma once
 #include "RedUI/Components/Box.h"
-#include "RedUI/Color/Dropshadow.h"
+#include "../Graphics/Dropshadow.h"
 
 namespace RedUI::Components
 {
