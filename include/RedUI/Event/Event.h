@@ -64,5 +64,10 @@ namespace RedUI::Event
 			Listeners.push_back(Listener<TSender, TArgs>{ .ID = id, .Function = func });
 			return (std::make_unique<Connection<TSender, TArgs>>(id++, &Listeners));
 		}
+
+		unsigned int	GetListenerCount()
+		{
+			return (Listeners.size());
+		}
 	};
 }
