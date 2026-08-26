@@ -1,4 +1,5 @@
 #include "RedUI/Runtime.h"
+#include "RedUI/Focus.h"
 #include "RedUI/Object/UIObject.h"
 #include "RedUI/Input/Mouse.h"
 
