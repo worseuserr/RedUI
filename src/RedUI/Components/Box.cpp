@@ -28,7 +28,7 @@ void Box::Draw()
 bool Box::ContainsPoint(const Vec2 &point)
 {
 	const Vec2	pos = (RenderTransformAffectsHits ? WorldPosition + RenderOffset : WorldPosition);
-	const Vec2	scale = (RenderTransformAffectsHits ? WorldScale + RenderScale : WorldScale);
+	const Vec2	scale = (RenderTransformAffectsHits ? WorldScale * RenderScale : WorldScale);
 	const float	halfX = scale.X * 0.5f;
 	const float	halfY = scale.Y * 0.5f;
 
