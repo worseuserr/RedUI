@@ -18,18 +18,17 @@ void Box::Draw()
 			Color.R, Color.G, Color.B,
 			static_cast<int>(Alpha * 255),
 			true);
-	else
-		GRAPHICS::DRAW_RECT(
-			pos.X, pos.Y, scale.X, scale.Y,
-			Color.R, Color.G, Color.B,
-			static_cast<int>(Alpha * 255),
-			true, true);
+	GRAPHICS::DRAW_RECT(
+		pos.X, pos.Y, scale.X, scale.Y,
+		SpriteColor.R, SpriteColor.G, SpriteColor.B,
+		static_cast<int>(SpriteAlpha * 255),
+		true, true);
 }
 
 bool Box::ContainsPoint(const Vec2 &point)
 {
-	const Vec2	pos = WorldPosition;
-	const Vec2	scale = WorldScale;
+	const Vec2	pos = (RenderTransformAffectsHits ? WorldPosition + RenderOffset : WorldPosition);
+	const Vec2	scale = (RenderTransformAffectsHits ? WorldScale + RenderScale : WorldScale);
 	const float	halfX = scale.X * 0.5f;
 	const float	halfY = scale.Y * 0.5f;
 
@@ -40,3 +39,19 @@ bool Box::ContainsPoint(const Vec2 &point)
 		point.Y < pos.Y + halfY
 	);
 }
+
+void Box::SetSprite(RedUI::Sprite *sprite)
+{
+	Sprite = sprite;
+}
+
+RedUI::Sprite *Box::GetSprite() const
+{
+	return (Sprite);
+}
+
+void Box::AnimateSpriteColor(const Color::RGB &startColor, const Color::RGB &endColor, const Time::Milliseconds duration, const Easing easing)
+	{ Animate<Color::RGB>(&SpriteColor, startColor, endColor, duration, easing); }
+
+void Box::AnimateSpriteAlpha(const float startAlpha, const float endAlpha, const Time::Milliseconds duration, const Easing easing)
+	{ Animate<float>(&SpriteAlpha, startAlpha, endAlpha, duration, easing); }
