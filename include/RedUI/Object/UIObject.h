@@ -61,7 +61,10 @@ namespace RedUI::Object
 		Math::Vec2					WorldScale = Math::Vec2();
 		Math::Vec2					Position;
 		Math::Vec2					Scale;
+		int							ZIndex = 0;
 
+		// Re-sorts children based on their z index. Must be run after changing the ZIndex.
+		void			UpdateZ();
 		// Optional method for ui components to implement per-frame logic.
 		// Important: If changing Position or Scale inside the method, you MUST call UpdateWorldTransform afterwards or use SetPosition/SetScale.
 		virtual void	Update(FrameState &state) {}
@@ -125,6 +128,9 @@ namespace RedUI::Object
 		// Safely set scale by immediately updating world transform afterwards.
 		void			SetScale(const Math::Vec2 &scale);
 		Math::Vec2		GetScale() const;
+		// Set the ZIndex of the object. Higher values position objects in front. Only affects the render order of siblings of the object.
+		void			SetZIndex(int value);
+		int				GetZIndex() const;
 		std::vector<UIObjectOwner>	&GetChildren();
 		static UIObjectOwner		*GetChildHandle(std::vector<UIObjectOwner> &children, UIObject *child);
 		static bool					IsInTick();

@@ -1,4 +1,5 @@
 #include "RedUI/Object/UIObject.h"
+#include <algorithm>
 
 using namespace RedUI::Object;
 using namespace RedUI::Math;
@@ -41,6 +42,15 @@ void UIObject::TickQueue()
 		obj->SetParent(newParent);
 	DeletionQueue.clear();
 	ReparentQueue.clear();
+}
+
+void UIObject::UpdateZ()
+{
+	std::vector<UIObjectOwner>	&container = Parent == nullptr ? RootObjects : Parent->Children;
+
+	std::ranges::sort(container, [](const UIObjectOwner &a, const UIObjectOwner &b){
+		return (a->ZIndex > b->ZIndex);
+	});
 }
 
 UIObject::UIObject(const Vec2 &position, const Vec2 &scale, const RGB &color, const float opacity)
@@ -99,6 +109,17 @@ void UIObject::SetScale(const Vec2 &scale)
 {
 	Scale = scale;
 	UpdateWorldTransform();
+}
+
+void UIObject::SetZIndex(int value)
+{
+	ZIndex = value;
+	UpdateZ();
+}
+
+int UIObject::GetZIndex() const
+{
+	return (ZIndex);
 }
 
 std::vector<UIObjectOwner> &UIObject::GetChildren()
