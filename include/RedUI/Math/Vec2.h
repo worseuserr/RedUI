@@ -3,7 +3,6 @@
 
 namespace RedUI::Math
 {
-	// Vec2 instead of Vector3 because the scripthook sdk has a Vector3 type.
 	class	Vec2
 	{
 	public:
