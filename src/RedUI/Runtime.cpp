@@ -1,4 +1,5 @@
 #include "RedUI/Runtime.h"
+#include "RedUI/Focus.h"
 #include "RedUI/Object/UIObject.h"
 #include "RedUI/Input/Mouse.h"
 
@@ -21,7 +22,8 @@ void Runtime::ProcessTick()
 {
 	FrameState	state = { .MousePosition = Input::GetMousePosition() };
 
-	Input::Tick(state); // Sets .IsLeftMouseClicked and .IsRightMouseClicked
+	Input::MouseEvents::Tick(state); // Sets .IsLeftMouseClicked and .IsRightMouseClicked
+	Input::KeyEvents::Tick(state);
 	// Scheduler::Tick(); For future coroutine scheduler.
 	Focus::Tick();
 	UIObject::IsTickLocked = true;

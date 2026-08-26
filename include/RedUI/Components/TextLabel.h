@@ -1,6 +1,6 @@
 #pragma once
 #include "RedUI/Components/Box.h"
-#include "RedUI/Color/Dropshadow.h"
+#include "../Graphics/Dropshadow.h"
 
 namespace RedUI::Components
 {
@@ -14,18 +14,18 @@ namespace RedUI::Components
 		Color::Dropshadow	Dropshadow;
 		float				TextScale;
 		Color::RGB			TextColor;
-		float				TextAlpha;
+		float				TextOpacity;
 		std::string			Text;
 		bool				TextCentered = false;
 		// bool				TextWrapping -> Could possibly be added in the future.
 
 		TextLabel(const std::string &text, const Math::Vec2 &position = {},
 			float textScale = 1.0f, const Color::RGB &textColor = {},
-			float textAlpha = 1.0f, const Math::Vec2 &backgroundScale = {1, 1},
-			const Color::RGB &backgroundColor = {}, float backgroundAlpha = 0.0f);
-		void	AnimateTextScale(float startScale, float endScale, Time::Milliseconds duration, Easing easing = Easing::Linear);
-		void	AnimateTextColor(const Color::RGB &startColor, const Color::RGB &endColor, Time::Milliseconds duration, Easing easing = Easing::Linear);
-		void	AnimateTextAlpha(float startAlpha, float endAlpha, Time::Milliseconds duration, Easing easing = Easing::Linear);
+			float textOpacity = 1.0f, const Math::Vec2 &backgroundScale = {1, 1},
+			const Color::RGB &backgroundColor = {}, float backgroundOpacity = 0.0f);
+		void	AnimateTextScale(float startValue, float endValue, Time::Milliseconds duration, Easing easing = Easing::Linear);
+		void	AnimateTextColor(const Color::RGB &startValue, const Color::RGB &endValue, Time::Milliseconds duration, Easing easing = Easing::Linear);
+		void	AnimateTextOpacity(float startValue, float endValue, Time::Milliseconds duration, Easing easing = Easing::Linear);
 		// void	AnimateDropshadow() -> Maybe.
 		// void	AnimateText() -> Planned, with different animation styles (swap, erase then fill, glitch, fade in, etc).
 	};

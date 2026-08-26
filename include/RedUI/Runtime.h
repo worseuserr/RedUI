@@ -1,9 +1,5 @@
 #pragma once
-#include <memory>
-#include <vector>
-#include <type_traits>
 #include "RedUI/Math/Vec2.h"
-#include "RedUI/Focus.h"
 
 namespace RedUI
 {
@@ -26,6 +22,7 @@ namespace RedUI
 		static bool	UpdateLoopEnabled;
 
 	public:
+		Runtime() = delete;
 		// Main loop that gets registered to scripthook.
 		[[noreturn]] static void	RedUILoop();
 		// Process every core system in a specified order.

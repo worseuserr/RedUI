@@ -2,12 +2,12 @@
 #include <map>
 #include <memory>
 #include <vector>
-#include "../Graphics/Animation.h"
+#include "RedUI/Graphics/Animation.h"
 #include "RedUI/Runtime.h"
-#include "../Color/RGB.h"
-#include "../Event/MouseEvent.h"
-#include "../Math/Vec2.h"
-#include "../Time/Time.h"
+#include "RedUI/Graphics/RGB.h"
+#include "RedUI/Input//Mouse.h"
+#include "RedUI/Math/Vec2.h"
+#include "RedUI/Time/Time.h"
 
 namespace RedUI::Object
 {
@@ -59,7 +59,12 @@ namespace RedUI::Object
 		std::vector<UIObjectOwner>	Children = {};
 		Math::Vec2					WorldPosition = Math::Vec2();
 		Math::Vec2					WorldScale = Math::Vec2();
+		Math::Vec2					Position;
+		Math::Vec2					Scale;
+		int							ZIndex = 0;
 
+		// Re-sorts children based on their z index. Must be run after changing the ZIndex.
+		void			UpdateZ();
 		// Optional method for ui components to implement per-frame logic.
 		// Important: If changing Position or Scale inside the method, you MUST call UpdateWorldTransform afterwards or use SetPosition/SetScale.
 		virtual void	Update(FrameState &state) {}
@@ -79,21 +84,20 @@ namespace RedUI::Object
 		bool			BlocksHover = true;
 		// If enabled, children that are physically outside the object can receive mouse events. Otherwise not. Performance heavy if enabled with many children.
 		bool			OverflowChildHits = false;
-		Math::Vec2		Position;
-		Math::Vec2		Scale;
 		Color::RGB		Color;
-		float			Alpha;
-		// Purely visual offset that does not affect the position of an object's children, or hit detection.
-		Math::Vec2		RenderOffset = Math::Vec2();
-		// Purely visual scale multiplier that does not affect the position or scale of an object's children, or hit detection.
+		float			Opacity;
+		// Purely visual offset that does not affect the position of an object's children (or hit detection if RenderTransformAffectsHits is false).
+		Math::Vec2		RenderOffset = Math::Vec2(0, 0);
+		// Purely visual scale multiplier that does not affect the position or scale of an object's children (or hit detection if RenderTransformAffectsHits is false).
 		Math::Vec2		RenderScale = Math::Vec2(1, 1);
-		Event::MouseHoverEvent<UIObject>	OnMouseEnter;
-		Event::MouseHoverEvent<UIObject>	OnMouseLeave;
-		Event::MouseClickEvent<UIObject>	OnLeftClick;
-		Event::MouseClickEvent<UIObject>	OnRightClick;
+		bool			RenderTransformAffectsHits = true;
+		Input::MouseHoverEvent<UIObject>	OnMouseEnter;
+		Input::MouseHoverEvent<UIObject>	OnMouseLeave;
+		Input::MouseClickEvent<UIObject>	OnLeftClick;
+		Input::MouseClickEvent<UIObject>	OnRightClick;
 
 		UIObject(const Math::Vec2 &position = {}, const Math::Vec2 &scale = {1, 1},
-			const Color::RGB &color = {}, float alpha = 1.0f);
+			const Color::RGB &color = {}, float opacity = 1.0f);
 		virtual			~UIObject() = default;
 		// Destroy object.
 		void			Destroy();
@@ -106,12 +110,12 @@ namespace RedUI::Object
 		{
 			IAnimation::Register(std::make_unique<Animation<T>>(member, duration, startValue, endValue, easing));
 		}
-		void			AnimatePosition(const Math::Vec2 &startPosition, const Math::Vec2 &endPosition, Time::Milliseconds duration, Easing easing = Easing::Linear);
-		void			AnimateRenderOffset(const Math::Vec2 &startOffset, const Math::Vec2 &endOffset,Time::Milliseconds duration, Easing easing = Easing::Linear);
-		void			AnimateRenderScale(const Math::Vec2 &startScale, const Math::Vec2 &endScale,Time::Milliseconds duration, Easing easing = Easing::Linear);
-		void			AnimateScale(const Math::Vec2 &startScale, const Math::Vec2 &endScale, Time::Milliseconds duration, Easing easing = Easing::Linear);
-		void			AnimateColor(const Color::RGB &startColor, const Color::RGB &endColor, Time::Milliseconds duration, Easing easing = Easing::Linear);
-		void			AnimateAlpha(float startAlpha, float endAlpha, Time::Milliseconds duration, Easing easing = Easing::Linear);
+		void			AnimatePosition(const Math::Vec2 &startValue, const Math::Vec2 &endValue, Time::Milliseconds duration, Easing easing = Easing::Linear);
+		void			AnimateRenderOffset(const Math::Vec2 &startValue, const Math::Vec2 &endValue,Time::Milliseconds duration, Easing easing = Easing::Linear);
+		void			AnimateRenderScale(const Math::Vec2 &startValue, const Math::Vec2 &endValue,Time::Milliseconds duration, Easing easing = Easing::Linear);
+		void			AnimateScale(const Math::Vec2 &startValue, const Math::Vec2 &endValue, Time::Milliseconds duration, Easing easing = Easing::Linear);
+		void			AnimateColor(const Color::RGB &startValue, const Color::RGB &endValue, Time::Milliseconds duration, Easing easing = Easing::Linear);
+		void			AnimateOpacity(float startValue, float endValue, Time::Milliseconds duration, Easing easing = Easing::Linear);
 		bool			IsMouseHovering() const;
 		// Returns whether the mouse is hovering on the object this frame. Unlike a raw ContainsPoint call, this is occluded by other objects.
 		bool			HasMouseHoveredThisFrame() const;
@@ -120,8 +124,13 @@ namespace RedUI::Object
 		UIObject		*GetParent() const;
 		// Safely set position by immediately updating world transform afterwards.
 		void			SetPosition(const Math::Vec2 &position);
+		Math::Vec2		GetPosition() const;
 		// Safely set scale by immediately updating world transform afterwards.
 		void			SetScale(const Math::Vec2 &scale);
+		Math::Vec2		GetScale() const;
+		// Set the ZIndex of the object. Higher values position objects in front. Only affects the render order of siblings of the object.
+		void			SetZIndex(int value);
+		int				GetZIndex() const;
 		std::vector<UIObjectOwner>	&GetChildren();
 		static UIObjectOwner		*GetChildHandle(std::vector<UIObjectOwner> &children, UIObject *child);
 		static bool					IsInTick();

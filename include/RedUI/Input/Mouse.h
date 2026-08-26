@@ -1,5 +1,6 @@
 #pragma once
 #include <Sdk/natives.h>
+#include "Key.h"
 #include "RedUI/Math/Vec2.h"
 #include "RedUI/Event/Event.h"
 #include "RedUI/Runtime.h"
@@ -17,14 +18,29 @@ namespace RedUI::Input
 	constexpr Hash	INPUT_AIM = 0xF84FA74F;
 	constexpr Hash	INPUT_ATTACK = 0x07CE1E61;
 
-	struct MouseChangedEventArgs
+	struct	MouseHoverEventArgs
+	{
+		Math::Vec2	MousePosition;
+	};
+
+	struct	MouseClickEventArgs
+	{
+		bool		IsLeft;
+		Math::Vec2	MousePosition;
+	};
+
+	struct	MouseChangedEventArgs
 	{
 		bool	WasDown;
 		bool	IsDown;
 	};
 
 	template	<typename TSender>
-	class MouseChangedEvent : public Event::Event<TSender, MouseChangedEventArgs> {};
+	class	MouseHoverEvent : public Event::Event<TSender, MouseHoverEventArgs> {};
+	template	<typename TSender>
+	class	MouseClickEvent : public Event::Event<TSender, MouseClickEventArgs> {};
+	template	<typename TSender>
+	class	MouseChangedEvent : public Event::Event<TSender, MouseChangedEventArgs> {};
 
 	// Returns width and height.
 	Math::Vec2	GetGameWindow(HWND &window, RECT &clientRect);
@@ -33,16 +49,15 @@ namespace RedUI::Input
 	bool		IsLeftMouseDown();
 	bool		IsRightMouseDown();
 
-	// Internal input tick.
-	// Mod developers, do not use.
-	void		Tick(FrameState &state);
-
-	// This may get changed back to a static class if a dynamic OnKeyPressed(key) or similar method is added.
-	namespace Events
+	class MouseEvents
 	{
-		API extern MouseChangedEvent<void>	OnLeftMouseDown;
-		API extern MouseChangedEvent<void>	OnLeftMouseUp;
-		API extern MouseChangedEvent<void>	OnRightMouseDown;
-		API extern MouseChangedEvent<void>	OnRightMouseUp;
-	}
+		friend class	::RedUI::Runtime;
+		static void		Tick(FrameState &state);
+
+	public:
+		API static MouseChangedEvent<void>	OnLeftMouseDown;
+		API static MouseChangedEvent<void>	OnLeftMouseUp;
+		API static MouseChangedEvent<void>	OnRightMouseDown;
+		API static MouseChangedEvent<void>	OnRightMouseUp;
+	};
 }
