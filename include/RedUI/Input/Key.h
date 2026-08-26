@@ -1,5 +1,8 @@
 #pragma once
+#include <map>
 #include "windows.h"
+#include "RedUI/Runtime.h"
+#include "RedUI/Event/Event.h"
 
 namespace RedUI::Input
 {
@@ -32,6 +35,37 @@ namespace RedUI::Input
 		Y = 0x59, Z = 0x5A,
 		MouseLeft = VK_LBUTTON,
 		MouseRight = VK_RBUTTON,
+	};
+
+	struct	KeyChangedEventArgs
+	{
+		bool	IsDown;
+		Key		Key;
+	};
+
+	class	KeyEvents
+	{
+		friend class	::RedUI::Runtime;
+		static void		Tick(FrameState &state);
+	};
+
+	class KeyChangedEvent;
+
+	struct	KeyState
+	{
+		bool							IsDown;
+		std::vector<KeyChangedEvent *>	Events;
+	};
+
+	class	KeyChangedEvent : public Event::Event<void, KeyChangedEventArgs>
+	{
+		friend class					KeyEvents;
+		static std::map<Key, KeyState>	KeyChangedEvents;
+		Key								Key;
+
+	public:
+		KeyChangedEvent(Input::Key key);
+		~KeyChangedEvent();
 	};
 
 	bool	IsKeyDown(Key key);
