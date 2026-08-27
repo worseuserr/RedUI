@@ -36,6 +36,8 @@ add_library(RedUI SHARED
 		src/RedUI/Graphics/Animation.cpp
 		include/RedUI/UIComponent.h
 		src/RedUI/Object/Create.cpp
+		include/RedUI/Input/Screen.h
+		src/RedUI/Input/Screen.cpp
 )
 
 target_include_directories(RedUI PUBLIC
