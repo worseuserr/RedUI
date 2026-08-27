@@ -1,5 +1,6 @@
 #include "RedUI/Object/UIObject.h"
 #include <algorithm>
+#include "RedUI/Input/Screen.h"
 
 using namespace RedUI::Object;
 using namespace RedUI::Math;
@@ -44,7 +45,7 @@ void UIObject::TickQueue()
 	ReparentQueue.clear();
 }
 
-void UIObject::UpdateZ()
+void UIObject::UpdateZ() const
 {
 	std::vector<UIObjectOwner>	&container = Parent == nullptr ? RootObjects : Parent->Children;
 
@@ -184,10 +185,15 @@ void UIObject::Destroy()
 void UIObject::UpdateWorldTransform()
 {
 	bool	isRoot;
+	Vec2	AspectScale = Vec2(Input::GetGameWindow().GetAspectRatio(), 1);
 
 	isRoot = Parent == nullptr;
 	WorldScale = isRoot ? Scale : Parent->WorldScale * Scale;
-	WorldPosition = isRoot ? Position : Parent->WorldPosition + (Position - Vec2(0.5, 0.5)) * Parent->WorldScale;
+	WorldPosition = isRoot ? Position : Parent->WorldPosition + (Position - Vec2(0.5, 0.5)) * (Parent->WorldScale * AspectScale);
+	FinalDrawPosition = WorldPosition + RenderOffset;
+	FinalDrawScale = (WorldScale * RenderScale) * AspectScale;
+	FinalHitPosition = (RenderTransformAffectsHits ? WorldPosition + RenderOffset : WorldPosition);
+	FinalHitScale = (RenderTransformAffectsHits ? WorldScale * RenderScale : WorldScale) * AspectScale;
 }
 
 void UpdateHitState(HitState &state)
@@ -221,7 +227,6 @@ bool UIObject::RecursivelyProcessEvents(HitState &state)
 	if (!contains)
 		return (true);
 	// Process hit.
-
 	if (!state.LeftClickConsumed && state.Frame.IsLeftMouseClicked)
 	{
 		if (Clickable)
