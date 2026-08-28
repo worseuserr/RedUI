@@ -22,7 +22,8 @@ namespace RedUI::Components
 		bool			ContainsPoint(const Math::Vec2 &point) override;
 		void			SetSprite(RedUI::Sprite *sprite);
 		RedUI::Sprite	*GetSprite() const;
-		void			SetRotation(float degrees);
+		// Visual rotation applied to the component. This is experimental and does not affect child transforms.
+		void			SetRotation(Math::Angle angle);
 		Math::Angle		GetRotation() const;
 		void			AnimateRotation(Math::Angle startValue, Math::Angle endValue, Time::Milliseconds duration, Easing easing = Easing::Linear);
 		void			AnimateSpriteColor(const Color::RGB &startValue, const Color::RGB &endValue, Time::Milliseconds duration, Easing easing = Easing::Linear);

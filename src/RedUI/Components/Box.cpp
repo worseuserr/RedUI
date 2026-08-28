@@ -56,9 +56,9 @@ RedUI::Sprite *Box::GetSprite() const
 	return (Sprite);
 }
 
-void Box::SetRotation(const float degrees)
+void Box::SetRotation(const Angle angle)
 {
-	Rotation = {degrees};
+	Rotation = angle;
 }
 
 Angle Box::GetRotation() const
