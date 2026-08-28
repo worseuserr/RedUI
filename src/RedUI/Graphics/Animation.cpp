@@ -5,8 +5,6 @@ using namespace RedUI;
 std::vector<AnimationOwner *>	IAnimation::FinishedQueue = {};
 std::vector<AnimationOwner>		IAnimation::All = {};
 
-
-
 void IAnimation::Tick()
 {
 	for (AnimationOwner &anim : All)
