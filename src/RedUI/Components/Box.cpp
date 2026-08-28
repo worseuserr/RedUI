@@ -6,19 +6,28 @@ using namespace RedUI::Math;
 
 void Box::Draw()
 {
-	GRAPHICS::DRAW_RECT(
-		FinalDrawPosition.X, FinalDrawPosition.Y,
-		FinalDrawScale.X, FinalDrawScale.Y,
-		Color.R, Color.G, Color.B,
-		static_cast<int>(Opacity * 255),
-		true, true);
+	GRAPHICS::DRAW_SPRITE(
+			"big_feed",
+			"big_feed_placeholder_background",
+			FinalDrawPosition.X, FinalDrawPosition.Y,
+			FinalDrawScale.X, FinalDrawScale.Y,
+			Rotation.ToDegrees(),
+			Color.R, Color.G, Color.B,
+			static_cast<int>(Opacity * 255),
+			true);
+	// GRAPHICS::DRAW_RECT(
+	// 	FinalDrawPosition.X, FinalDrawPosition.Y,
+	// 	FinalDrawScale.X, FinalDrawScale.Y,
+	// 	Color.R, Color.G, Color.B,
+	// 	static_cast<int>(Opacity * 255),
+	// 	true, true);
 	if (Sprite != nullptr)
 		GRAPHICS::DRAW_SPRITE(
 			Sprite->TextureDict.c_str(),
 			Sprite->TextureName.c_str(),
 			FinalDrawPosition.X, FinalDrawPosition.Y,
 			FinalDrawScale.X, FinalDrawScale.Y,
-			Sprite->Heading,
+			Rotation.ToDegrees() + Sprite->Heading,
 			SpriteColor.R, SpriteColor.G, SpriteColor.B,
 			static_cast<int>(SpriteOpacity * 255),
 			true);
@@ -47,12 +56,14 @@ RedUI::Sprite *Box::GetSprite() const
 	return (Sprite);
 }
 
-void Box::SetRotation(float degrees)
+void Box::SetRotation(const float degrees)
 {
+	Rotation = {degrees};
 }
 
-float Box::GetRotation()
+Angle Box::GetRotation() const
 {
+	return (Rotation);
 }
 
 void Box::AnimateRotation(const Angle startValue, const Angle endValue, const Time::Milliseconds duration, const Easing easing)

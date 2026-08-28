@@ -23,7 +23,7 @@ namespace RedUI::Components
 		void			SetSprite(RedUI::Sprite *sprite);
 		RedUI::Sprite	*GetSprite() const;
 		void			SetRotation(float degrees);
-		float			GetRotation();
+		Math::Angle		GetRotation() const;
 		void			AnimateRotation(Math::Angle startValue, Math::Angle endValue, Time::Milliseconds duration, Easing easing = Easing::Linear);
 		void			AnimateSpriteColor(const Color::RGB &startValue, const Color::RGB &endValue, Time::Milliseconds duration, Easing easing = Easing::Linear);
 		void			AnimateSpriteOpacity(float startValue, float endValue, Time::Milliseconds duration, Easing easing = Easing::Linear);
