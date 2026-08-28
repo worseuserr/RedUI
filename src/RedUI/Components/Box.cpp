@@ -47,6 +47,17 @@ RedUI::Sprite *Box::GetSprite() const
 	return (Sprite);
 }
 
+void Box::SetRotation(float degrees)
+{
+}
+
+float Box::GetRotation()
+{
+}
+
+void Box::AnimateRotation(const Angle startValue, const Angle endValue, const Time::Milliseconds duration, const Easing easing)
+	{ Animate<Angle>(&Rotation, startValue, endValue, duration, easing); }
+
 void Box::AnimateSpriteColor(const Color::RGB &startValue, const Color::RGB &endValue, const Time::Milliseconds duration, const Easing easing)
 	{ Animate<Color::RGB>(&SpriteColor, startValue, endValue, duration, easing); }
 
