@@ -23,9 +23,6 @@ TextLabel::TextLabel(const std::string &text, const Vec2 &position,
 
 void TextLabel::Draw()
 {
-	const Vec2	pos = WorldPosition + RenderOffset;
-	const Vec2	scale = WorldScale * RenderScale;
-
 	Box::Draw();
 	UI::SET_TEXT_SCALE(0, TextScale);
 	UI::SET_TEXT_COLOR_RGBA(TextColor.R, TextColor.G, TextColor.B, TextOpacity * 255);
@@ -36,8 +33,8 @@ void TextLabel::Draw()
 			10,
 			"LITERAL_STRING",
 			const_cast<char *>(Text.c_str())),
-		pos.X - scale.X * 0.5,
-		pos.Y - scale.Y * 0.5);
+		FinalDrawPosition.X - FinalDrawScale.X * 0.5,
+		FinalDrawPosition.Y - FinalDrawScale.Y * 0.5);
 }
 
 void TextLabel::AnimateTextScale(const float startValue, const float endValue, const Time::Milliseconds duration, const Easing easing)

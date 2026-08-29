@@ -72,7 +72,7 @@ namespace RedUI
 			progress = static_cast<float>(Time::MsSinceEpoch() - CreationTime) / Duration;
 			if (progress > 1.0f)
 				progress = 1.0f;
-			*Member = Ease(progress);
+			*Member = StartValue + (EndValue - StartValue) * Ease(progress);
 			return (progress == 1.0f);
 		}
 		virtual T	Ease(float t)
@@ -131,7 +131,7 @@ namespace RedUI
 				default:
 					return (EndValue);
 			}
-			return (StartValue + (EndValue - StartValue) * t);
+			return (t);
 		}
 	};
 }
