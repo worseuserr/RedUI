@@ -5,8 +5,8 @@ using namespace RedUI;
 
 
 IO::File::File(const char *filename, const bool replaceIfExists)
+	: Filename(filename)
 {
-	Filename = filename;
 	Stream.open(filename, std::ios_base::out | (replaceIfExists ? std::ios_base::trunc : std::ios_base::app));
 	Stream.close();
 }
