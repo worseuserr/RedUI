@@ -75,7 +75,7 @@ namespace RedUI
 			*Member = StartValue + (EndValue - StartValue) * Ease(progress);
 			return (progress == 1.0f);
 		}
-		virtual T	Ease(float t)
+		virtual float	Ease(float t)
 		{
 			static constexpr float	BackOvershoot = 1.5f;
 			static constexpr float	OvershootAdd = BackOvershoot + 1.0f;
@@ -89,7 +89,7 @@ namespace RedUI
 					// t = t;
 					break ;
 				case Easing::Constant:
-					return (t == 1.0f ? EndValue : StartValue);
+					return (t == 1.0f ? t : 0.0f);
 				case Easing::SineIn:
 					t = (1.0f - cos((t * std::numbers::pi) / 2.0f));
 					break ;
@@ -129,7 +129,7 @@ namespace RedUI
 					}
 					break ;
 				default:
-					return (EndValue);
+					return (t);
 			}
 			return (t);
 		}
