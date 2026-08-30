@@ -48,6 +48,8 @@ add_library(RedUI SHARED
 		src/RedUI/Input/Screen.cpp
 		include/RedUI/Math/Angle.h
 		src/RedUI/Math/Angle.cpp
+		include/RedUI/IO/File.h
+		src/RedUI/IO/File.cpp
 )
 
 target_include_directories(RedUI PUBLIC
