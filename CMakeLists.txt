@@ -7,7 +7,7 @@ function(distribute FILE)
 	add_custom_command(TARGET RedUI POST_BUILD
 			COMMAND ${CMAKE_COMMAND} -E copy_if_different
 			"${FILE}"
-			"${CMAKE_SOURCE_DIR}/bin/"
+			"${CMAKE_CURRENT_SOURCE_DIR}/bin/"
 	)
 endfunction()
 
@@ -67,17 +67,17 @@ target_compile_options(RedUI PRIVATE
 target_link_libraries(RedUI PRIVATE ScriptHookRDR2.lib)
 
 set_target_properties(RedUI PROPERTIES
-		RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
-		ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+		RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin
+		ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin
 		WINDOWS_EXPORT_ALL_SYMBOLS ON
 		SUFFIX ".asi"
 )
 
 add_custom_command(TARGET RedUI POST_BUILD
 		COMMAND ${CMAKE_COMMAND} -E make_directory
-		"${CMAKE_SOURCE_DIR}/bin"
+		"${CMAKE_CURRENT_SOURCE_DIR}/bin"
 )
 
-distribute("${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.asi")
-distribute("${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.lib")
-distribute("${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.pdb")
+distribute("${CMAKE_CURRENT_BINARY_DIR}/bin/${PROJECT_NAME}.asi")
+distribute("${CMAKE_CURRENT_BINARY_DIR}/bin/${PROJECT_NAME}.lib")
+distribute("${CMAKE_CURRENT_BINARY_DIR}/bin/${PROJECT_NAME}.pdb")
