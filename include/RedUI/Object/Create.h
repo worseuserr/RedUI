@@ -20,3 +20,5 @@ namespace RedUI::Object
 		return (raw);
 	}
 }
+
+// UI_CREATE is in UIComponent.h.
