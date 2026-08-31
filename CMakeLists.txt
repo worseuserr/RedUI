@@ -50,6 +50,9 @@ add_library(RedUI SHARED
 		src/RedUI/Math/Angle.cpp
 		include/RedUI/IO/File.h
 		src/RedUI/IO/File.cpp
+		include/RedUI/IO/Logger.h
+		src/RedUI/IO/Logger.cpp
+		src/RedUI/Time/Time.cpp
 )
 
 target_include_directories(RedUI PUBLIC
