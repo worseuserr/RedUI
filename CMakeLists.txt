@@ -3,13 +3,19 @@ project(RedUI)
 
 set(CMAKE_CXX_STANDARD 20)
 
-function(distribute FILE)
-	add_custom_command(TARGET RedUI POST_BUILD
-			COMMAND ${CMAKE_COMMAND} -E copy_if_different
-			"${FILE}"
-			"${CMAKE_CURRENT_SOURCE_DIR}/bin/"
-	)
+function(distribute TARGET FILE)
+	if (EXISTS "${FILE}")
+		add_custom_command(TARGET ${TARGET} POST_BUILD
+				COMMAND ${CMAKE_COMMAND} -E copy_if_different
+				"${FILE}"
+				"${CMAKE_CURRENT_SOURCE_DIR}/bin/"
+		)
+	endif ()
 endfunction()
+
+# +-+-+-+-+-+-
+# Main Library
+# +-+-+-+-+-+-
 
 add_library(RedUI SHARED
 		include/RedUI.h
@@ -33,7 +39,6 @@ add_library(RedUI SHARED
 		include/RedUI/Event/Event.h
 		include/RedUI/Input/Key.h
 		src/RedUI/Input/Key.cpp
-		src/DllMain.cpp
 		include/RedUI/Object/Create.h
 		include/RedUI/Graphics/Sprite.h
 		src/RedUI/Graphics/Sprite.cpp
@@ -78,11 +83,48 @@ set_target_properties(RedUI PROPERTIES
 		SUFFIX ".asi"
 )
 
+# +-+-+-+-+-+-
+# DllMain Runtime
+# +-+-+-+-+-+-
+
+add_library(RedUIRuntime SHARED
+		src/DllMain.cpp
+)
+
+target_include_directories(RedUIRuntime PRIVATE
+		${CMAKE_CURRENT_SOURCE_DIR}/include
+		${CMAKE_CURRENT_SOURCE_DIR}/sdk/inc
+)
+
+target_link_directories(RedUIRuntime PRIVATE
+		${CMAKE_CURRENT_SOURCE_DIR}/sdk/lib
+)
+
+target_compile_options(RedUIRuntime PRIVATE
+		/EHsc
+		/O2
+)
+
+target_link_libraries(RedUIRuntime PRIVATE RedUI ScriptHookRDR2.lib)
+
+set_target_properties(RedUIRuntime PROPERTIES
+		RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin
+		ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin
+		WINDOWS_EXPORT_ALL_SYMBOLS ON
+		SUFFIX ".asi"
+)
+
+# +-+-+-+-+-+-
+# Distrib
+# +-+-+-+-+-+-
+
 add_custom_command(TARGET RedUI POST_BUILD
 		COMMAND ${CMAKE_COMMAND} -E make_directory
 		"${CMAKE_CURRENT_SOURCE_DIR}/bin"
 )
 
-distribute("${CMAKE_CURRENT_BINARY_DIR}/bin/${PROJECT_NAME}.asi")
-distribute("${CMAKE_CURRENT_BINARY_DIR}/bin/${PROJECT_NAME}.lib")
-distribute("${CMAKE_CURRENT_BINARY_DIR}/bin/${PROJECT_NAME}.pdb")
+distribute(RedUI "${CMAKE_CURRENT_BINARY_DIR}/bin/RedUI.asi")
+distribute(RedUI "${CMAKE_CURRENT_BINARY_DIR}/bin/RedUI.lib")
+distribute(RedUI "${CMAKE_CURRENT_BINARY_DIR}/bin/RedUI.pdb")
+distribute(RedUIRuntime "${CMAKE_CURRENT_BINARY_DIR}/bin/RedUIRuntime.asi")
+distribute(RedUIRuntime "${CMAKE_CURRENT_BINARY_DIR}/bin/RedUIRuntime.pdb")
