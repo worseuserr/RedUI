@@ -1,4 +1,5 @@
 #include "RedUI/Runtime.h"
+#include "RedUI/Debug.h"
 #include "RedUI/Focus.h"
 #include "RedUI/Object/UIObject.h"
 #include "RedUI/Input/Mouse.h"
@@ -10,6 +11,10 @@ bool Runtime::UpdateLoopEnabled = true;
 
 void Runtime::RedUILoop()
 {
+	static IO::Logger	logger = IO::Logger("RedUI.log");
+
+	Debug::DLogger = &logger;
+	Debug::DLogger->Write("Starting RedUI version INDEV");
 	while (true)
 	{
 		if (UpdateLoopEnabled)
