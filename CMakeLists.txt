@@ -58,6 +58,8 @@ add_library(RedUI SHARED
 		include/RedUI/IO/Logger.h
 		src/RedUI/IO/Logger.cpp
 		src/RedUI/Time/Time.cpp
+		include/RedUI/Debug.h
+		src/RedUI/Debug.cpp
 )
 
 target_include_directories(RedUI PUBLIC
