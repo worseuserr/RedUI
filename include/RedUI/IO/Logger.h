@@ -38,6 +38,7 @@ namespace RedUI::IO
 		Logger(const char *filename, bool overwriteIfExists = true);
 		~Logger();
 		void	Write(const char *str, LL logLevel = LL::Info, bool prependDatetime = true, bool appendNewline = true);
+		void	Write(const std::string &str, LL logLevel = LL::Info, bool prependDatetime = true, bool appendNewline = true);
 		void	Flush();
 	};
 }

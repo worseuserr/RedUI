@@ -27,6 +27,10 @@ void IO::Logger::Write(const char *str, LL logLevel, const bool prependDatetime,
 		Flush();
 }
 
+void IO::Logger::Write(const std::string &str, const LL logLevel, const bool prependDatetime, const bool appendNewline)
+{
+	Write(str.c_str(), logLevel, prependDatetime, appendNewline);
+}
 
 void IO::Logger::Flush()
 {
