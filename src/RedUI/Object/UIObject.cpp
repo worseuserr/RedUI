@@ -140,6 +140,11 @@ bool UIObject::IsInTick()
 	return (IsTickLocked);
 }
 
+std::string UIObject::Name() const
+{
+	return ("BaseUIObject");
+}
+
 void UIObject::RecursivelyRender(FrameState &state)
 {
 	if (!Enabled)

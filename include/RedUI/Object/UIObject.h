@@ -138,5 +138,6 @@ namespace RedUI::Object
 		std::vector<UIObjectOwner>	&GetChildren();
 		static UIObjectOwner		*GetChildHandle(std::vector<UIObjectOwner> &children, UIObject *child);
 		static bool					IsInTick();
+		virtual std::string			Name() const;
 	};
 }
