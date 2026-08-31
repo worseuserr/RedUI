@@ -28,6 +28,11 @@ namespace RedUI
 			Release();
 		}
 
+		void	Destroy()
+		{
+			Release();
+		}
+
 		void	Release()
 		{
 			Debug::Log(std::format("UIHandle released {:p} (for {:p} {})",
@@ -54,6 +59,12 @@ namespace RedUI
 		// Movable.
 		UIHandle(UIHandle&& other) noexcept
 		{
+			Debug::Log(std::format("UIHandle moved {:p} -> {:p} ({} {:p})",
+				static_cast<void *>(&other),
+				static_cast<void *>(this),
+				other.OrgPtr ? other.OrgPtr->Name() : "nullptr",
+				static_cast<void *>(other.OrgPtr)
+			));
 			OrgPtr = other.OrgPtr;
 			other.OrgPtr = nullptr;
 		}
