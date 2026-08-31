@@ -29,7 +29,7 @@ namespace RedUI
 
 		Focus() = default;
 		Focus(const uint16_t value) : Value(value) {}
-		static bool	IsEnabled(Focus flag);
+		static bool	IsActive(Focus flag);
 
 		Focus	operator|(const Focus rhs) const
 			{ return (this->Value | rhs.Value); }
@@ -48,6 +48,9 @@ namespace RedUI
 
 		bool	operator!=(const Focus rhs) const
 			{ return (this->Value != rhs.Value); }
+
+		bool	Has(const Focus flags) const
+			{ return ((*this & flags) != 0); }
 	};
 
 	class	FocusHandle

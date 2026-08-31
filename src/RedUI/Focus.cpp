@@ -10,16 +10,16 @@ Focus			Focus::State{};
 
 void Focus::Tick()
 {
-	if (IsEnabled(Cursor))
+	if (IsActive(Cursor))
 		_NAMESPACE30::_SET_MOUSE_CURSOR_ACTIVE_THIS_FRAME();
-	if (IsEnabled(DisableInput))
+	if (IsActive(DisableInput))
 	{
 		PAD::DISABLE_CONTROL_ACTION(0, Input::INPUT_ATTACK, true);
 		PAD::DISABLE_CONTROL_ACTION(0, Input::INPUT_AIM, true);
 	}
 }
 
-bool Focus::IsEnabled(const Focus flag)
+bool Focus::IsActive(const Focus flag)
 {
 	return ((State & flag) != 0);
 }
@@ -54,9 +54,9 @@ FocusHandle::FocusHandle(const Focus flags, const bool isValid)
 {
 	Debug::Log(std::format("Focus acquired ({:p}), flags: Cursor: {}, Interaction: {}, DisableInput: {}",
 		static_cast<void *>(this),
-		flags.IsEnabled(Focus::Cursor),
-		flags.IsEnabled(Focus::Interaction),
-		flags.IsEnabled(Focus::DisableInput)));
+		flags.Has(Focus::Cursor),
+		flags.Has(Focus::Interaction),
+		flags.Has(Focus::DisableInput)));
 	Flags = flags;
 	Valid = isValid;
 	if (isValid)
@@ -73,9 +73,9 @@ void FocusHandle::Release()
 {
 	Debug::Log(std::format("Focus released ({:p}), flags: Cursor: {}, Interaction: {}, DisableInput: {}",
 		static_cast<void *>(this),
-		Flags.IsEnabled(Focus::Cursor),
-		Flags.IsEnabled(Focus::Interaction),
-		Flags.IsEnabled(Focus::DisableInput)));
+		Flags.Has(Focus::Cursor),
+		Flags.Has(Focus::Interaction),
+		Flags.Has(Focus::DisableInput)));
 	if (Valid)
 		UnregisterFlags();
 	Valid = false;
@@ -88,6 +88,7 @@ FocusHandle::operator bool() const
 
 FocusHandle::FocusHandle(FocusHandle&& other) noexcept
 {
+	Debug::Log(std::format("Focus moved {:p} -> {:p}", static_cast<void *>(&other), static_cast<void *>(this)));
 	Flags = other.Flags;
 	Valid = other.Valid;
 	other.Valid = false;
