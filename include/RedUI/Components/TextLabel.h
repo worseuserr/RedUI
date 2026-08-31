@@ -10,7 +10,7 @@ namespace RedUI::Components
 		void	Draw() override;
 
 	public:
-		UI_CREATE(TextLabel)
+		UI_CREATE(TextLabel, "TextLabel")
 		Color::Dropshadow	Dropshadow;
 		float				TextScale;
 		Color::RGB			TextColor;

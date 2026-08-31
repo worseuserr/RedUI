@@ -14,7 +14,7 @@ namespace RedUI::Components
 		Math::Angle	Rotation;
 
 	public:
-		UI_CREATE(Box)
+		UI_CREATE(Box, "Box")
 		using			UIComponent::UIComponent;
 		Color::RGB		SpriteColor;
 		float			SpriteOpacity;
