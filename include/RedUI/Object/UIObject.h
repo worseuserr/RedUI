@@ -69,8 +69,7 @@ namespace RedUI::Object
 
 		// Re-sorts children based on their z index. Must be run after changing the ZIndex.
 		void			UpdateZ() const;
-		// Optional method for ui components to implement per-frame logic.
-		// Important: If changing Position or Scale inside the method, you MUST call UpdateWorldTransform afterwards or use SetPosition/SetScale.
+		// Optional method for ui components to implement per-frame logic. This is called right before Draw.
 		virtual void	Update(FrameState &state) {}
 		// Draw component. Called every frame, in order: ProcessEvents (and thus ContainsPoint) -> Update -> Draw.
 		virtual void	Draw() = 0;
@@ -102,7 +101,7 @@ namespace RedUI::Object
 
 		UIObject(const Math::Vec2 &position = {}, const Math::Vec2 &scale = {1, 1},
 			const Color::RGB &color = {}, float opacity = 1.0f);
-		virtual			~UIObject() = default;
+		virtual			~UIObject();
 		// Destroy object.
 		void			Destroy();
 		// Updates world transform using local transforms and nearest parent.

@@ -1,4 +1,6 @@
 #include "RedUI/Focus.h"
+#include <format>
+#include "RedUI/Debug.h"
 #include "RedUI/Input/Mouse.h"
 
 using namespace RedUI;
@@ -50,6 +52,11 @@ void FocusHandle::RegisterFlags() const
 
 FocusHandle::FocusHandle(const Focus flags, const bool isValid)
 {
+	Debug::Log(std::format("Focus acquired ({:p}), flags: Cursor: {}, Interaction: {}, DisableInput: {}",
+		static_cast<void *>(this),
+		flags.IsEnabled(Focus::Cursor),
+		flags.IsEnabled(Focus::Interaction),
+		flags.IsEnabled(Focus::DisableInput)));
 	Flags = flags;
 	Valid = isValid;
 	if (isValid)
@@ -64,6 +71,11 @@ FocusHandle::~FocusHandle()
 
 void FocusHandle::Release()
 {
+	Debug::Log(std::format("Focus released ({:p}), flags: Cursor: {}, Interaction: {}, DisableInput: {}",
+		static_cast<void *>(this),
+		Flags.IsEnabled(Focus::Cursor),
+		Flags.IsEnabled(Focus::Interaction),
+		Flags.IsEnabled(Focus::DisableInput)));
 	if (Valid)
 		UnregisterFlags();
 	Valid = false;

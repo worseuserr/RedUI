@@ -14,7 +14,7 @@ void Runtime::RedUILoop()
 	static IO::Logger	logger = IO::Logger("RedUI.log");
 
 	Debug::DLogger = &logger;
-	Debug::DLogger->Write("Starting RedUI version INDEV");
+	Debug::Log("Starting RedUI version INDEV");
 	while (true)
 	{
 		if (UpdateLoopEnabled)

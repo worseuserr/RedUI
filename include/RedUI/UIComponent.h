@@ -1,6 +1,7 @@
 #pragma once
 #include "Object/UIObject.h"
 // ReSharper disable once CppUnusedIncludeDirective
+#include "Debug.h"
 #include "Object/Create.h"
 
 namespace RedUI
@@ -12,13 +13,13 @@ namespace RedUI
 		T		*OrgPtr;
 
 	public:
-		UIHandle()
-		{
-			OrgPtr = nullptr;
-		}
+		UIHandle() : UIHandle(nullptr)
+		{}
 
 		UIHandle(T *object)
 		{
+			Debug::Log(std::format("UIHandle created {:p} (for {:p} {})",
+				static_cast<void *>(this), static_cast<void *>(object), object ? object->Name() : "nullptr"));
 			OrgPtr = object;
 		}
 
@@ -29,6 +30,8 @@ namespace RedUI
 
 		void	Release()
 		{
+			Debug::Log(std::format("UIHandle released {:p} (for {:p} {})",
+				static_cast<void *>(this), static_cast<void *>(OrgPtr), OrgPtr ? OrgPtr->Name() : "nullptr"));
 			if (OrgPtr != nullptr)
 				OrgPtr->Destroy();
 			OrgPtr = nullptr;

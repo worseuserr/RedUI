@@ -1,5 +1,6 @@
 #include "RedUI/Object/UIObject.h"
 #include <algorithm>
+#include "RedUI/Debug.h"
 #include "RedUI/Input/Screen.h"
 
 using namespace RedUI::Object;
@@ -60,6 +61,11 @@ UIObject::UIObject(const Vec2 &position, const Vec2 &scale, const RGB &color, co
 	Scale = scale;
 	Color = color;
 	Opacity = opacity;
+}
+
+UIObject::~UIObject()
+{
+	Debug::Log(std::format("UIObject destroyed: {:p}", static_cast<void *>(this)));
 }
 
 void UIObject::SetParent(UIObject *newParent)
@@ -171,6 +177,7 @@ void UIObject::RecursivelyRender(FrameState &state)
 
 void UIObject::Destroy()
 {
+	Debug::Log(std::format("Destroy called on {} {:p}", this->Name(), static_cast<void *>(this)));
 	Enabled = false;
 	if (IsTickLocked)
 	{
@@ -190,15 +197,15 @@ void UIObject::Destroy()
 void UIObject::UpdateWorldTransform()
 {
 	bool	isRoot;
-	Vec2	AspectScale = Vec2(Input::GetGameWindow().GetAspectRatio(), 1);
+	Vec2	aspectScale = Vec2(Input::GetGameWindow().GetAspectRatio(), 1);
 
 	isRoot = Parent == nullptr;
 	WorldScale = isRoot ? Scale : Parent->WorldScale * Scale;
-	WorldPosition = isRoot ? Position : Parent->WorldPosition + (Position - Vec2(0.5, 0.5)) * (Parent->WorldScale * AspectScale);
+	WorldPosition = isRoot ? Position : Parent->WorldPosition + (Position - Vec2(0.5, 0.5)) * (Parent->WorldScale * aspectScale);
 	FinalDrawPosition = WorldPosition + RenderOffset;
-	FinalDrawScale = (WorldScale * RenderScale) * AspectScale;
+	FinalDrawScale = (WorldScale * RenderScale) * aspectScale;
 	FinalHitPosition = (RenderTransformAffectsHits ? WorldPosition + RenderOffset : WorldPosition);
-	FinalHitScale = (RenderTransformAffectsHits ? WorldScale * RenderScale : WorldScale) * AspectScale;
+	FinalHitScale = (RenderTransformAffectsHits ? WorldScale * RenderScale : WorldScale) * aspectScale;
 }
 
 void UpdateHitState(HitState &state)

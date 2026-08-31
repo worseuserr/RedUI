@@ -1,5 +1,6 @@
 #pragma once
 #include "UIObject.h"
+#include "RedUI/Debug.h"
 
 namespace RedUI::Object
 {
@@ -15,8 +16,14 @@ namespace RedUI::Object
 		std::unique_ptr<T>	obj = std::make_unique<T>(std::forward<Args>(args)...);
 
 		raw = obj.get();
+		Debug::Log(std::format(
+			"New UIObject created: {:p} ({}), parent: {:p} ({})",
+			static_cast<void *>(raw),
+			obj->Name(),
+			static_cast<void *>(parent),
+			parent ? parent->Name() : "nullptr"
+		));
 		Object::ParentNewUIObject(std::move(obj), parent);
-		// obj->SetParent(parent, true);
 		return (raw);
 	}
 }
