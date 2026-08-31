@@ -13,7 +13,7 @@ namespace RedUI::IO
 		File(const char *filename, bool replaceIfExists = false);
 
 		// Returns IsOpen().
-		bool        Open(std::ios_base::openmode mode = std::ios_base::app);
+		bool        Open(std::ios_base::openmode mode = std::ios_base::app | std::ios_base::out);
 		void        Close();
 		void        Write(const char *str);
 		std::string	Read() const;
