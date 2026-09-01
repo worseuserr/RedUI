@@ -12,7 +12,8 @@ bool Runtime::UpdateLoopEnabled = true;
 void Runtime::RedUILoop()
 {
 	static IO::Logger	logger = IO::Logger("RedUI.log");
-
+	logger.UseBuffer = true;
+	logger.BufferSize = 1048;
 	Debug::DLogger = &logger;
 	Debug::Log("Starting RedUI version INDEV");
 	while (true)
