@@ -76,7 +76,7 @@ target_compile_options(RedUI PRIVATE
 		/O2
 )
 
-target_link_libraries(RedUI PRIVATE ScriptHookRDR2.lib)
+target_link_libraries(RedUI PRIVATE ScriptHookRDR2.lib Dbghelp)
 
 set_target_properties(RedUI PROPERTIES
 		RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin
