@@ -12,8 +12,9 @@ namespace RedUI
 		static void			Log(const char *str, LL logLevel = LL::Info, bool prependDatetime = true, bool appendNewline = true);
 		static void			Log(const std::string &str, LL logLevel = LL::Info, bool prependDatetime = true, bool appendNewline = true);
 		// If fatal == true, stops the RedUI loop.
-		static void			Error(const char *message, bool fatal = false);
+		static void			Error(const char *message, bool fatal = false, IO::Logger *customLogger = nullptr);
 		// If fatal == true, stops the RedUI loop.
-		static void			Error(const std::string &message, bool fatal = false);
+		static void			Error(const std::string &message, bool fatal = false, IO::Logger *customLogger = nullptr);
+		static std::string	GetStacktrace(unsigned long framesToSkip = 0);
 	};
 }
