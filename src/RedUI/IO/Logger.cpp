@@ -1,10 +1,12 @@
 #include "RedUI/IO/Logger.h"
 #include "RedUI/Time/Time.h"
+#include "RedUI/Debug.h"
+#include <windows.h>
 
 using namespace RedUI;
 
-IO::Logger::Logger(const char *filename, const bool overwriteIfExists)
-	: Out(filename, overwriteIfExists) {}
+IO::Logger::Logger(const char *filename, const char *modname, const bool overwriteIfExists)
+	: Out(filename, overwriteIfExists), Name(modname) {}
 
 IO::Logger::~Logger()
 {
@@ -13,7 +15,7 @@ IO::Logger::~Logger()
 
 void IO::Logger::Write(const char *str, LL logLevel, const bool prependDatetime, const bool appendNewline)
 {
-	tm	time = Time::GetCurrentTime();
+	tm	time = Time::Now();
 
 	Buffer << (prependDatetime ? std::format(
 		"[{:02}/{:02}/{} {:02}:{:02}:{:02}] ",
@@ -30,6 +32,27 @@ void IO::Logger::Write(const char *str, LL logLevel, const bool prependDatetime,
 void IO::Logger::Write(const std::string &str, const LL logLevel, const bool prependDatetime, const bool appendNewline)
 {
 	Write(str.c_str(), logLevel, prependDatetime, appendNewline);
+}
+
+void IO::Logger::Error(const char *message, const bool fatal)
+{
+	std::string	str = std::format(
+		"{} error occurred in {}! Error message: \'{}\'.{}",
+		fatal ? "A fatal" : "An", Name, message, fatal ? std::format(" {} shutting down.", Name) : "");
+
+	Write(std::format("{}\nStack trace:\n{}", str, Debug::GetStacktrace()), LL::Error, true, false);
+	if (fatal)
+		MessageBox(
+			nullptr,
+			str.c_str(),
+			(Name + " error!").c_str(),
+			MB_ICONERROR | MB_OK
+		);
+}
+
+void IO::Logger::Error(const std::string &message, const bool fatal)
+{
+	Error(message.c_str(), fatal);
 }
 
 void IO::Logger::Flush()

@@ -11,7 +11,7 @@ bool Runtime::UpdateLoopEnabled = true;
 
 void Runtime::RedUILoop()
 {
-	static IO::Logger	logger = IO::Logger("RedUI.log");
+	static IO::Logger	logger = IO::Logger("RedUI.log", "RedUI");
 	logger.UseBuffer = true;
 	logger.BufferSize = 1048;
 	Debug::DLogger = &logger;

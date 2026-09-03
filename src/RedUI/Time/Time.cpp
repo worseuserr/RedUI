@@ -22,7 +22,7 @@ Time::Seconds Time::SSinceEpoch()
 	return (duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now().time_since_epoch()).count());
 }
 
-tm Time::GetCurrentTime()
+tm Time::Now()
 {
 	time_t				now;
 	tm					current;

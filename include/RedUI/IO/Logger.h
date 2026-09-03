@@ -30,15 +30,18 @@ namespace RedUI::IO
 	{
 		File				Out;
 		std::stringstream	Buffer;
+		std::string			Name;
 
 	public:
 		bool			UseBuffer = false;
 		unsigned int	BufferSize = 2048; // Size in characters.
 
-		Logger(const char *filename, bool overwriteIfExists = true);
+		Logger(const char *filename, const char *modname, bool overwriteIfExists = true);
 		~Logger();
 		void	Write(const char *str, LL logLevel = LL::Info, bool prependDatetime = true, bool appendNewline = true);
 		void	Write(const std::string &str, LL logLevel = LL::Info, bool prependDatetime = true, bool appendNewline = true);
+		void	Error(const char *message, bool fatal = false);
+		void	Error(const std::string &message, bool fatal = false);
 		void	Flush();
 	};
 }

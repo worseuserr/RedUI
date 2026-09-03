@@ -18,24 +18,16 @@ void Debug::Log(const std::string &str, const LL logLevel, const bool prependDat
 	DLogger->Write(str, logLevel, prependDatetime, appendNewline);
 }
 
-void Debug::Error(const char *message, const bool fatal, IO::Logger *customLogger)
+void Debug::Error(const char *message, const bool fatal)
 {
-	std::string	str = std::format("{} error occurred in RedUI! Error message: \'{}\'.{}", fatal ? "A fatal" : "An", message, fatal ? " RedUI shutting down." : "");
-
-	(customLogger ? customLogger : DLogger)->Write(std::format("{}\nStack trace:\n{}", str, GetStacktrace()), LL::Error, true, false);
-	MessageBox(
-		nullptr,
-		str.c_str(),
-		"RedUI error!",
-		MB_ICONERROR | MB_OK
-	);
+	DLogger->Error(message, fatal);
 	if (fatal)
 		Runtime::UpdateLoopEnabled = false;
 }
 
-void Debug::Error(const std::string &message, const bool fatal, IO::Logger *customLogger)
+void Debug::Error(const std::string &message, const bool fatal)
 {
-	Error(message.c_str(), fatal, customLogger);
+	Error(message.c_str(), fatal);
 }
 
 class	TraceContext

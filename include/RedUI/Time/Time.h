@@ -13,7 +13,7 @@ namespace RedUI::Time
 	Nanoseconds		NsSinceEpoch();
 	Seconds			SSinceEpoch();
 
-	tm	GetCurrentTime();
+	tm	Now();
 
 	// TODO: add a method for delaying functions
 }
