@@ -19,7 +19,8 @@ namespace RedUI
 
 	class	Runtime
 	{
-		static bool	UpdateLoopEnabled;
+		friend class	Debug;
+		static bool		UpdateLoopEnabled;
 
 	public:
 		Runtime() = delete;
