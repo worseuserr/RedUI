@@ -19,8 +19,27 @@ void Runtime::RedUILoop()
 	while (true)
 	{
 		if (UpdateLoopEnabled)
-			ProcessTick();
-		WAIT(0);
+		{
+			try
+			{
+				ProcessTick();
+			}
+			catch (const Debug::RedUIException &e)
+			{
+				Debug::Log("Error exception in RedUI loop caught properly (RedUIException).", LogLevel::Error);
+				Debug::Log(std::format("Message: '{}'.", e.what()), LogLevel::Error);
+			}
+			catch (const std::exception &e)
+			{
+				Debug::Log("A wrong exception type was thrown in RedUI loop (is or inherits from std::exception). This could be caused by a mod throwing an exception in one of a component's event handlers.", LogLevel::Error);
+				Debug::Log(std::format("Message: '{}'.", e.what()), LogLevel::Error);
+			}
+			catch (...)
+			{
+				Debug::Log("Unknown exception thrown in RedUI loop.", LogLevel::Error);
+			}
+		}
+		WAIT(UpdateLoopEnabled ? 0 : 1000);
 	}
 }
 
@@ -34,7 +53,7 @@ void Runtime::ProcessTick()
 	Focus::Tick();
 	UIObject::IsTickLocked = true;
 	IAnimation::Tick();
-	if ((Focus::State & Focus::Interaction) != 0)
+	if (Focus::IsActive(Focus::Interaction))
 		UIObject::TickEvents(state);
 	UIObject::TickRender(state);
 	UIObject::IsTickLocked = false;
