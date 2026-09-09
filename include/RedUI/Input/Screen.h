@@ -6,8 +6,8 @@ namespace RedUI::Input
 	class	Window
 	{
 	public:
-		HWND		Handle;
-		RECT		Rect;
+		HWND		Handle{};
+		RECT		Rect{};
 		Math::Vec2	Size;
 
 		float		GetAspectRatio() const;
