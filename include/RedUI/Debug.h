@@ -1,5 +1,7 @@
 #pragma once
 #include "IO/Logger.h"
+#include <windows.h>
+#include <dbghelp.h>
 
 namespace RedUI
 {
@@ -16,5 +18,23 @@ namespace RedUI
 		// If fatal == true, stops the RedUI loop.
 		static void			Error(const std::string &message, bool fatal = false);
 		static std::string	GetStacktrace(unsigned long framesToSkip = 0);
+
+		class	TraceContext
+		{
+		public:
+			SYMBOL_INFO		*Symbol;
+			HANDLE			Process;
+			IMAGEHLP_LINE64	Line{};
+			DWORD			Displacement;
+			WORD			FrameCount;
+
+			TraceContext(void **frames, char *symbolBuffer, unsigned long framesToSkip);
+		};
+
+		class				RedUIException : public std::exception
+		{
+		public:
+			using std::exception::exception;
+		};
 	};
 }

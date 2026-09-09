@@ -22,7 +22,10 @@ void Debug::Error(const char *message, const bool fatal)
 {
 	DLogger->Error(message, fatal);
 	if (fatal)
+	{
 		Runtime::UpdateLoopEnabled = false;
+		throw (RedUIException(message));
+	}
 }
 
 void Debug::Error(const std::string &message, const bool fatal)
@@ -30,17 +33,8 @@ void Debug::Error(const std::string &message, const bool fatal)
 	Error(message.c_str(), fatal);
 }
 
-class	TraceContext
+Debug::TraceContext::TraceContext(void **frames, char *symbolBuffer, const unsigned long framesToSkip)
 {
-public:
-	SYMBOL_INFO		*Symbol;
-	HANDLE			Process;
-	IMAGEHLP_LINE64	Line{};
-	DWORD			Displacement;
-	WORD			FrameCount;
-
-	TraceContext(void **frames, char *symbolBuffer, const unsigned long framesToSkip)
-	{
 		Displacement = 0;
 		Line.SizeOfStruct = sizeof(Line);
 		Process = GetCurrentProcess();
@@ -49,10 +43,9 @@ public:
 		Symbol->SizeOfStruct = sizeof(SYMBOL_INFO);
 		Symbol->MaxNameLen = MAX_SYM_NAME;
 		FrameCount = CaptureStackBackTrace(framesToSkip, 32, frames, nullptr);
-	}
-};
+}
 
-std::string GetSymLine(TraceContext &ctx)
+std::string GetSymLine(Debug::TraceContext &ctx)
 {
 	std::filesystem::path	path;
 
